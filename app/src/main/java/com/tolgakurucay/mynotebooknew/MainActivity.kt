@@ -41,6 +41,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 @Composable
 fun GreetingPreview() {
     MyNotebookNewTheme {
+
         Greeting("Android")
     }
 }
