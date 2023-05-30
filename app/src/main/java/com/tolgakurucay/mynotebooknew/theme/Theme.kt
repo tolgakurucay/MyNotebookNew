@@ -1,4 +1,4 @@
-package com.tolgakurucay.mynotebooknew.ui.theme
+package com.tolgakurucay.mynotebooknew.theme
 
 import android.app.Activity
 import android.os.Build
