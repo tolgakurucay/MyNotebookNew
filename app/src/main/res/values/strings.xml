@@ -1,3 +1,13 @@
 <resources>
-    <string name="app_name">MyNotebookNew</string>
+    <string name="app_name" translatable="false">MyNotebookNew</string>
+    <string name="common_login_uppercase">LOGIN</string>
+    <string name="common_email">E-mail</string>
+    <string name="common_password">Password</string>
+    <string name="common_did_you_forgot_password">Did you forgot your password?</string>
+    <string name="common_login_now_uppercase">LOGIN NOW</string>
+    <string name="common_dont_you_have_an_account">Don\'t you have an account?</string>
+    <string name="common_register">Register</string>
+    <string name="common_or">Or</string>
+    <string name="action_enter_email">Mail giriniz</string>
+    <string name="action_enter_password">Enter password</string>
 </resources>

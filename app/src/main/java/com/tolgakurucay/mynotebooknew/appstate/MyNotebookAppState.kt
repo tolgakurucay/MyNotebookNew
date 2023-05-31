@@ -20,9 +20,13 @@ import androidx.navigation.compose.rememberNavController
 sealed class Screen(val route: String) {
 
     object Home : Screen("home")
-
     object Profile : Screen("profile")
+    object Register : Screen("register")
+    object Login : Screen("login")
+    object ForgotPassword : Screen("forgotpassword")
 
+
+    //Below field is example of different usage
     object Player : Screen("player/{episodeUri}") {
         fun createRoute(episodeUri: String) = "player/$episodeUri"
     }

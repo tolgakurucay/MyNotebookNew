@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 
-
+@Preview
 @Composable
 fun Home(
     viewModel: HomeViewModel = viewModel()
@@ -22,10 +22,9 @@ fun Home(
     }
 }
 
-@Preview
 @Composable
 fun HomeContent() {
-    Text(text = "selam")
+    Text(text = "öksdjnfökjn")
 
 
 }

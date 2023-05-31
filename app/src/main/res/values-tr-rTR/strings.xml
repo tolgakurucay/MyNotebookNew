@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="common_login_uppercase">GİRİŞ YAP</string>
+    <string name="common_email">E-posta</string>
+    <string name="common_password">Şifre</string>
+    <string name="common_did_you_forgot_password">Şifreni mi unuttun?</string>
+    <string name="common_login_now_uppercase">ŞİMDİ GİRİŞ YAP</string>
+    <string name="common_dont_you_have_an_account">Bir hesabın yok mu?</string>
+    <string name="common_register">Kayıt ol</string>
+    <string name="common_or">Ya da</string>
+    <string name="action_enter_email">E-posta giriniz</string>
+    <string name="action_enter_password">Şifre giriniz</string>
+</resources>
