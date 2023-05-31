@@ -10,4 +10,6 @@
     <string name="common_or">Ya da</string>
     <string name="action_enter_email">E-posta giriniz</string>
     <string name="action_enter_password">Şifre giriniz</string>
+    <string name="description_email">E-posta ikonu</string>
+    <string name="description_password">Şifre ikonu</string>
 </resources>

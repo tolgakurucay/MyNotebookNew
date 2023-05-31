@@ -26,6 +26,27 @@ val spacing17 = 17.dp
 val spacing18 = 18.dp
 val spacing19 = 19.dp
 val spacing20 = 20.dp
+val spacing21 = 21.dp
+val spacing22 = 22.dp
+val spacing23 = 23.dp
+val spacing24 = 24.dp
+val spacing25 = 25.dp
+val spacing26 = 26.dp
+val spacing27 = 27.dp
+val spacing28 = 28.dp
+val spacing29 = 29.dp
+val spacing30 = 30.dp
+val spacing31 = 31.dp
+val spacing32 = 32.dp
+val spacing33 = 33.dp
+val spacing34 = 34.dp
+val spacing35 = 35.dp
+val spacing36 = 36.dp
+val spacing37 = 37.dp
+val spacing38 = 38.dp
+val spacing39 = 39.dp
+val spacing40 = 40.dp
+val spacing41 = 41.dp
 
 
 //Font Size
@@ -51,3 +72,39 @@ val fontSize27 = 27.sp
 val fontSize28 = 28.sp
 val fontSize29 = 29.sp
 val fontSize30 = 30.sp
+val fontSize31 = 31.sp
+val fontSize32 = 32.sp
+val fontSize33 = 33.sp
+val fontSize34 = 34.sp
+val fontSize35 = 35.sp
+val fontSize36 = 36.sp
+val fontSize37 = 37.sp
+val fontSize38 = 38.sp
+val fontSize39 = 39.sp
+val fontSize40 = 40.sp
+val fontSize41 = 41.sp
+
+
+//Radius
+
+val radius0 = 0.dp
+val radius1 = 1.dp
+val radius2 = 2.dp
+val radius3 = 3.dp
+val radius4 = 4.dp
+val radius6 = 6.dp
+val radius7 = 7.dp
+val radius8= 8.dp
+val radius9 = 9.dp
+val radius10 = 10.dp
+val radius11 = 11.dp
+val radius12 = 12.dp
+val radius13 = 13.dp
+val radius14 = 14.dp
+val radius15 = 15.dp
+val radius16 = 16.dp
+val radius17 = 17.dp
+val radius18 = 18.dp
+val radius19 = 19.dp
+val radius20 = 20.dp
+

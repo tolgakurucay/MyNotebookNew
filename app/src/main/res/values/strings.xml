@@ -10,4 +10,6 @@
     <string name="common_or">Or</string>
     <string name="action_enter_email">Mail giriniz</string>
     <string name="action_enter_password">Enter password</string>
+    <string name="description_email">E-mail icon</string>
+    <string name="description_password">Passport icon</string>
 </resources>

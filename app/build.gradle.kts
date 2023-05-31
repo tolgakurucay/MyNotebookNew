@@ -35,7 +35,7 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = "1.4.1"
     }
-    packagingOptions {
+    packaging {
         resources {
             excludes += ("/META-INF/{AL2.0,LGPL2.1}")
         }
@@ -61,8 +61,8 @@ android {
         debugImplementation ("androidx.compose.ui:ui-test-manifest")
 
         //Jetpack Navigation
-        val nav_version = "2.5.3"
-        implementation("androidx.navigation:navigation-compose:$nav_version")
+        val navVersion = "2.5.3"
+        implementation("androidx.navigation:navigation-compose:$navVersion")
     }
 }
 
