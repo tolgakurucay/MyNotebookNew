@@ -36,17 +36,17 @@ val MyNotebookNewTypography = Typography(
     ),
     bodySmall = TextStyle(
         fontFamily = Comfortaa,
-        fontSize = fontSize14,
+        fontSize = fontSize10,
         fontWeight = FontWeight.Light,
     ),
     bodyMedium = TextStyle(
         fontFamily = Comfortaa,
-        fontSize = fontSize16,
+        fontSize = fontSize14,
         fontWeight = FontWeight.Medium,
     ),
     bodyLarge = TextStyle(
         fontFamily = Comfortaa,
-        fontSize = fontSize18,
+        fontSize = fontSize24,
         fontWeight = FontWeight.Bold,
     )
 

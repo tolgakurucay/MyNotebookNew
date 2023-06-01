@@ -12,4 +12,8 @@
     <string name="action_enter_password">Enter password</string>
     <string name="description_email">E-mail icon</string>
     <string name="description_password">Passport icon</string>
+    <string name="empty_email">E-mail field must not empty</string>
+    <string name="empty_password">Password field must not empty</string>
+    <string name="action_enter_valid_email">Enter a valid email</string>
+    <string name="common_or_sign_in_with">or sign in with</string>
 </resources>

@@ -4,6 +4,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 //Spacing
+//multi cursor -> cmd shift 8
 
 val spacing0 = 0.dp
 val spacing1 = 1.dp
@@ -47,6 +48,48 @@ val spacing38 = 38.dp
 val spacing39 = 39.dp
 val spacing40 = 40.dp
 val spacing41 = 41.dp
+val spacing42= 42.dp
+val spacing43= 43.dp
+val spacing44= 44.dp
+val spacing45= 45.dp
+val spacing46= 46.dp
+val spacing47= 47.dp
+val spacing48= 48.dp
+val spacing49= 49.dp
+val spacing50 = 50.dp
+val spacing51= 51.dp
+val spacing52 = 52.dp
+val spacing53 = 53.dp
+val spacing54 = 54.dp
+val spacing55 = 55.dp
+val spacing56 = 56.dp
+val spacing57 = 57.dp
+val spacing58 = 58.dp
+val spacing59 = 59.dp
+val spacing60 = 60.dp
+val spacing61 = 61.dp
+val spacing62 = 62.dp
+val spacing63 = 63.dp
+val spacing64 = 64.dp
+val spacing65 = 65.dp
+val spacing66 = 66.dp
+val spacing67 = 67.dp
+val spacing68 = 68.dp
+val spacing69 = 69.dp
+val spacing70 = 70.dp
+val spacing71 = 71.dp
+val spacing72 = 72.dp
+val spacing73 = 73.dp
+val spacing74 = 74.dp
+val spacing75 = 75.dp
+val spacing76 = 76.dp
+val spacing77 = 77.dp
+val spacing78 = 78.dp
+val spacing79 = 79.dp
+val spacing80 = 80.dp
+val spacing81 = 81.dp
+val spacing82 = 82.dp
+val spacing83 = 83.dp
 
 
 //Font Size
@@ -107,4 +150,50 @@ val radius17 = 17.dp
 val radius18 = 18.dp
 val radius19 = 19.dp
 val radius20 = 20.dp
+
+
+// Size
+
+val size0 = 0.dp
+val size1 = 1.dp
+val size2 = 2.dp
+val size3 = 3.dp
+val size4 = 4.dp
+val size5 = 5.dp
+val size6 = 6.dp
+val size7 = 7.dp
+val size8= 8.dp
+val size9 = 9.dp
+val size10 = 10.dp
+val size11 = 11.dp
+val size12 = 12.dp
+val size13 = 13.dp
+val size14 = 14.dp
+val size15 = 15.dp
+val size16 = 16.dp
+val size17 = 17.dp
+val size18 = 18.dp
+val size19 = 19.dp
+val size20 = 20.dp
+val size21 = 21.dp
+val size22 = 22.dp
+val size23 = 23.dp
+val size24 = 24.dp
+val size25 = 25.dp
+val size26 = 26.dp
+val size27 = 27.dp
+val size28 = 28.dp
+val size29 = 29.dp
+val size30 = 30.dp
+val size31 = 31.dp
+val size32 = 32.dp
+val size33 = 33.dp
+val size34 = 34.dp
+val size35 = 35.dp
+val size36 = 36.dp
+val size37 = 37.dp
+val size38 = 38.dp
+val size39 = 39.dp
+val size40 = 40.dp
+val size41 = 41.dp
 

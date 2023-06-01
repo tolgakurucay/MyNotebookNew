@@ -12,4 +12,8 @@
     <string name="action_enter_password">Şifre giriniz</string>
     <string name="description_email">E-posta ikonu</string>
     <string name="description_password">Şifre ikonu</string>
+    <string name="empty_email">E-posta alanı boş olamaz</string>
+    <string name="empty_password">Şifre alanı boş olamaz</string>
+    <string name="action_enter_valid_email">Geçerli bir eposta giriniz</string>
+    <string name="common_or_sign_in_with">ya da</string>
 </resources>
