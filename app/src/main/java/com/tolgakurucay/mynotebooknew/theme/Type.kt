@@ -9,6 +9,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.tolgakurucay.mynotebooknew.R
 
+//Implementation Example
+//https://developer.android.com/jetpack/compose/designsystems/material3
 
 private val Comfortaa = FontFamily(
     Font(R.font.comfortaa_light, FontWeight.Light),
@@ -19,35 +21,93 @@ private val Comfortaa = FontFamily(
 )
 
 val MyNotebookNewTypography = Typography(
-    titleSmall = TextStyle(
+    displayLarge = TextStyle(
         fontFamily = Comfortaa,
-        fontSize = fontSize18,
-        fontWeight = FontWeight.Medium,
+        fontSize = fontSize57,
+        fontWeight = FontWeight.Normal,
+        lineHeight = fontSize64
     ),
-    titleMedium = TextStyle(
+    displayMedium = TextStyle(
         fontFamily = Comfortaa,
-        fontSize = fontSize20,
-        fontWeight = FontWeight.Bold,
+        fontSize = fontSize45,
+        fontWeight = FontWeight.Normal,
+        lineHeight = fontSize52
+    ),
+    displaySmall = TextStyle(
+        fontFamily = Comfortaa,
+        fontSize = fontSize36,
+        fontWeight = FontWeight.Normal,
+        lineHeight = fontSize44
+    ),
+    headlineLarge = TextStyle(
+        fontFamily = Comfortaa,
+        fontSize = fontSize32,
+        fontWeight = FontWeight.Normal,
+        lineHeight = fontSize40
+    ),
+    headlineMedium = TextStyle(
+        fontFamily = Comfortaa,
+        fontSize = fontSize28,
+        fontWeight = FontWeight.Normal,
+        lineHeight = fontSize36
+    ),
+    headlineSmall = TextStyle(
+        fontFamily = Comfortaa,
+        fontSize = fontSize24,
+        fontWeight = FontWeight.Normal,
+        lineHeight = fontSize32
     ),
     titleLarge = TextStyle(
         fontFamily = Comfortaa,
         fontSize = fontSize22,
-        fontWeight = FontWeight.SemiBold,
+        fontWeight = FontWeight.Medium,
+        lineHeight = fontSize28
     ),
-    bodySmall = TextStyle(
+    titleMedium = TextStyle(
         fontFamily = Comfortaa,
-        fontSize = fontSize10,
-        fontWeight = FontWeight.Light,
+        fontSize = fontSize16,
+        fontWeight = FontWeight.Medium,
+        lineHeight = fontSize24
+    ),
+    titleSmall = TextStyle(
+        fontFamily = Comfortaa,
+        fontSize = fontSize14,
+        fontWeight = FontWeight.Medium,
+        lineHeight = fontSize20
+    ),
+    bodyLarge = TextStyle(
+        fontFamily = Comfortaa,
+        fontSize = fontSize16,
+        fontWeight = FontWeight.Normal,
+        lineHeight = fontSize24
     ),
     bodyMedium = TextStyle(
         fontFamily = Comfortaa,
         fontSize = fontSize14,
-        fontWeight = FontWeight.Medium,
+        fontWeight = FontWeight.Normal,
+        lineHeight = fontSize20
     ),
-    bodyLarge = TextStyle(
+    bodySmall = TextStyle(
         fontFamily = Comfortaa,
-        fontSize = fontSize24,
-        fontWeight = FontWeight.Bold,
-    )
-
-)
+        fontSize = fontSize12,
+        fontWeight = FontWeight.Normal,
+        lineHeight = fontSize16
+    ),
+    labelLarge = TextStyle(
+        fontFamily = Comfortaa,
+        fontSize = fontSize14,
+        fontWeight = FontWeight.Normal,
+        lineHeight = fontSize20
+    ),
+    labelMedium = TextStyle(
+        fontFamily = Comfortaa,
+        fontSize = fontSize12,
+        fontWeight = FontWeight.Normal,
+        lineHeight = fontSize16
+    ),
+    labelSmall = TextStyle(
+        fontFamily = Comfortaa,
+        fontSize = fontSize11,
+        fontWeight = FontWeight.Normal,
+        lineHeight = fontSize16
+    ),)

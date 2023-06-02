@@ -16,8 +16,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
-// primary = status bar color
-
 
 private val DarkColorScheme =
     darkColorScheme(
@@ -81,10 +79,10 @@ fun MyNotebookNewTheme(
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {
-//        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-//            val context = LocalContext.current
-//            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-//        }
+        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
+            val context = LocalContext.current
+            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
+        }
 
         darkTheme -> DarkColorScheme
         else -> LightColorScheme
@@ -101,6 +99,7 @@ fun MyNotebookNewTheme(
     MaterialTheme(
         colorScheme = colorScheme,
         typography = MyNotebookNewTypography,
-        content = content
+        content = content,
+        shapes = MyNotebookNewShapes
     )
 }

@@ -126,6 +126,36 @@ val fontSize38 = 38.sp
 val fontSize39 = 39.sp
 val fontSize40 = 40.sp
 val fontSize41 = 41.sp
+val fontSize42 = 42.sp
+val fontSize43 = 43.sp
+val fontSize44 = 44.sp
+val fontSize45 = 45.sp
+val fontSize46 = 46.sp
+val fontSize47 = 47.sp
+val fontSize48 = 48.sp
+val fontSize49 = 49.sp
+val fontSize50 = 50.sp
+val fontSize51 = 51.sp
+val fontSize52 = 52.sp
+val fontSize53 = 53.sp
+val fontSize54 = 54.sp
+val fontSize55 = 55.sp
+val fontSize56 = 56.sp
+val fontSize57 = 57.sp
+val fontSize58 = 58.sp
+val fontSize59 = 59.sp
+val fontSize60 = 60.sp
+val fontSize61 = 61.sp
+val fontSize62 = 62.sp
+val fontSize63 = 63.sp
+val fontSize64 = 64.sp
+val fontSize65 = 65.sp
+val fontSize66 = 66.sp
+val fontSize67 = 67.sp
+val fontSize68 = 68.sp
+val fontSize69 = 69.sp
+val fontSize70 = 70.sp
+
 
 
 //Radius
@@ -150,6 +180,16 @@ val radius17 = 17.dp
 val radius18 = 18.dp
 val radius19 = 19.dp
 val radius20 = 20.dp
+val radius21 = 21.dp
+val radius22 = 22.dp
+val radius23 = 23.dp
+val radius24 = 24.dp
+val radius25 = 25.dp
+val radius26 = 26.dp
+val radius27 = 27.dp
+val radius28 = 28.dp
+val radius29 = 29.dp
+val radius30 = 30.dp
 
 
 // Size

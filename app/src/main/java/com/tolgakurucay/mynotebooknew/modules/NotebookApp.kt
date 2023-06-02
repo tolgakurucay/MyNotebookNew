@@ -16,6 +16,8 @@ import com.tolgakurucay.mynotebooknew.appstate.Screen
 import com.tolgakurucay.mynotebooknew.appstate.rememberMyNotebookAppState
 import com.tolgakurucay.mynotebooknew.modules.login.Login
 import com.tolgakurucay.mynotebooknew.modules.login.LoginViewModel
+import com.tolgakurucay.mynotebooknew.modules.register.Register
+import com.tolgakurucay.mynotebooknew.modules.register.RegisterViewModel
 
 @Composable
 fun MyNotebookApp(
@@ -48,7 +50,8 @@ fun MyNotebookApp(
             }
 
             composable(Screen.Register.route){
-
+                val registerViewModel : RegisterViewModel = viewModel()
+                Register(registerViewModel)
             }
 
 

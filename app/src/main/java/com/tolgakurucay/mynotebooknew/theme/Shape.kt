@@ -4,9 +4,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Shapes
 
 val MyNotebookNewShapes = Shapes(
-    extraSmall = RoundedCornerShape(percent = 25),
-    small = RoundedCornerShape(percent = 50),
-    medium = RoundedCornerShape(size = radius8),
-    large = RoundedCornerShape(size = radius8),
-    extraLarge = RoundedCornerShape(size = radius8)
+    extraSmall = RoundedCornerShape(size = radius4),
+    small = RoundedCornerShape(size = radius8),
+    medium = RoundedCornerShape(size = radius12),
+    large = RoundedCornerShape(size = radius16),
+    extraLarge = RoundedCornerShape(size = radius24)
 )
