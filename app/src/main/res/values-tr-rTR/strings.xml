@@ -16,4 +16,6 @@
     <string name="empty_password">Şifre alanı boş olamaz</string>
     <string name="action_enter_valid_email">Geçerli bir eposta giriniz</string>
     <string name="common_or_sign_in_with">ya da</string>
+    <string name="common_hide_password">Parolayı gizle</string>
+    <string name="common_show_password">Parolayı göster</string>
 </resources>

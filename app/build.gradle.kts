@@ -63,6 +63,10 @@ android {
         //Jetpack Navigation
         val navVersion = "2.5.3"
         implementation("androidx.navigation:navigation-compose:$navVersion")
+
+        //Material Icons
+        val materialIcons = "1.4.3"
+        implementation ("androidx.compose.material:material-icons-extended:$materialIcons")
     }
 }
 

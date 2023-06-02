@@ -7,6 +7,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -22,19 +27,22 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.Dp
 
 
 @Composable
 fun CustomTextField(
     textFieldType: TextFieldType,
-    horizontalMargin : Dp,
+    horizontalMargin: Dp,
     value: String,
     onValueChange: (newValue: String) -> Unit
 ) {
     //Validation is true when supportingText field is empty ""
     //Validation is false when supportingText field isn't empty "example text"
     var supportingText by remember { mutableStateOf("") }
+    var showPassword by remember { mutableStateOf(false) }
     val focusManager = LocalFocusManager.current
 
     OutlinedTextField(
@@ -52,7 +60,7 @@ fun CustomTextField(
         ),
         singleLine = true,
         textStyle = MaterialTheme.typography.bodyMedium,
-        trailingIcon = {
+        leadingIcon = {
             when (textFieldType) {
                 TextFieldType.EMAIL -> {
                     //Checking validation
@@ -85,15 +93,14 @@ fun CustomTextField(
                 }
 
                 TextFieldType.PASSWORD -> {
-                    if(value.isEmpty()){
+                    if (value.isEmpty()) {
                         Image(
                             painter = painterResource(id = R.drawable.twotone_password_24),
                             contentDescription = stringResource(
                                 id = R.string.description_password
                             ),
                         )
-                    }
-                    else{
+                    } else {
                         when (supportingText) {
                             "" ->
                                 Image(
@@ -116,7 +123,9 @@ fun CustomTextField(
             }
 
         },
-        modifier = Modifier.fillMaxWidth().padding(horizontal = horizontalMargin),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = horizontalMargin),
         supportingText = {
             //Validation rules
             when (textFieldType) {
@@ -136,10 +145,9 @@ fun CustomTextField(
                 }
 
                 TextFieldType.PASSWORD -> {
-                    supportingText = if(value.isEmpty()){
+                    supportingText = if (value.isEmpty()) {
                         stringResource(id = R.string.empty_password)
-                    }
-                    else{
+                    } else {
                         ""
                     }
                     Text(
@@ -173,12 +181,45 @@ fun CustomTextField(
                 focusManager.clearFocus()
             },
         ),
-        isError = if(value.isEmpty()){
+        isError = if (value.isEmpty()) {
             false
         } else {
             when (supportingText) {
                 "" -> false
                 else -> true
+            }
+        },
+        visualTransformation = when (textFieldType) {
+            TextFieldType.PASSWORD -> {
+                if(!showPassword) PasswordVisualTransformation() else VisualTransformation.None
+            }
+            else -> VisualTransformation.None
+        }, trailingIcon = {
+            if(textFieldType == TextFieldType.PASSWORD){
+                when (showPassword) {
+                    true -> {
+                        IconButton(onClick = { showPassword = false }) {
+                            Icon(
+                                imageVector = Icons.Filled.Visibility,
+                                contentDescription = stringResource(
+                                    id = R.string.common_hide_password
+                                ),
+                            )
+                        }
+                    }
+
+                    false -> {
+                        IconButton(onClick = { showPassword = true }) {
+                            Icon(
+                                imageVector = Icons.Filled.VisibilityOff,
+                                contentDescription = stringResource(
+                                    id = R.string.common_show_password
+                                ),
+                            )
+                        }
+                    }
+                }
+
             }
         }
 

@@ -1,9 +1,6 @@
 package com.tolgakurucay.mynotebooknew.modules.login
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -18,6 +15,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.Divider
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -28,24 +26,27 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.paint
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.tolgakurucay.mynotebooknew.CustomTextField
 import com.tolgakurucay.mynotebooknew.R
 import com.tolgakurucay.mynotebooknew.TextFieldType
 import com.tolgakurucay.mynotebooknew.theme.Black
-import com.tolgakurucay.mynotebooknew.theme.size1
-import com.tolgakurucay.mynotebooknew.theme.size10
-import com.tolgakurucay.mynotebooknew.theme.size5
+import com.tolgakurucay.mynotebooknew.theme.size125
 import com.tolgakurucay.mynotebooknew.theme.spacing10
 import com.tolgakurucay.mynotebooknew.theme.spacing16
 import com.tolgakurucay.mynotebooknew.theme.spacing18
 import com.tolgakurucay.mynotebooknew.theme.spacing20
 import com.tolgakurucay.mynotebooknew.theme.spacing30
-import com.tolgakurucay.mynotebooknew.theme.spacing35
+import com.tolgakurucay.mynotebooknew.theme.spacing32
+import com.tolgakurucay.mynotebooknew.theme.spacing40
 import com.tolgakurucay.mynotebooknew.theme.spacing5
+import com.tolgakurucay.mynotebooknew.theme.spacing70
 
 @Preview
 @Composable
@@ -71,6 +72,8 @@ fun LoginContent(
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
+
+
     Column(
         modifier = modifier
             .windowInsetsPadding(WindowInsets.systemBars)
@@ -87,7 +90,7 @@ fun LoginContent(
         )
 
 
-        Spacer(modifier = Modifier.padding(vertical = spacing35))
+        Spacer(modifier = Modifier.padding(vertical = spacing70))
         CustomTextField(
             horizontalMargin = spacing10,
             textFieldType = TextFieldType.EMAIL, value = email,
@@ -130,12 +133,45 @@ fun LoginContent(
                 style = MaterialTheme.typography.bodyMedium
             )
         }
-        Row(modifier = Modifier.fillMaxWidth()) {
-            Divider(thickness = size5, color = Black, modifier = Modifier.fillMaxWidth(0.30f).align(Alignment.CenterVertically))
-            Divider(thickness = size5, color = Black, modifier = Modifier.fillMaxWidth(0.30f).align(Alignment.CenterVertically))
+        Spacer(modifier = Modifier.padding(top = spacing32))
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Divider(color = Black, modifier = Modifier.width(size125))
+            Text(
+                text = stringResource(id = R.string.common_or_sign_in_with),
+                style = MaterialTheme.typography.bodySmall
+            )
+            Divider(color = Black, modifier = Modifier.width(size125))
 
         }
 
+        Row(
+            horizontalArrangement = Arrangement.SpaceAround, modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = spacing40)
+        ) {
+            IconButton(
+                onClick = {}, modifier = Modifier
+                    .paint(painterResource(id = R.drawable.facebook_sign))
+            ) {
+
+            }
+            IconButton(
+                onClick = {},
+                modifier = Modifier.paint(painterResource(id = R.drawable.google_sign))
+            ) {
+
+            }
+            IconButton(
+                onClick = {},
+                modifier = Modifier.paint(painterResource(id = R.drawable.phone_sign))
+            ) {
+
+            }
+        }
 
 
     }
