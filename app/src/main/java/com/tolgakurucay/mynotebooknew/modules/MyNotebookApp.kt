@@ -2,14 +2,9 @@ package com.tolgakurucay.mynotebooknew.modules
 
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCompositionContext
-import androidx.lifecycle.AbstractSavedStateViewModelFactory
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import androidx.window.layout.DisplayFeature
 import com.tolgakurucay.mynotebooknew.appstate.MyNotebookAppState
 import com.tolgakurucay.mynotebooknew.appstate.Screen
@@ -28,7 +23,7 @@ fun MyNotebookApp(
     if(appState.isOnline){
         NavHost(navController = appState.navController, startDestination = Screen.Login.route){
 
-            composable(Screen.Home.route){ navBackStackEntry ->
+            composable(Screen.Home.route){
 
             }
 
@@ -42,7 +37,7 @@ fun MyNotebookApp(
 
             composable(Screen.Login.route){
                 val loginViewModel : LoginViewModel = viewModel()
-                Login(viewModel = loginViewModel)
+                Login(viewModel = loginViewModel,appState = appState)
             }
 
             composable(Screen.ForgotPassword.route){
@@ -51,7 +46,7 @@ fun MyNotebookApp(
 
             composable(Screen.Register.route){
                 val registerViewModel : RegisterViewModel = viewModel()
-                Register(registerViewModel)
+                Register(registerViewModel,appState)
             }
 
 

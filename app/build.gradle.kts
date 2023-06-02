@@ -67,6 +67,10 @@ android {
         //Material Icons
         val materialIcons = "1.4.3"
         implementation ("androidx.compose.material:material-icons-extended:$materialIcons")
+
+        //Kotlin ktx methods
+        implementation("androidx.core:core-ktx:1.10.1")
+    
     }
 }
 

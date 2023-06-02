@@ -12,10 +12,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.tolgakurucay.mynotebooknew.extensions.lifecycleIsResumed
 
 sealed class Screen(val route: String) {
 
@@ -56,8 +56,19 @@ class MyNotebookAppState(val navController: NavHostController, private val conte
         if(from.lifecycleIsResumed()){
             val encodedUri = Uri.encode(episodeUri)
             navController.navigate(Screen.Player.createRoute(encodedUri))
+
         }
     }
+
+    fun safeNavigate(from: NavBackStackEntry){
+        if(from.lifecycleIsResumed()){
+            navController.navigate(Screen.Register.route)
+
+        }
+    }
+
+
+
 
     fun navigateBack() {
         navController.popBackStack()
@@ -79,12 +90,4 @@ class MyNotebookAppState(val navController: NavHostController, private val conte
     }
 }
 
-
-/**
- * If the lifecycle is not resumed it means this NavBackStackEntry already processed a nav event.
- *
- * This is used to de-duplicate navigation events.
- */
-private fun NavBackStackEntry.lifecycleIsResumed() =
-    this.getLifecycle().currentState == Lifecycle.State.RESUMED
 

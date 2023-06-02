@@ -1,4 +1,4 @@
-package com.tolgakurucay.mynotebooknew
+package com.tolgakurucay.mynotebooknew.custom
 
 enum class TextFieldType {
     EMAIL,

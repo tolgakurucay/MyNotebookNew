@@ -1,8 +1,7 @@
-package com.tolgakurucay.mynotebooknew
+package com.tolgakurucay.mynotebooknew.custom
 
 import android.util.Patterns.EMAIL_ADDRESS
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
@@ -30,6 +29,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.Dp
+import com.tolgakurucay.mynotebooknew.R
 
 
 @Composable

@@ -12,7 +12,9 @@ import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.ripple.LocalRippleTheme
 import androidx.compose.material3.Button
 import androidx.compose.material3.Divider
 import androidx.compose.material3.IconButton
@@ -27,14 +29,25 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.tolgakurucay.mynotebooknew.CustomTextField
+import androidx.navigation.compose.rememberNavController
+import com.tolgakurucay.mynotebooknew.custom.CustomTextField
 import com.tolgakurucay.mynotebooknew.R
-import com.tolgakurucay.mynotebooknew.TextFieldType
+import com.tolgakurucay.mynotebooknew.appstate.MyNotebookAppState
+import com.tolgakurucay.mynotebooknew.appstate.Screen
+import com.tolgakurucay.mynotebooknew.appstate.rememberMyNotebookAppState
+import com.tolgakurucay.mynotebooknew.custom.CustomClickableText
+import com.tolgakurucay.mynotebooknew.custom.TextFieldType
+import com.tolgakurucay.mynotebooknew.extensions.safeNavigate
 import com.tolgakurucay.mynotebooknew.theme.Black
 import com.tolgakurucay.mynotebooknew.theme.size125
 import com.tolgakurucay.mynotebooknew.theme.spacing10
@@ -47,25 +60,27 @@ import com.tolgakurucay.mynotebooknew.theme.spacing40
 import com.tolgakurucay.mynotebooknew.theme.spacing5
 import com.tolgakurucay.mynotebooknew.theme.spacing70
 
-@Preview
+
 @Composable
 fun Login(
-    viewModel: LoginViewModel = viewModel()
+    viewModel: LoginViewModel,
+    appState: MyNotebookAppState
 ) {
 
     Surface(
         Modifier
             .fillMaxSize()
     ) {
-        LoginContent(modifier = Modifier.fillMaxSize())
+        LoginContent(modifier = Modifier.fillMaxSize(), appState)
     }
 
 }
 
-
+@Preview
 @Composable
 fun LoginContent(
-    modifier: Modifier
+    modifier: Modifier = Modifier,
+    appState: MyNotebookAppState = rememberMyNotebookAppState()
 ) {
 
     var email by remember { mutableStateOf("") }
@@ -85,7 +100,7 @@ fun LoginContent(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(end = spacing30, top = spacing30),
-            style = MaterialTheme.typography.titleLarge
+            style = MaterialTheme.typography.displaySmall
         )
 
 
@@ -112,7 +127,9 @@ fun LoginContent(
             style = MaterialTheme.typography.bodyMedium
         )
         Spacer(modifier = Modifier.padding(top = spacing18))
-        Button(onClick = { }, modifier = Modifier.align(Alignment.CenterHorizontally)) {
+        Button(onClick = {
+
+        }, modifier = Modifier.align(Alignment.CenterHorizontally)) {
             Text(text = stringResource(id = R.string.common_login_now_uppercase))
         }
         Row(
@@ -126,11 +143,12 @@ fun LoginContent(
                 modifier = Modifier.padding(start = spacing30),
                 style = MaterialTheme.typography.bodyMedium
             )
-            Text(
-                text = stringResource(id = R.string.common_register),
-                modifier = Modifier.padding(end = spacing30),
-                style = MaterialTheme.typography.bodyMedium
-            )
+            CustomClickableText(
+                stringResId = R.string.common_register,
+                modifier = Modifier.padding(end = spacing30)
+            ) {
+                appState.navController.safeNavigate(Screen.Register)
+            }
         }
         Spacer(modifier = Modifier.padding(top = spacing32))
         Row(
@@ -150,7 +168,7 @@ fun LoginContent(
         Row(
             horizontalArrangement = Arrangement.SpaceAround, modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = spacing40)
+                .padding(top = spacing40, bottom = spacing40)
         ) {
             IconButton(
                 onClick = {}, modifier = Modifier
