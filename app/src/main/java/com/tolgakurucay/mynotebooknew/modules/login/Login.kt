@@ -1,5 +1,6 @@
 package com.tolgakurucay.mynotebooknew.modules.login
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -12,9 +13,7 @@ import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.ripple.LocalRippleTheme
 import androidx.compose.material3.Button
 import androidx.compose.material3.Divider
 import androidx.compose.material3.IconButton
@@ -29,17 +28,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewParameter
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.compose.rememberNavController
 import com.tolgakurucay.mynotebooknew.custom.CustomTextField
 import com.tolgakurucay.mynotebooknew.R
 import com.tolgakurucay.mynotebooknew.appstate.MyNotebookAppState
@@ -60,7 +52,6 @@ import com.tolgakurucay.mynotebooknew.theme.spacing40
 import com.tolgakurucay.mynotebooknew.theme.spacing5
 import com.tolgakurucay.mynotebooknew.theme.spacing70
 
-
 @Composable
 fun Login(
     viewModel: LoginViewModel,
@@ -76,12 +67,12 @@ fun Login(
 
 }
 
-@Preview
 @Composable
 fun LoginContent(
     modifier: Modifier = Modifier,
-    appState: MyNotebookAppState = rememberMyNotebookAppState()
+    appState: MyNotebookAppState
 ) {
+
 
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -123,14 +114,20 @@ fun LoginContent(
         Spacer(modifier = Modifier.padding(vertical = spacing20))
         Text(
             text = stringResource(id = R.string.common_did_you_forgot_password),
-            modifier = Modifier.align(Alignment.CenterHorizontally),
-            style = MaterialTheme.typography.bodyMedium
+            modifier = Modifier.align(Alignment.CenterHorizontally).clickable {
+                appState.navController.safeNavigate(Screen.ForgotPassword)
+            },style = MaterialTheme.typography.bodyMedium
         )
         Spacer(modifier = Modifier.padding(top = spacing18))
         Button(onClick = {
 
-        }, modifier = Modifier.align(Alignment.CenterHorizontally)) {
-            Text(text = stringResource(id = R.string.common_login_now_uppercase))
+        },
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .fillMaxSize()
+                .padding(horizontal = spacing10)
+        ) {
+            Text(text = stringResource(id = R.string.common_login_now_uppercase),style = MaterialTheme.typography.bodyMedium)
         }
         Row(
             modifier = Modifier
@@ -143,12 +140,17 @@ fun LoginContent(
                 modifier = Modifier.padding(start = spacing30),
                 style = MaterialTheme.typography.bodyMedium
             )
-            CustomClickableText(
-                stringResId = R.string.common_register,
-                modifier = Modifier.padding(end = spacing30)
-            ) {
-                appState.navController.safeNavigate(Screen.Register)
-            }
+            Text(
+                text = stringResource(id = R.string.common_register),
+                modifier = Modifier
+                    .padding(end = spacing30)
+                    .clickable {
+                        appState.navController.safeNavigate(Screen.Register)
+                    },
+                style = MaterialTheme.typography.bodyMedium
+            )
+
+
         }
         Spacer(modifier = Modifier.padding(top = spacing32))
         Row(

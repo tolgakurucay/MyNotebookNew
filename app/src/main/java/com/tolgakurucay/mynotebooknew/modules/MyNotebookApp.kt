@@ -9,6 +9,8 @@ import androidx.window.layout.DisplayFeature
 import com.tolgakurucay.mynotebooknew.appstate.MyNotebookAppState
 import com.tolgakurucay.mynotebooknew.appstate.Screen
 import com.tolgakurucay.mynotebooknew.appstate.rememberMyNotebookAppState
+import com.tolgakurucay.mynotebooknew.modules.forgot_password.ForgotPassword
+import com.tolgakurucay.mynotebooknew.modules.forgot_password.ForgotPasswordViewModel
 import com.tolgakurucay.mynotebooknew.modules.login.Login
 import com.tolgakurucay.mynotebooknew.modules.login.LoginViewModel
 import com.tolgakurucay.mynotebooknew.modules.register.Register
@@ -41,7 +43,8 @@ fun MyNotebookApp(
             }
 
             composable(Screen.ForgotPassword.route){
-
+                val registerViewModel : ForgotPasswordViewModel = viewModel()
+                ForgotPassword(registerViewModel)
             }
 
             composable(Screen.Register.route){

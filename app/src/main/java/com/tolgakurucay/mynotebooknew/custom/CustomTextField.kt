@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountTree
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Icon
@@ -56,6 +58,9 @@ fun CustomTextField(
             when (textFieldType) {
                 TextFieldType.EMAIL -> KeyboardType.Email
                 TextFieldType.PASSWORD -> KeyboardType.Password
+                TextFieldType.PASSWORD_AGAIN -> KeyboardType.Password
+                TextFieldType.NAME -> KeyboardType.Text
+                TextFieldType.SURNAME -> KeyboardType.Text
             },
         ),
         singleLine = true,
@@ -68,7 +73,7 @@ fun CustomTextField(
                         Image(
                             painter = painterResource(id = R.drawable.twotone_email_24),
                             contentDescription = stringResource(
-                                id = R.string.description_email
+                                id = R.string.cd_email
                             )
                         )
                     } else {
@@ -77,14 +82,14 @@ fun CustomTextField(
                                 Image(
                                     painter = painterResource(id = R.drawable.baseline_check_circle_outline_24),
                                     contentDescription = stringResource(
-                                        id = R.string.description_email
+                                        id = R.string.cd_true
                                     ),
                                 )
 
                             else -> Image(
                                 painter = painterResource(id = R.drawable.baseline_error_outline_24),
                                 contentDescription = stringResource(
-                                    id = R.string.description_email
+                                    id = R.string.cd_false
                                 )
                             )
                         }
@@ -97,7 +102,7 @@ fun CustomTextField(
                         Image(
                             painter = painterResource(id = R.drawable.twotone_password_24),
                             contentDescription = stringResource(
-                                id = R.string.description_password
+                                id = R.string.cd_password
                             ),
                         )
                     } else {
@@ -106,14 +111,100 @@ fun CustomTextField(
                                 Image(
                                     painter = painterResource(id = R.drawable.baseline_check_circle_outline_24),
                                     contentDescription = stringResource(
-                                        id = R.string.description_email
+                                        id = R.string.cd_true
                                     ),
                                 )
 
                             else -> Image(
                                 painter = painterResource(id = R.drawable.baseline_error_outline_24),
                                 contentDescription = stringResource(
-                                    id = R.string.description_email
+                                    id = R.string.cd_false
+                                )
+                            )
+                        }
+                    }
+
+                }
+                TextFieldType.PASSWORD_AGAIN -> {
+                    if (value.isEmpty()) {
+                        Image(
+                            painter = painterResource(id = R.drawable.twotone_password_24),
+                            contentDescription = stringResource(
+                                id = R.string.cd_password_again
+                            ),
+                        )
+                    } else {
+                        when (supportingText) {
+                            "" ->
+                                Image(
+                                    painter = painterResource(id = R.drawable.baseline_check_circle_outline_24),
+                                    contentDescription = stringResource(
+                                        id = R.string.cd_true
+                                    ),
+                                )
+
+                            else -> Image(
+                                painter = painterResource(id = R.drawable.baseline_error_outline_24),
+                                contentDescription = stringResource(
+                                    id = R.string.cd_false
+                                )
+                            )
+                        }
+                    }
+
+                }
+
+                TextFieldType.NAME -> {
+                    if (value.isEmpty()) {
+                        Image(
+                            imageVector = Icons.Filled.Person,
+                            contentDescription = stringResource(
+                                id = R.string.cd_name_icon
+                            ),
+                        )
+                    } else {
+                        when (supportingText) {
+                            "" ->
+                                Image(
+                                    imageVector = Icons.Filled.Person,
+                                    contentDescription = stringResource(
+                                        id = R.string.cd_person
+                                    )
+                                )
+
+                            else -> Image(
+                                painter = painterResource(id = R.drawable.baseline_error_outline_24),
+                                contentDescription = stringResource(
+                                    id = R.string.cd_false
+                                )
+                            )
+                        }
+                    }
+
+                }
+
+                TextFieldType.SURNAME -> {
+                    if (value.isEmpty()) {
+                        Image(
+                            imageVector = Icons.Filled.AccountTree,
+                            contentDescription = stringResource(
+                                id = R.string.cd_person_tree
+                            ),
+                        )
+                    } else {
+                        when (supportingText) {
+                            "" ->
+                                Image(
+                                    painter = painterResource(id = R.drawable.baseline_check_circle_outline_24),
+                                    contentDescription = stringResource(
+                                        id = R.string.cd_true
+                                    ),
+                                )
+
+                            else -> Image(
+                                painter = painterResource(id = R.drawable.baseline_error_outline_24),
+                                contentDescription = stringResource(
+                                    id = R.string.cd_false
                                 )
                             )
                         }
@@ -157,6 +248,45 @@ fun CustomTextField(
                     )
 
                 }
+                TextFieldType.PASSWORD_AGAIN -> {
+                    supportingText = if (value.isEmpty()) {
+                        stringResource(id = R.string.empty_password_again)
+                    } else {
+                        ""
+                    }
+                    Text(
+                        text = supportingText,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = Color.Red
+                    )
+
+                }
+
+                TextFieldType.NAME -> {
+                    supportingText = if (value.isEmpty()) {
+                        stringResource(id = R.string.empty_name)
+                    } else {
+                        ""
+                    }
+                    Text(
+                        text = supportingText,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = Color.Red
+                    )
+                }
+
+                TextFieldType.SURNAME -> {
+                    supportingText = if (value.isEmpty()) {
+                        stringResource(id = R.string.empty_surname)
+                    } else {
+                        ""
+                    }
+                    Text(
+                        text = supportingText,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = Color.Red
+                    )
+                }
 
             }
 
@@ -170,6 +300,20 @@ fun CustomTextField(
 
                 TextFieldType.PASSWORD -> Text(
                     text = stringResource(id = R.string.action_enter_password),
+                    style = MaterialTheme.typography.bodyMedium
+                )
+                TextFieldType.PASSWORD_AGAIN -> Text(
+                    text = stringResource(id = R.string.action_enter_password_again),
+                    style = MaterialTheme.typography.bodyMedium
+                )
+
+                TextFieldType.NAME -> Text(
+                    text = stringResource(id = R.string.action_enter_name),
+                    style = MaterialTheme.typography.bodyMedium
+                )
+
+                TextFieldType.SURNAME -> Text(
+                    text = stringResource(id = R.string.action_enter_surname),
                     style = MaterialTheme.typography.bodyMedium
                 )
             }
@@ -191,11 +335,12 @@ fun CustomTextField(
         },
         visualTransformation = when (textFieldType) {
             TextFieldType.PASSWORD -> {
-                if(!showPassword) PasswordVisualTransformation() else VisualTransformation.None
+                if (!showPassword) PasswordVisualTransformation() else VisualTransformation.None
             }
+
             else -> VisualTransformation.None
         }, trailingIcon = {
-            if(textFieldType == TextFieldType.PASSWORD){
+            if (textFieldType == TextFieldType.PASSWORD) {
                 when (showPassword) {
                     true -> {
                         IconButton(onClick = { showPassword = false }) {
