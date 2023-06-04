@@ -9,7 +9,9 @@ import androidx.core.view.WindowCompat
 import com.google.accompanist.adaptive.calculateDisplayFeatures
 import com.tolgakurucay.mynotebooknew.modules.MyNotebookApp
 import com.tolgakurucay.mynotebooknew.theme.MyNotebookNewTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {

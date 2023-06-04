@@ -1,8 +1,9 @@
 package com.tolgakurucay.mynotebooknew
 
 import android.app.Application
+import dagger.hilt.android.HiltAndroidApp
 
-class MyNotebookNewApplication : Application() {
+@HiltAndroidApp
+class MyNotebookNewApplication : Application()
 
 
-}
