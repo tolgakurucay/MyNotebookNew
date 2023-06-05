@@ -11,20 +11,16 @@ sealed class ApiServices<T>(
 ) {
 
     //TEST
-    class MainContent : ApiServices<TestResponse>(
-        path = "", requestType = RequestType.GET,
-        queryMap = mapOf(
-            Pair("page", 1)
-        ),
-    )
+    class MainContent(page : Int) : ApiServices<TestResponse>(
+        path = "quotes", requestType = RequestType.GET, queryMap = mapOf<String,Int>(Pair("page",page))
 
+    )
 
     companion object {
         var ENDPOINT = Config.ENDPOINT_RELEASE
     }
 
 }
-
 
 enum class RequestType {
     POST, GET;

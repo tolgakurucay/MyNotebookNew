@@ -10,6 +10,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import com.tolgakurucay.mynotebooknew.services.Result
+import dagger.Module
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ViewModelComponent
 import javax.inject.Inject
 
 open class BaseRepository @Inject constructor(val myNotebookNewService: MyNotebookNewService) {
@@ -27,27 +30,28 @@ open class BaseRepository @Inject constructor(val myNotebookNewService: MyNotebo
             }
 
             val response = Gson().fromJson(raw.body().toString(), T::class.java)
-            when ((response as BaseApiResponse).responseType) {
-                ResponseType.OK -> emit(Result.success(response as T))
-                ResponseType.WARNING -> emit(
-                    Result.error(
-                        BaseThrowable(
-                            uiMessage = response.messages,
-                            finishScreen = service.finishScreen,
-                            responseCode = response.responseCode
-                        )
-                    )
-                )
-                ResponseType.NO_CONTENT -> emit(Result.success(response as T))
-                else -> emit(
-                    Result.error(
-                        BaseThrowable(
-                            uiMessage = response.messages,
-                            finishScreen = service.finishScreen
-                        )
-                    )
-                )
-            }
+            emit(Result.success(response as T))
+//            when ((response as BaseApiResponse).responseType) {
+//                ResponseType.OK -> emit(Result.success(response as T))
+//                ResponseType.WARNING -> emit(
+//                    Result.error(
+//                        BaseThrowable(
+//                            uiMessage = response.messages,
+//                            finishScreen = service.finishScreen,
+//                            responseCode = response.responseCode
+//                        )
+//                    )
+//                )
+//                ResponseType.NO_CONTENT -> emit(Result.success(response as T))
+//                else -> emit(
+//                    Result.error(
+//                        BaseThrowable(
+//                            uiMessage = response.messages,
+//                            finishScreen = service.finishScreen
+//                        )
+//                    )
+//                )
+//            }
         } catch (e: Exception) {
             Log.e("ServiceRepo ERROR-LOG", e.localizedMessage ?: "")
             emit(Result.error(BaseThrowable()))

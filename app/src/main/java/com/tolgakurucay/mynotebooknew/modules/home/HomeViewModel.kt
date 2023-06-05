@@ -5,22 +5,31 @@ import androidx.lifecycle.viewModelScope
 import com.tolgakurucay.mynotebooknew.base.BaseViewModel
 import com.tolgakurucay.mynotebooknew.extensions.callService
 import com.tolgakurucay.mynotebooknew.services.TestResponse
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
-class HomeViewModel @Inject constructor(private val homeRepository: HomeRepository) :
+
+@HiltViewModel
+class HomeViewModel @Inject constructor(private val homeRepository: HomeRepository):
     BaseViewModel() {
 
 
-    val testResponse = MutableLiveData<TestResponse>()
+//    val testResponse = MutableLiveData<TestResponse>()
+    private val _testResponse = MutableStateFlow<TestResponse?>(null)
+    val testResponse = _testResponse.asStateFlow()
 
-    fun getMainContent() {
+
+
+    fun getMainContent(page : Int) {
         viewModelScope.callService(
             vm = this,
             success = {
-                testResponse.value = it
+                _testResponse.value = it
             },
             service = {
-                homeRepository.getJsonFromTest()
+               homeRepository.getJsonFromTest(page)
             },
         )
     }

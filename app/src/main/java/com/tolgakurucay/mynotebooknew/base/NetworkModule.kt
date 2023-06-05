@@ -22,10 +22,15 @@ object NetworkModule {
 //    private val READ_TIME_OUT = if (BuildConfig.DEBUG) 200.toLong() else 60.toLong()
 //    private val CONNECT_TIME_OUT = if (BuildConfig.DEBUG) 200.toLong() else 60.toLong()
 
+
+//    @Singleton
+//    @Provides
+//    fun provideContent(context: Context) : Context = context.applicationContext
+
     @Singleton
     @Provides
-    fun provideOkHttpClient(context: Context) : OkHttpClient{
-        var builder =
+    fun provideOkHttpClient() : OkHttpClient{
+        val builder =
             OkHttpClient.Builder()
                 .readTimeout(200, TimeUnit.SECONDS)
                 .connectTimeout(200, TimeUnit.SECONDS)
@@ -51,6 +56,9 @@ object NetworkModule {
         .client(okHttpClient)
         .build()
         .create(MyNotebookNewService::class.java)
+
+
+
 
 
 }

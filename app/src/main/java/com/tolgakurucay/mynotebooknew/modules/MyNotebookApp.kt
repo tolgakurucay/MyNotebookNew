@@ -2,6 +2,7 @@ package com.tolgakurucay.mynotebooknew.modules
 
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -25,11 +26,10 @@ fun MyNotebookApp(
     appState: MyNotebookAppState = rememberMyNotebookAppState()
 ){
     if(appState.isOnline){
-        NavHost(navController = appState.navController, startDestination = Screen.Login.route){
+        NavHost(navController = appState.navController, startDestination = Screen.Home.route){
 
             composable(Screen.Home.route){
-                val homeViewModel: HomeViewModel = viewModel()
-                Home( )
+                Home(viewModel = hiltViewModel<HomeViewModel>())
             }
 
             composable(Screen.Profile.route){

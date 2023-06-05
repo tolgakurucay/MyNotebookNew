@@ -2,7 +2,8 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
-    id("dagger.hilt.android.plugin")
+    //id("dagger.hilt.android.plugin")
+    id("com.google.dagger.hilt.android")
     id("kotlin-parcelize")
 }
 
@@ -101,6 +102,7 @@ android {
 
         implementation("androidx.core:core-ktx:1.10.1")
         implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
+        implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.1")
         implementation("androidx.activity:activity-compose:1.7.2")
         implementation("androidx.compose:compose-bom:2023.05.01")
         implementation("androidx.compose.ui:ui")
@@ -143,6 +145,9 @@ android {
         implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
         implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
 
+    }
+    kapt {
+        correctErrorTypes = true
     }
 }
 
