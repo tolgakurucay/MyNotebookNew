@@ -1,8 +1,10 @@
 package com.tolgakurucay.mynotebooknew.modules.login
 
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.tolgakurucay.mynotebooknew.base.BaseViewModel
 
-class LoginViewModel : ViewModel() {
+class LoginViewModel : BaseViewModel() {
+
+
 
 }

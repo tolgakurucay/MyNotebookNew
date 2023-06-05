@@ -15,7 +15,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 fun Home(
     viewModel: HomeViewModel = viewModel()
 ) {
-    val viewState by viewModel.state.collectAsState()
 
     Surface(Modifier.fillMaxSize()) {
         HomeContent()

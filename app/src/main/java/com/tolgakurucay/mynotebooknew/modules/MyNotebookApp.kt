@@ -11,6 +11,8 @@ import com.tolgakurucay.mynotebooknew.appstate.Screen
 import com.tolgakurucay.mynotebooknew.appstate.rememberMyNotebookAppState
 import com.tolgakurucay.mynotebooknew.modules.forgot_password.ForgotPassword
 import com.tolgakurucay.mynotebooknew.modules.forgot_password.ForgotPasswordViewModel
+import com.tolgakurucay.mynotebooknew.modules.home.Home
+import com.tolgakurucay.mynotebooknew.modules.home.HomeViewModel
 import com.tolgakurucay.mynotebooknew.modules.login.Login
 import com.tolgakurucay.mynotebooknew.modules.login.LoginViewModel
 import com.tolgakurucay.mynotebooknew.modules.register.Register
@@ -26,7 +28,8 @@ fun MyNotebookApp(
         NavHost(navController = appState.navController, startDestination = Screen.Login.route){
 
             composable(Screen.Home.route){
-
+                val homeViewModel: HomeViewModel = viewModel()
+                Home( )
             }
 
             composable(Screen.Profile.route){

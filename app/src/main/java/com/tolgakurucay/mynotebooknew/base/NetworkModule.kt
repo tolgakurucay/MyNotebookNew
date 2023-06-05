@@ -22,7 +22,8 @@ object NetworkModule {
 //    private val READ_TIME_OUT = if (BuildConfig.DEBUG) 200.toLong() else 60.toLong()
 //    private val CONNECT_TIME_OUT = if (BuildConfig.DEBUG) 200.toLong() else 60.toLong()
 
-
+    @Singleton
+    @Provides
     fun provideOkHttpClient(context: Context) : OkHttpClient{
         var builder =
             OkHttpClient.Builder()
@@ -44,9 +45,10 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideMyNotebookNewService(): MyNotebookNewService = Retrofit.Builder()
+    fun provideMyNotebookNewService(okHttpClient: OkHttpClient): MyNotebookNewService = Retrofit.Builder()
         .baseUrl(ApiServices.ENDPOINT)
         .addConverterFactory(GsonConverterFactory.create())
+        .client(okHttpClient)
         .build()
         .create(MyNotebookNewService::class.java)
 

@@ -23,8 +23,8 @@ android {
         }
     }
 
-    signingConfigs {
-        create("test"){
+//    signingConfigs {
+//        create("test"){
 //            val DEBUG_KEY_ALIAS: String by project
 //            val DEBUG_KEY_PASSWORD: String by project
 //            val DEBUG_STORE_PASSWORD: String by project
@@ -34,9 +34,9 @@ android {
 //            keyPassword = DEBUG_KEY_PASSWORD
 //            storePassword = DEBUG_STORE_PASSWORD
 //            storeFile = file(DEBUG_STORE_FILE)
-
-        }
-        create("release"){
+//
+//        }
+//        create("release"){
 //            val RELEASE_KEY_ALIAS: String by project
 //            val RELEASE_KEY_PASSWORD: String by project
 //            val RELEASE_STORE_PASSWORD: String by project
@@ -46,14 +46,14 @@ android {
 //            keyPassword = RELEASE_KEY_PASSWORD
 //            storePassword = RELEASE_STORE_PASSWORD
 //            storeFile = file(RELEASE_STORE_FILE)
-        }
-    }
+//        }
+//    }
 
 
     buildTypes {
         named("debug"){
             isMinifyEnabled = false
-            signingConfig = signingConfigs.getByName("test")
+//            signingConfig = signingConfigs.getByName("test")
             resValue("string", "notebook_app_name", "My Notebook Test")
             buildConfigField("String", "ENDPOINT_RELEASE", "\"https://quotable.io/\"")
 
@@ -63,7 +63,7 @@ android {
         }
         named("release") {
             isMinifyEnabled = true
-            signingConfig = signingConfigs.getByName("release")
+//            signingConfig = signingConfigs.getByName("release")
             resValue("string", "ets_app_name","My Notebook")
             buildConfigField("String", "ENDPOINT_RELEASE", "\"https://quotable.io/\"")
 
