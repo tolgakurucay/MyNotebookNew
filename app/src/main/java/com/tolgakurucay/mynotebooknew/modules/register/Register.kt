@@ -28,6 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.tolgakurucay.mynotebooknew.R
 import com.tolgakurucay.mynotebooknew.appstate.MyNotebookAppState
@@ -46,8 +47,7 @@ import com.tolgakurucay.mynotebooknew.theme.spacing70
 @Preview
 @Composable
 fun Register(
-    viewModel: RegisterViewModel = viewModel(),
-    appState: MyNotebookAppState = rememberMyNotebookAppState()
+    viewModel: RegisterViewModel = hiltViewModel(),
 ) {
 
     Surface(modifier = Modifier.fillMaxSize()) {

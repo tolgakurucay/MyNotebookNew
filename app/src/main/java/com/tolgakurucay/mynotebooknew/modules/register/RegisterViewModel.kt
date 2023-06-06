@@ -1,6 +1,9 @@
 package com.tolgakurucay.mynotebooknew.modules.register
 
-import androidx.lifecycle.ViewModel
+import com.tolgakurucay.mynotebooknew.base.BaseViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class RegisterViewModel : ViewModel() {
+@HiltViewModel
+class RegisterViewModel @Inject constructor(): BaseViewModel() {
 }

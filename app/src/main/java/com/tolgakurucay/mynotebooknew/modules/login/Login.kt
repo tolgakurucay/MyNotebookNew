@@ -31,15 +31,10 @@ import androidx.compose.ui.draw.paint
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.tolgakurucay.mynotebooknew.custom.CustomTextField
 import com.tolgakurucay.mynotebooknew.R
-import com.tolgakurucay.mynotebooknew.appstate.MyNotebookAppState
-import com.tolgakurucay.mynotebooknew.appstate.Screen
-import com.tolgakurucay.mynotebooknew.appstate.rememberMyNotebookAppState
-import com.tolgakurucay.mynotebooknew.custom.CustomClickableText
 import com.tolgakurucay.mynotebooknew.custom.TextFieldType
-import com.tolgakurucay.mynotebooknew.extensions.safeNavigate
 import com.tolgakurucay.mynotebooknew.theme.Black
 import com.tolgakurucay.mynotebooknew.theme.size125
 import com.tolgakurucay.mynotebooknew.theme.spacing10
@@ -54,15 +49,23 @@ import com.tolgakurucay.mynotebooknew.theme.spacing70
 
 @Composable
 fun Login(
-    viewModel: LoginViewModel,
-    appState: MyNotebookAppState
+    viewModel: LoginViewModel = hiltViewModel(),
+    onNavigateToRegisterMain: () -> Unit,
+    onNavigateToForgotPasswordMain: () -> Unit
 ) {
 
     Surface(
         Modifier
             .fillMaxSize()
     ) {
-        LoginContent(modifier = Modifier.fillMaxSize(), appState)
+        LoginContent(
+            onNavigateToRegisterContent = {
+                onNavigateToRegisterMain.invoke()
+            }, onNavigateToForgotPasswordContent = {
+                onNavigateToForgotPasswordMain.invoke()
+            }
+
+        )
     }
 
 }
@@ -70,7 +73,9 @@ fun Login(
 @Composable
 fun LoginContent(
     modifier: Modifier = Modifier,
-    appState: MyNotebookAppState
+    onNavigateToRegisterContent: () -> Unit,
+    onNavigateToForgotPasswordContent: () -> Unit
+
 ) {
 
 
@@ -114,20 +119,26 @@ fun LoginContent(
         Spacer(modifier = Modifier.padding(vertical = spacing20))
         Text(
             text = stringResource(id = R.string.common_did_you_forgot_password),
-            modifier = Modifier.align(Alignment.CenterHorizontally).clickable {
-                appState.navController.safeNavigate(Screen.ForgotPassword)
-            },style = MaterialTheme.typography.bodyMedium
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .clickable {
+                    onNavigateToForgotPasswordContent.invoke()
+                }, style = MaterialTheme.typography.bodyMedium
         )
         Spacer(modifier = Modifier.padding(top = spacing18))
-        Button(onClick = {
+        Button(
+            onClick = {
 
-        },
+            },
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 .fillMaxSize()
                 .padding(horizontal = spacing10)
         ) {
-            Text(text = stringResource(id = R.string.common_login_now_uppercase),style = MaterialTheme.typography.bodyMedium)
+            Text(
+                text = stringResource(id = R.string.common_login_now_uppercase),
+                style = MaterialTheme.typography.bodyMedium
+            )
         }
         Row(
             modifier = Modifier
@@ -145,7 +156,7 @@ fun LoginContent(
                 modifier = Modifier
                     .padding(end = spacing30)
                     .clickable {
-                        appState.navController.safeNavigate(Screen.Register)
+                        onNavigateToRegisterContent.invoke()
                     },
                 style = MaterialTheme.typography.bodyMedium
             )

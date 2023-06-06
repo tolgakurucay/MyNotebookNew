@@ -1,6 +1,9 @@
 package com.tolgakurucay.mynotebooknew.modules.forgot_password
 
-import androidx.lifecycle.ViewModel
+import com.tolgakurucay.mynotebooknew.base.BaseViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class ForgotPasswordViewModel : ViewModel() {
+@HiltViewModel
+class ForgotPasswordViewModel @Inject constructor(): BaseViewModel() {
 }

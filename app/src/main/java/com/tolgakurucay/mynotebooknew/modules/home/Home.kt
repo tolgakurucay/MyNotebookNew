@@ -20,9 +20,11 @@ import com.tolgakurucay.mynotebooknew.services.TestResponse
 
 @Composable
 fun Home(
+    userName : String?,
+    userId : Int?,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
-    val value by viewModel.testResponse.collectAsStateWithLifecycle()
+    val value = viewModel.testResponse.value
     Surface(Modifier.fillMaxSize()) {
         HomeContent(viewModel,value)
     }
@@ -32,7 +34,6 @@ fun Home(
 fun HomeContent(viewModel: HomeViewModel,value : TestResponse?) {
 
     Column(modifier = Modifier
-        .fillMaxSize()
         .windowInsetsPadding(WindowInsets.systemBars)) {
         Button(onClick = {
             viewModel.getMainContent(1)

@@ -1,5 +1,6 @@
 package com.tolgakurucay.mynotebooknew.modules.home
 
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.tolgakurucay.mynotebooknew.base.BaseViewModel
@@ -16,9 +17,7 @@ class HomeViewModel @Inject constructor(private val homeRepository: HomeReposito
     BaseViewModel() {
 
 
-//    val testResponse = MutableLiveData<TestResponse>()
-    private val _testResponse = MutableStateFlow<TestResponse?>(null)
-    val testResponse = _testResponse.asStateFlow()
+    val testResponse = mutableStateOf<TestResponse?>(null)
 
 
 
@@ -26,7 +25,7 @@ class HomeViewModel @Inject constructor(private val homeRepository: HomeReposito
         viewModelScope.callService(
             vm = this,
             success = {
-                _testResponse.value = it
+                testResponse.value = it
             },
             service = {
                homeRepository.getJsonFromTest(page)

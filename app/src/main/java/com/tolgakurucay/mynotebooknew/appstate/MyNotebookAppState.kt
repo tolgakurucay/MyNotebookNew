@@ -15,22 +15,21 @@ import androidx.core.content.ContextCompat
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.tolgakurucay.mynotebooknew.extensions.lifecycleIsResumed
-
-sealed class Screen(val route: String) {
-
-    object Home : Screen("home")
-    object Profile : Screen("profile")
-    object Register : Screen("register")
-    object Login : Screen("login")
-    object ForgotPassword : Screen("forgotpassword")
-
-
-    //Below field is example of different usage
-    object Player : Screen("player/{episodeUri}") {
-        fun createRoute(episodeUri: String) = "player/$episodeUri"
-    }
-}
+//®®®®®®
+//sealed class Screen(val route: String) {
+//
+//    object Home : Screen("home/{userId}/{userName}")
+//    object Profile : Screen("profile")
+//    object Register : Screen("register")
+//    object Login : Screen("login")
+//    object ForgotPassword : Screen("forgotpassword")
+//
+//
+//    //Below field is example of different usage
+//    object Player : Screen("player/{episodeUri}") {
+//        fun createRoute(episodeUri: String) = "player/$episodeUri"
+//    }
+//}
 
 
 @Composable
@@ -51,21 +50,21 @@ class MyNotebookAppState(val navController: NavHostController, private val conte
         isOnline = checkIfOnline()
     }
 
-    fun navigateToPlayer(episodeUri: String, from: NavBackStackEntry){
-        // In order to discard duplicated navigation events, we check the Lifecycle
-        if(from.lifecycleIsResumed()){
-            val encodedUri = Uri.encode(episodeUri)
-            navController.navigate(Screen.Player.createRoute(encodedUri))
-
-        }
-    }
-
-    fun safeNavigate(from: NavBackStackEntry){
-        if(from.lifecycleIsResumed()){
-            navController.navigate(Screen.Register.route)
-
-        }
-    }
+//    fun navigateToPlayer(episodeUri: String, from: NavBackStackEntry){
+//        // In order to discard duplicated navigation events, we check the Lifecycle
+//        if(from.lifecycleIsResumed()){
+//            val encodedUri = Uri.encode(episodeUri)
+//            navController.navigate(Screen.Player.createRoute(encodedUri))
+//
+//        }
+//    }
+//
+//    fun safeNavigate(from: NavBackStackEntry,goTo : Screen){
+//        if(from.lifecycleIsResumed()){
+//            navController.navigate(goTo.route)
+//
+//        }
+//    }
 
 
 

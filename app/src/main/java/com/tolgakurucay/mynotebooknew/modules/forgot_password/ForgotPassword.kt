@@ -24,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.tolgakurucay.mynotebooknew.R
 import com.tolgakurucay.mynotebooknew.custom.CustomTextField
 import com.tolgakurucay.mynotebooknew.custom.TextFieldType
@@ -34,7 +35,7 @@ import com.tolgakurucay.mynotebooknew.theme.spacing70
 
 @Preview
 @Composable
-fun ForgotPassword(viewModel: ForgotPasswordViewModel = androidx.lifecycle.viewmodel.compose.viewModel()) {
+fun ForgotPassword(viewModel: ForgotPasswordViewModel = hiltViewModel()) {
     Surface(Modifier.fillMaxSize()) {
         ForgotPasswordContent()
     }
@@ -73,7 +74,10 @@ fun ForgotPasswordContent() {
         Spacer(modifier = Modifier.padding(top = spacing40))
         Button(onClick = {
 
-        }, modifier = Modifier.align(Alignment.CenterHorizontally).fillMaxSize().padding(horizontal = spacing10)) {
+        }, modifier = Modifier
+            .align(Alignment.CenterHorizontally)
+            .fillMaxSize()
+            .padding(horizontal = spacing10)) {
             Text(text = stringResource(id = R.string.common_login_now_uppercase))
         }
         Spacer(modifier = Modifier.padding(top = spacing40))
