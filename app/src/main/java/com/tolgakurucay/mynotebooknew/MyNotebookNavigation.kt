@@ -6,6 +6,7 @@ import com.tolgakurucay.mynotebooknew.MyNotebookNewScreens.HOME_SCREEN
 import com.tolgakurucay.mynotebooknew.MyNotebookNewScreens.LOGIN_SCREEN
 import com.tolgakurucay.mynotebooknew.MyNotebookNewScreens.REGISTER_SCREEN
 import com.tolgakurucay.mynotebooknew.MyNotebookNewDestinationsArgs.USER_ID_ARG
+import com.tolgakurucay.mynotebooknew.MyNotebookNewDestinationsArgs.USER_NAME_ARG
 import com.tolgakurucay.mynotebooknew.MyNotebookNewScreens.PROFILE_SCREEN
 
 
@@ -45,7 +46,7 @@ object MyNotebookNewDestinations {
     const val LOGIN_ROUTE = LOGIN_SCREEN
     const val FORGOT_PASSWORD_ROUTE = FORGOT_PASSWORD_SCREEN
     const val REGISTER_ROUTE = REGISTER_SCREEN
-    const val HOME_ROUTE = "$HOME_SCREEN/{$USER_ID_ARG}"
+    const val HOME_ROUTE = "$HOME_SCREEN/{$USER_ID_ARG}/{$USER_NAME_ARG}"
     const val PROFILE_ROUTE = "$PROFILE_SCREEN/{$USER_ID_ARG}"
 
 
@@ -72,10 +73,8 @@ class MyNotebookNavigationActions(private val navController: NavHostController) 
         }
     }
 
-    fun navigateToHome(userId : String){
-        navController.navigate(MyNotebookNewDestinations.HOME_ROUTE){
-
-        }
+    fun navigateToHome(userId : Int, userName : String){
+        navController.navigate("$HOME_SCREEN/$userId/$userName")
     }
 
 }

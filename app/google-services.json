@@ -1,0 +1,100 @@
+{
+  "project_info": {
+    "project_number": "426433673716",
+    "project_id": "my-notebook-39613",
+    "storage_bucket": "my-notebook-39613.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:426433673716:android:412c12c612f7641c6d61a1",
+        "android_client_info": {
+          "package_name": "com.tolgakurucay.mynotebook"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "426433673716-1bc6en34hfj7v03c7fn14m847a0tcg64.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tolgakurucay.mynotebook",
+            "certificate_hash": "fb874de205089a2377ed6ee2c3e7823853d0f856"
+          }
+        },
+        {
+          "client_id": "426433673716-8q35b9sv30t3dsips0mrbvq2dij6gaq1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tolgakurucay.mynotebook",
+            "certificate_hash": "22c369f94abb7bc1ceab255a5debfacc12a5e76c"
+          }
+        },
+        {
+          "client_id": "426433673716-clmc3nja2vgk3sd04u1vtvl68etkffol.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tolgakurucay.mynotebook",
+            "certificate_hash": "a58b2945e7965a56abb1d42f4f956af3f7a369d3"
+          }
+        },
+        {
+          "client_id": "426433673716-3abqrfi4s7d4gn8prvnk4rhtpicrmpfc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC4XgT3X6tLeImtZzZFCl4xZg6xBaaMdT8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "426433673716-3abqrfi4s7d4gn8prvnk4rhtpicrmpfc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:426433673716:android:33e2a61a9b69788e6d61a1",
+        "android_client_info": {
+          "package_name": "com.tolgakurucay.mynotebooknew"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "426433673716-4irrgccsv1tffhubnpr6mqfgv13gubj5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tolgakurucay.mynotebooknew",
+            "certificate_hash": "5a4ded371cca9b1efaf20bfc2e9ec36dc52a09b7"
+          }
+        },
+        {
+          "client_id": "426433673716-3abqrfi4s7d4gn8prvnk4rhtpicrmpfc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC4XgT3X6tLeImtZzZFCl4xZg6xBaaMdT8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "426433673716-3abqrfi4s7d4gn8prvnk4rhtpicrmpfc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

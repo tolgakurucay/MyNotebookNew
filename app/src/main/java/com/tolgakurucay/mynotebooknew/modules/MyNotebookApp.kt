@@ -2,12 +2,15 @@ package com.tolgakurucay.mynotebooknew.modules
 
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import androidx.window.layout.DisplayFeature
 import com.tolgakurucay.mynotebooknew.MyNotebookNavigationActions
@@ -17,26 +20,34 @@ import com.tolgakurucay.mynotebooknew.MyNotebookNewDestinationsArgs.USER_NAME_AR
 import com.tolgakurucay.mynotebooknew.appstate.MyNotebookAppState
 import com.tolgakurucay.mynotebooknew.appstate.rememberMyNotebookAppState
 import com.tolgakurucay.mynotebooknew.modules.forgot_password.ForgotPassword
-import com.tolgakurucay.mynotebooknew.modules.forgot_password.ForgotPasswordViewModel
 import com.tolgakurucay.mynotebooknew.modules.home.Home
 import com.tolgakurucay.mynotebooknew.modules.login.Login
 import com.tolgakurucay.mynotebooknew.modules.register.Register
-import com.tolgakurucay.mynotebooknew.modules.register.RegisterViewModel
 
 @Composable
 fun MyNotebookApp(
     windowSizeClass: WindowSizeClass,
     displayFeature: List<DisplayFeature>,
     modifier: Modifier = Modifier,
+    navController: NavHostController = rememberNavController(),
     startDestination: String = MyNotebookNewDestinations.LOGIN_ROUTE,
     appState: MyNotebookAppState = rememberMyNotebookAppState(),
-    navActions: MyNotebookNavigationActions = remember(appState.navController) {
-        MyNotebookNavigationActions(appState.navController)
+    navActions: MyNotebookNavigationActions = remember(navController) {
+        MyNotebookNavigationActions(navController)
     }
 
 ) {
+
+    //Use this when you use drawe
+    val currentNavBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = currentNavBackStackEntry?.destination?.route ?: startDestination
+
     if (appState.isOnline) {
-        NavHost(navController = appState.navController, startDestination = startDestination) {
+        NavHost(
+            navController = navController,
+            startDestination = startDestination,
+            modifier = modifier
+        ) {
 
             composable(
                 MyNotebookNewDestinations.HOME_ROUTE,
@@ -52,10 +63,10 @@ fun MyNotebookApp(
                 ),
             ) { entry ->
                 val userId = remember {
-                    entry.arguments?.getInt("userId")
+                    entry.arguments?.getInt(USER_ID_ARG)
                 }
                 val userName = remember {
-                    entry.arguments?.getString("userName")
+                    entry.arguments?.getString(USER_NAME_ARG)
                 }
                 Home(userId = userId, userName = userName)
             }
@@ -64,11 +75,11 @@ fun MyNotebookApp(
 
             }
 
-
             composable(MyNotebookNewDestinations.LOGIN_ROUTE) {
                 Login(
                     onNavigateToForgotPasswordMain = {
-                        navActions.navigateToForgotPassword()
+                        navActions.navigateToHome(100,"Tolga")
+                        //navActions.navigateToForgotPassword()
                     },
                     onNavigateToRegisterMain = {
                         navActions.navigateToRegister()
@@ -86,6 +97,7 @@ fun MyNotebookApp(
 
 
         }
+
     }
 
 }

@@ -2,9 +2,9 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
-    //id("dagger.hilt.android.plugin")
     id("com.google.dagger.hilt.android")
     id("kotlin-parcelize")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -132,8 +132,8 @@ android {
         implementation("androidx.core:core-ktx:1.10.1")
 
         //Dependency Injection
-        implementation("com.google.dagger:hilt-android:2.44")
-        kapt("com.google.dagger:hilt-android-compiler:2.44")
+        implementation("com.google.dagger:hilt-android:2.44.2")
+        kapt("com.google.dagger:hilt-android-compiler:2.44.2")
         implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
 
         //Retrofit
@@ -145,6 +145,9 @@ android {
         implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
         implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
 
+        //Firebase
+        implementation("com.google.firebase:firebase-bom:32.1.0")
+        implementation("com.google.firebase:firebase-analytics-ktx")
     }
     kapt {
         correctErrorTypes = true

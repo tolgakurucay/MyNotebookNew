@@ -1,11 +1,13 @@
 package com.tolgakurucay.mynotebooknew.modules.home
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -20,32 +22,36 @@ import com.tolgakurucay.mynotebooknew.services.TestResponse
 
 @Composable
 fun Home(
-    userName : String?,
-    userId : Int?,
+    userName: String?,
+    userId: Int?,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
-    val value = viewModel.testResponse.value
-    Surface(Modifier.fillMaxSize()) {
-        HomeContent(viewModel,value)
+    val uiState by viewModel.testResponse.collectAsStateWithLifecycle()
+
+    Surface(
+        Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
+    ) {
+        HomeContent(viewModel, uiState)
     }
 }
 
 @Composable
-fun HomeContent(viewModel: HomeViewModel,value : TestResponse?) {
+fun HomeContent(viewModel: HomeViewModel, value: TestResponse?) {
 
-    Column(modifier = Modifier
-        .windowInsetsPadding(WindowInsets.systemBars)) {
-        Button(onClick = {
-            viewModel.getMainContent(1)
+    Column(
+        modifier = Modifier
+            .windowInsetsPadding(WindowInsets.systemBars)
+    ) {
+        Button(
+            onClick = {
+                viewModel.getMainContent(2)
 
-        }) {
+            },
+        ) {
 
         }
-        
-        
-        Text(text = value?.results?.get(1)?.content.toString())
-    }
-    value?.let {
 
 
     }
