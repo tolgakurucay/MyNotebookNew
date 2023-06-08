@@ -34,4 +34,11 @@
     <string name="empty_password_again">Password again field must not empty</string>
     <string name="action_enter_password_again">Enter password again</string>
     <string name="common_forgot_password">FORGOT PASSWORD</string>
+    <string name="common_okay">Okay</string>
+    <string name="common_yes">Yes</string>
+    <string name="common_no">No</string>
+    <string name="common_attention">Attention</string>
+    <string name="common_information">Information</string>
+    <string name="action_fill_empty_fields_correctly">Please fill the empty fields correctly</string>
+    <string name="common_passwords_not_same">Passwords are not same</string>
 </resources>

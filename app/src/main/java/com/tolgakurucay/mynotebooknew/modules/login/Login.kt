@@ -79,8 +79,8 @@ fun LoginContent(
 ) {
 
 
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf<String?>(null) }
+    var password by remember { mutableStateOf<String?>(null) }
 
 
 
@@ -103,7 +103,7 @@ fun LoginContent(
         Spacer(modifier = Modifier.padding(vertical = spacing70))
         CustomTextField(
             horizontalMargin = spacing10,
-            textFieldType = TextFieldType.EMAIL, value = email,
+            textFieldType = TextFieldType.EMAIL,
             onValueChange = {
                 email = it
             },
@@ -111,7 +111,7 @@ fun LoginContent(
         Spacer(modifier = Modifier.padding(vertical = spacing5))
         CustomTextField(
             horizontalMargin = spacing10,
-            textFieldType = TextFieldType.PASSWORD, value = password,
+            textFieldType = TextFieldType.PASSWORD,
             onValueChange = {
                 password = it
             },

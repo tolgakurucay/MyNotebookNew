@@ -13,7 +13,7 @@ interface MyNotebookNewService {
     @GET("{path}")
     suspend fun get(
         @Path("path", encoded = true) path: String,
-        @QueryMap queries: Map<String, Int>
+        @QueryMap queries: Map<String, Any>
     ): Response<JsonObject>
 
 

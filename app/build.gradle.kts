@@ -146,8 +146,11 @@ android {
         implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
 
         //Firebase
-        implementation("com.google.firebase:firebase-bom:32.1.0")
+        implementation(platform("com.google.firebase:firebase-bom:32.1.0"))
         implementation("com.google.firebase:firebase-analytics-ktx")
+
+        //Firebase Auth
+        implementation("com.google.firebase:firebase-auth-ktx")
     }
     kapt {
         correctErrorTypes = true

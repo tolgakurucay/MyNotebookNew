@@ -30,7 +30,7 @@ fun MyNotebookApp(
     displayFeature: List<DisplayFeature>,
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
-    startDestination: String = MyNotebookNewDestinations.LOGIN_ROUTE,
+    startDestination: String = MyNotebookNewDestinations.REGISTER_ROUTE,
     appState: MyNotebookAppState = rememberMyNotebookAppState(),
     navActions: MyNotebookNavigationActions = remember(navController) {
         MyNotebookNavigationActions(navController)
@@ -38,7 +38,7 @@ fun MyNotebookApp(
 
 ) {
 
-    //Use this when you use drawe
+    //Use this when you use drawer
     val currentNavBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = currentNavBackStackEntry?.destination?.route ?: startDestination
 

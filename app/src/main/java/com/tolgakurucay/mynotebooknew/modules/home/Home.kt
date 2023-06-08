@@ -9,16 +9,9 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.tolgakurucay.mynotebooknew.services.TestResponse
 
 @Composable
 fun Home(
@@ -26,19 +19,19 @@ fun Home(
     userId: Int?,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
-    val uiState by viewModel.testResponse.collectAsStateWithLifecycle()
+//    val uiState by viewModel.testResponse.collectAsStateWithLifecycle()
 
     Surface(
         Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
     ) {
-        HomeContent(viewModel, uiState)
+        HomeContent(viewModel)
     }
 }
 
 @Composable
-fun HomeContent(viewModel: HomeViewModel, value: TestResponse?) {
+fun HomeContent(viewModel: HomeViewModel) {
 
     Column(
         modifier = Modifier
@@ -46,7 +39,7 @@ fun HomeContent(viewModel: HomeViewModel, value: TestResponse?) {
     ) {
         Button(
             onClick = {
-                viewModel.getMainContent(2)
+//                viewModel.getMainContent(2)
 
             },
         ) {
