@@ -1,16 +1,17 @@
 package com.tolgakurucay.mynotebooknew.base
 
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.tolgakurucay.mynotebooknew.base.throwable.BaseThrowable
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
 open class BaseViewModel @Inject constructor(): ViewModel() {
-    val myNotebookError: MutableLiveData<BaseThrowable> = MutableLiveData()
-    val isShowLoading: MutableLiveData<Boolean> = MutableLiveData()
+    var myNotebookError: MutableStateFlow<Throwable?> = MutableStateFlow(null)
+    val isShowLoading: MutableStateFlow<Boolean?> = MutableStateFlow(null)
 
-    fun showWaitingDialog(isShow: Boolean) =
-        isShowLoading.postValue(isShow)
+    fun showWaitingDialog(isShow: Boolean){
+        isShowLoading.value = isShow
+    }
+
 }

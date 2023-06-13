@@ -25,7 +25,7 @@ import com.tolgakurucay.mynotebooknew.modules.login.Login
 import com.tolgakurucay.mynotebooknew.modules.register.Register
 
 @Composable
-fun MyNotebookApp(
+fun MyNotebookAppGraph(
     windowSizeClass: WindowSizeClass,
     displayFeature: List<DisplayFeature>,
     modifier: Modifier = Modifier,

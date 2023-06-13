@@ -16,11 +16,11 @@ interface MyNotebookNewService {
         @QueryMap queries: Map<String, Any>
     ): Response<JsonObject>
 
-
     @POST("{path}")
     suspend fun post(
         @Path("path", encoded = true) path: String,
-        @Body request: Any
+        @Body request: Any,
+        @QueryMap fields: Map<String,String>,
     ): Response<JsonObject>
 
 

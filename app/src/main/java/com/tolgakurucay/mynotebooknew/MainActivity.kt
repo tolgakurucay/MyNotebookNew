@@ -7,10 +7,14 @@ import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSiz
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.core.view.WindowCompat
 import com.google.accompanist.adaptive.calculateDisplayFeatures
-import com.tolgakurucay.mynotebooknew.modules.MyNotebookApp
+import com.tolgakurucay.mynotebooknew.modules.MyNotebookAppGraph
 import com.tolgakurucay.mynotebooknew.theme.MyNotebookNewTheme
 import dagger.hilt.android.AndroidEntryPoint
 
+
+/**
+ * Main activity for the MyNotebookApp
+ */
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
@@ -24,7 +28,7 @@ class MainActivity : ComponentActivity() {
             val displayFeatures = calculateDisplayFeatures(activity = this)
 
             MyNotebookNewTheme {
-                MyNotebookApp(
+                MyNotebookAppGraph(
                     windowSizeClass = windowSizeClass,
                     displayFeature = displayFeatures
                 )

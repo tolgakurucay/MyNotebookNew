@@ -41,4 +41,5 @@
     <string name="common_information">Information</string>
     <string name="action_fill_empty_fields_correctly">Please fill the empty fields correctly</string>
     <string name="common_passwords_not_same">Passwords are not same</string>
+    <string name="common_error">Error</string>
 </resources>

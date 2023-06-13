@@ -24,51 +24,20 @@ android {
         }
     }
 
-//    signingConfigs {
-//        create("test"){
-//            val DEBUG_KEY_ALIAS: String by project
-//            val DEBUG_KEY_PASSWORD: String by project
-//            val DEBUG_STORE_PASSWORD: String by project
-//            val DEBUG_STORE_FILE: String by project
-//
-//            keyAlias = DEBUG_KEY_ALIAS
-//            keyPassword = DEBUG_KEY_PASSWORD
-//            storePassword = DEBUG_STORE_PASSWORD
-//            storeFile = file(DEBUG_STORE_FILE)
-//
-//        }
-//        create("release"){
-//            val RELEASE_KEY_ALIAS: String by project
-//            val RELEASE_KEY_PASSWORD: String by project
-//            val RELEASE_STORE_PASSWORD: String by project
-//            val RELEASE_STORE_FILE: String by project
-//
-//            keyAlias = RELEASE_KEY_ALIAS
-//            keyPassword = RELEASE_KEY_PASSWORD
-//            storePassword = RELEASE_STORE_PASSWORD
-//            storeFile = file(RELEASE_STORE_FILE)
-//        }
-//    }
 
 
     buildTypes {
         named("debug"){
             isMinifyEnabled = false
-//            signingConfig = signingConfigs.getByName("test")
             resValue("string", "notebook_app_name", "My Notebook Test")
-            buildConfigField("String", "ENDPOINT_RELEASE", "\"https://quotable.io/\"")
-
-
-
+//            buildConfigField("String", "ENDPOINT_RELEASE", "\"https://quotable.io/\"")
 
         }
         named("release") {
             isMinifyEnabled = true
-//            signingConfig = signingConfigs.getByName("release")
-            resValue("string", "ets_app_name","My Notebook")
-            buildConfigField("String", "ENDPOINT_RELEASE", "\"https://quotable.io/\"")
-
-
+            resValue("string", "my_notebook_app_name","My Notebook")
+//            buildConfigField("String", "ENDPOINT_RELEASE", "\"https://quotable.io/\"")
+            
             setProguardFiles(
                 listOf(
                     getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -140,6 +109,10 @@ android {
 
         implementation ("com.squareup.retrofit2:retrofit:2.9.0")
         implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
+
+        //Chucker Implementation
+        implementation("com.github.chuckerteam.chucker:library:3.5.2")
+        releaseImplementation("com.github.chuckerteam.chucker:library-no-op:3.5.2")
 
         //Coroutine
         implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")

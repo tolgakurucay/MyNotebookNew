@@ -1,7 +1,6 @@
 package com.tolgakurucay.mynotebooknew.extensions
 
 import com.tolgakurucay.mynotebooknew.base.BaseViewModel
-import com.tolgakurucay.mynotebooknew.base.throwable.BaseThrowable
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.onStart
@@ -14,7 +13,7 @@ fun <T> CoroutineScope.callService(
     success: (data: T) -> Unit,
     service: suspend () -> Flow<Result<T>>,
     shouldShowDialog: Boolean = true,
-    fail: (error: BaseThrowable?) -> Unit = { vm?.myNotebookError?.value = it }
+    fail: (error: Throwable?) -> Unit = { vm?.myNotebookError?.value = it}
 ) {
     launch {
         service()

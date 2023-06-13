@@ -1,8 +1,6 @@
 package com.tolgakurucay.mynotebooknew.modules.register
 
-import android.util.Log
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,19 +19,21 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tolgakurucay.mynotebooknew.R
 import com.tolgakurucay.mynotebooknew.base.arePasswordsSame
 import com.tolgakurucay.mynotebooknew.base.validateCustomTextFields
 import com.tolgakurucay.mynotebooknew.custom.AlertDialogType
 import com.tolgakurucay.mynotebooknew.custom.CustomAlertDialog
+import com.tolgakurucay.mynotebooknew.custom.BaseColumn
 import com.tolgakurucay.mynotebooknew.custom.CustomTextField
 import com.tolgakurucay.mynotebooknew.custom.TextFieldType
+import com.tolgakurucay.mynotebooknew.services.register.RegisterRequest
 import com.tolgakurucay.mynotebooknew.theme.spacing10
 import com.tolgakurucay.mynotebooknew.theme.spacing30
 import com.tolgakurucay.mynotebooknew.theme.spacing40
@@ -44,7 +44,7 @@ import com.tolgakurucay.mynotebooknew.theme.spacing70
 @Preview
 @Composable
 fun Register(
-    viewModel: RegisterViewModel = hiltViewModel(),
+
 ) {
 
     Surface(modifier = Modifier.fillMaxSize()) {
@@ -54,10 +54,9 @@ fun Register(
 
 }
 
-
 @Preview
 @Composable
-fun RegisterContent() {
+fun RegisterContent(viewModel: RegisterViewModel = hiltViewModel()) {
 
     var email by remember { mutableStateOf<String?>(null) }
     var password by remember { mutableStateOf<String?>(null) }
@@ -69,10 +68,17 @@ fun RegisterContent() {
     var isShowPasswordAlert by remember { mutableStateOf(false) }
 
 
-    Column(
+    val response = viewModel.registerResponse.collectAsStateWithLifecycle()
+
+
+
+
+    BaseColumn(
         modifier = Modifier
+            .fillMaxSize()
             .windowInsetsPadding(WindowInsets.systemBars)
-            .verticalScroll(rememberScrollState())
+            .verticalScroll(rememberScrollState()),
+        viewModel = viewModel
     ) {
         Text(
             text = stringResource(id = R.string.common_register_uppercase),
@@ -126,11 +132,7 @@ fun RegisterContent() {
         Spacer(modifier = Modifier.padding(top = spacing40))
         Button(
             onClick = {
-                Log.d("bilgitolga", "email: $email")
-                Log.d("bilgitolga", "password: $password")
-                Log.d("bilgitolga", "again: $passwordAgain")
-                Log.d("bilgitolga", "name: $name")
-                Log.d("bilgitolga", "surname: $surname")
+
 
                 if (validateCustomTextFields(
                         arrayOf(
@@ -144,6 +146,13 @@ fun RegisterContent() {
                 ) {
                     if (arePasswordsSame(password = password, passwordAgain = passwordAgain)) {
                         //Viewmodel processes
+                        viewModel.register(
+                            RegisterRequest(
+                                email = email!!,
+                                password = password!!,
+                                returnSecureToken = true
+                            )
+                        )
                     } else {
                         isShowPasswordAlert = true
                     }
@@ -152,7 +161,6 @@ fun RegisterContent() {
                     isShowEmptyFieldsAlert = true
                 }
             }, modifier = Modifier
-                .align(Alignment.CenterHorizontally)
                 .fillMaxSize()
                 .clickable {
 
@@ -167,17 +175,16 @@ fun RegisterContent() {
             CustomAlertDialog(
                 type = AlertDialogType.OKAY,
                 titleRes = R.string.common_information,
-                descriptionRes = R.string.action_fill_empty_fields_correctly,
+                descriptionRes = stringResource(id = R.string.action_fill_empty_fields_correctly),
                 onConfirm = {
                     isShowEmptyFieldsAlert = false
                 },
             )
-        }
-        else if(isShowPasswordAlert){
+        } else if (isShowPasswordAlert) {
             CustomAlertDialog(
                 type = AlertDialogType.OKAY,
                 titleRes = R.string.common_information,
-                descriptionRes = R.string.common_passwords_not_same,
+                descriptionRes = stringResource(id = R.string.common_passwords_not_same),
                 onConfirm = {
                     isShowPasswordAlert = false
                 },
@@ -189,3 +196,5 @@ fun RegisterContent() {
 
 
 }
+
+

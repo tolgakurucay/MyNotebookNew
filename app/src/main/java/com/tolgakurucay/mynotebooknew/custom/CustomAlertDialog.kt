@@ -10,19 +10,23 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.window.DialogProperties
 import com.tolgakurucay.mynotebooknew.R
+import com.tolgakurucay.mynotebooknew.theme.OnPrimaryLight
+import com.tolgakurucay.mynotebooknew.theme.PrimaryLight
 import com.tolgakurucay.mynotebooknew.theme.spacing10
 
 @Composable
 fun CustomAlertDialog(
     type: AlertDialogType,
-    @StringRes titleRes: Int,
-    @StringRes descriptionRes: Int,
+    @StringRes titleRes: Int = R.string.common_error,
+    descriptionRes: String? = null,
     onConfirm: (() -> Unit)? = null,
     onDismiss: (() -> Unit)? = null
 ) {
+
 
     val showDialog = remember { mutableStateOf(true) }
     if (showDialog.value) {
@@ -40,8 +44,11 @@ fun CustomAlertDialog(
             },
             text = {
                 Text(
-                    stringResource(id = descriptionRes),
-                    style = MaterialTheme.typography.bodyMedium
+                    descriptionRes ?: stringResource(id = R.string.common_error),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = OnPrimaryLight
+
+
                 )
             },
             confirmButton = {
@@ -109,6 +116,9 @@ fun CustomAlertDialog(
 
 
 }
+
+
+
 
 /**
  * If you selected OKAY;

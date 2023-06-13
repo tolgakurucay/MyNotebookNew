@@ -8,18 +8,18 @@ sealed class ApiServices<T>(
     val path: String,
     val request: Any? = null,
     val queryMap: Map<String, Any> = mapOf(), // for GET requests
+    val fieldMap: Map<String, String> = mapOf(), // for SET requests
     val finishScreen: Boolean = true,
     val requestType: RequestType = RequestType.POST,
 ) {
 
     //REGISTER
     class Register(request: RegisterRequest) : ApiServices<RegisterResponse>(
-        "v1/accounts:signUp", request = request, queryMap = mapOf(
-            Pair("key", API_KEY)
-        )
+        path = "v1/accounts:signUp", request = request,
+        fieldMap = mapOf(
+            Pair("key", API_KEY),
+        ),
     )
-
-
 
 
     companion object {

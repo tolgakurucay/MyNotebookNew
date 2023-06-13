@@ -50,13 +50,16 @@ fun CustomTextField(
     val focusManager = LocalFocusManager.current
 
     OutlinedTextField(
-        value = value,
+        value = when (textFieldType) {
+            TextFieldType.EMAIL -> value.lowercase()
+            else -> value
+        },
         onValueChange = {
             value = it
             //If validated the textField, sending its string. Else sending null
-            if (isTextFieldValidated(textFieldType, it)){
+            if (isTextFieldValidated(textFieldType, it)) {
                 onValueChange.invoke(it)
-            } else{
+            } else {
                 onValueChange.invoke(null)
             }
 
@@ -78,7 +81,6 @@ fun CustomTextField(
         leadingIcon = {
             when (textFieldType) {
                 TextFieldType.EMAIL -> {
-                    //Checking validation
                     if (value.isEmpty()) {
                         Image(
                             painter = painterResource(id = R.drawable.twotone_email_24),
@@ -135,6 +137,7 @@ fun CustomTextField(
                     }
 
                 }
+
                 TextFieldType.PASSWORD_AGAIN -> {
                     if (value.isEmpty()) {
                         Image(
@@ -231,7 +234,7 @@ fun CustomTextField(
             //Validation rules
             when (textFieldType) {
                 TextFieldType.EMAIL -> {
-                    supportingText = supportingMessage(textFieldType,value, LocalContext.current)
+                    supportingText = supportingMessage(textFieldType, value, LocalContext.current)
                     Text(
                         text = supportingText,
                         style = MaterialTheme.typography.bodySmall,
@@ -240,7 +243,7 @@ fun CustomTextField(
                 }
 
                 TextFieldType.PASSWORD -> {
-                    supportingText = supportingMessage(textFieldType,value, LocalContext.current)
+                    supportingText = supportingMessage(textFieldType, value, LocalContext.current)
                     Text(
                         text = supportingText,
                         style = MaterialTheme.typography.bodySmall,
@@ -250,7 +253,7 @@ fun CustomTextField(
                 }
 
                 TextFieldType.PASSWORD_AGAIN -> {
-                    supportingText = supportingMessage(textFieldType,value, LocalContext.current)
+                    supportingText = supportingMessage(textFieldType, value, LocalContext.current)
                     Text(
                         text = supportingText,
                         style = MaterialTheme.typography.bodySmall,
@@ -260,7 +263,7 @@ fun CustomTextField(
                 }
 
                 TextFieldType.NAME -> {
-                    supportingText = supportingMessage(textFieldType,value, LocalContext.current)
+                    supportingText = supportingMessage(textFieldType, value, LocalContext.current)
                     Text(
                         text = supportingText,
                         style = MaterialTheme.typography.bodySmall,
@@ -269,7 +272,7 @@ fun CustomTextField(
                 }
 
                 TextFieldType.SURNAME -> {
-                    supportingText = supportingMessage(textFieldType,value, LocalContext.current)
+                    supportingText = supportingMessage(textFieldType, value, LocalContext.current)
                     Text(
                         text = supportingText,
                         style = MaterialTheme.typography.bodySmall,
@@ -291,6 +294,7 @@ fun CustomTextField(
                     text = stringResource(id = R.string.action_enter_password),
                     style = MaterialTheme.typography.bodyMedium
                 )
+
                 TextFieldType.PASSWORD_AGAIN -> Text(
                     text = stringResource(id = R.string.action_enter_password_again),
                     style = MaterialTheme.typography.bodyMedium

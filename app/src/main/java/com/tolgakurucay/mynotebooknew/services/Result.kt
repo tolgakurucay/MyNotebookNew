@@ -1,12 +1,11 @@
 package com.tolgakurucay.mynotebooknew.services
 
-import com.tolgakurucay.mynotebooknew.base.throwable.BaseThrowable
 
 
 data class Result<out T>(
     val status: Status,
     val data: T?,
-    val error: BaseThrowable?,
+    val error: Throwable?,
     val isFinishScreen: Boolean = false
 ) {
 
@@ -22,11 +21,11 @@ data class Result<out T>(
         }
 
         fun <T> error(
-            error: BaseThrowable,
+            error: Throwable,
             data: T? = null,
             isFinishScreen: Boolean = false
         ): Result<T> {
-            return Result(Status.ERROR, data, error, isFinishScreen)
+            return Result(Status.ERROR,data,error)
         }
 
         fun <T> loading(data: T? = null): Result<T> {
