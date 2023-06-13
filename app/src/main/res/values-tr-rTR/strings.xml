@@ -42,4 +42,5 @@
     <string name="action_fill_empty_fields_correctly">Lütfen boş alanları düzgünce doldurunuz</string>
     <string name="common_passwords_not_same">Şifreler uyuşmuyor</string>
     <string name="common_error">Hata</string>
+    <string name="screen_register_successful">Kayıt başarılı!. Lütfen mailinizi kontrol ediniz</string>
 </resources>

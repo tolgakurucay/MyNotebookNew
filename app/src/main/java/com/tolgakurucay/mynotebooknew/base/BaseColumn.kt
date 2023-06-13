@@ -1,4 +1,4 @@
-package com.tolgakurucay.mynotebooknew.custom
+package com.tolgakurucay.mynotebooknew.base
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -12,7 +12,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.tolgakurucay.mynotebooknew.base.BaseViewModel
+import com.tolgakurucay.mynotebooknew.custom.AlertDialogType
+import com.tolgakurucay.mynotebooknew.custom.CustomAlertDialog
+import com.tolgakurucay.mynotebooknew.custom.CustomLoading
 
 private val TAG = "bilgitolga"
 

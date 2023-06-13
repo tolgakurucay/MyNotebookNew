@@ -1,6 +1,6 @@
 package com.tolgakurucay.mynotebooknew.modules.register
 
-import androidx.compose.foundation.clickable
+import android.util.Log
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,6 +15,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -30,7 +31,7 @@ import com.tolgakurucay.mynotebooknew.base.arePasswordsSame
 import com.tolgakurucay.mynotebooknew.base.validateCustomTextFields
 import com.tolgakurucay.mynotebooknew.custom.AlertDialogType
 import com.tolgakurucay.mynotebooknew.custom.CustomAlertDialog
-import com.tolgakurucay.mynotebooknew.custom.BaseColumn
+import com.tolgakurucay.mynotebooknew.base.BaseColumn
 import com.tolgakurucay.mynotebooknew.custom.CustomTextField
 import com.tolgakurucay.mynotebooknew.custom.TextFieldType
 import com.tolgakurucay.mynotebooknew.services.register.RegisterRequest
@@ -41,22 +42,17 @@ import com.tolgakurucay.mynotebooknew.theme.spacing5
 import com.tolgakurucay.mynotebooknew.theme.spacing70
 
 
-@Preview
 @Composable
 fun Register(
-
+    onNavigateToLoginParent : () -> Unit
 ) {
-
     Surface(modifier = Modifier.fillMaxSize()) {
-        RegisterContent()
-
+        RegisterContent(onNavigateToLoginChild = onNavigateToLoginParent)
     }
-
 }
 
-@Preview
 @Composable
-fun RegisterContent(viewModel: RegisterViewModel = hiltViewModel()) {
+fun RegisterContent(viewModel: RegisterViewModel = hiltViewModel(),onNavigateToLoginChild: () -> Unit) {
 
     var email by remember { mutableStateOf<String?>(null) }
     var password by remember { mutableStateOf<String?>(null) }
@@ -66,7 +62,6 @@ fun RegisterContent(viewModel: RegisterViewModel = hiltViewModel()) {
 
     var isShowEmptyFieldsAlert by remember { mutableStateOf(false) }
     var isShowPasswordAlert by remember { mutableStateOf(false) }
-
 
     val response = viewModel.registerResponse.collectAsStateWithLifecycle()
 
@@ -132,8 +127,6 @@ fun RegisterContent(viewModel: RegisterViewModel = hiltViewModel()) {
         Spacer(modifier = Modifier.padding(top = spacing40))
         Button(
             onClick = {
-
-
                 if (validateCustomTextFields(
                         arrayOf(
                             email,
@@ -162,14 +155,16 @@ fun RegisterContent(viewModel: RegisterViewModel = hiltViewModel()) {
                 }
             }, modifier = Modifier
                 .fillMaxSize()
-                .clickable {
-
-                }
                 .padding(horizontal = spacing10)
         ) {
             Text(text = stringResource(id = R.string.common_login_now_uppercase))
         }
         Spacer(modifier = Modifier.padding(top = spacing40))
+
+
+
+
+
 
         if (isShowEmptyFieldsAlert) {
             CustomAlertDialog(
@@ -187,6 +182,17 @@ fun RegisterContent(viewModel: RegisterViewModel = hiltViewModel()) {
                 descriptionRes = stringResource(id = R.string.common_passwords_not_same),
                 onConfirm = {
                     isShowPasswordAlert = false
+                },
+            )
+        }
+
+        if (response.value != null) {
+            CustomAlertDialog(
+                type = AlertDialogType.OKAY, titleRes = R.string.common_information,
+                descriptionRes = stringResource(id = R.string.screen_register_successful),
+                onConfirm = {
+                    onNavigateToLoginChild.invoke()
+
                 },
             )
         }

@@ -92,7 +92,9 @@ fun MyNotebookAppGraph(
             }
 
             composable(MyNotebookNewDestinations.REGISTER_ROUTE) {
-                Register()
+                Register(onNavigateToLoginParent = {
+                    navActions.navigateToLogin()
+                })
             }
 
 

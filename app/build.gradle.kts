@@ -124,6 +124,10 @@ android {
 
         //Firebase Auth
         implementation("com.google.firebase:firebase-auth-ktx")
+
+        //Permissions
+        implementation("com.google.accompanist:accompanist-permissions:0.28.0")
+
     }
     kapt {
         correctErrorTypes = true

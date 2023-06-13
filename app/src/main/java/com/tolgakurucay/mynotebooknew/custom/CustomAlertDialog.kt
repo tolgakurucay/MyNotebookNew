@@ -46,7 +46,6 @@ fun CustomAlertDialog(
                 Text(
                     descriptionRes ?: stringResource(id = R.string.common_error),
                     style = MaterialTheme.typography.bodyMedium,
-                    color = OnPrimaryLight
 
 
                 )

@@ -34,7 +34,6 @@ object NetworkModule {
                 .readTimeout(200, TimeUnit.SECONDS)
                 .connectTimeout(200, TimeUnit.SECONDS)
 
-
         builder.addInterceptor(
             ChuckerInterceptor.Builder(context).collector(ChuckerCollector(context)).build()
         )
