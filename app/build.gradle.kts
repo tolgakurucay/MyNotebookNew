@@ -8,10 +8,12 @@ plugins {
 }
 
 android {
+
     namespace = ("com.tolgakurucay.mynotebooknew")
     compileSdk = 33
+
     defaultConfig {
-        applicationId = ("com.tolgakurucay.mynotebooknew")
+        applicationId = "com.tolgakurucay.mynotebooknew"
 
         minSdk = 28
         targetSdk = 33
@@ -22,6 +24,10 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+
+        val baseUrl: String by project
+        buildConfigField("String","BASE_URL",baseUrl)
+
     }
 
 
@@ -30,14 +36,12 @@ android {
         named("debug"){
             isMinifyEnabled = false
             resValue("string", "notebook_app_name", "My Notebook Test")
-//            buildConfigField("String", "ENDPOINT_RELEASE", "\"https://quotable.io/\"")
 
         }
         named("release") {
             isMinifyEnabled = true
             resValue("string", "my_notebook_app_name","My Notebook")
-//            buildConfigField("String", "ENDPOINT_RELEASE", "\"https://quotable.io/\"")
-            
+
             setProguardFiles(
                 listOf(
                     getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -67,6 +71,8 @@ android {
             excludes += ("/META-INF/{AL2.0,LGPL2.1}")
         }
     }
+
+
     dependencies {
 
         implementation("androidx.core:core-ktx:1.10.1")

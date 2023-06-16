@@ -17,8 +17,6 @@ import com.tolgakurucay.mynotebooknew.MyNotebookNavigationActions
 import com.tolgakurucay.mynotebooknew.MyNotebookNewDestinations
 import com.tolgakurucay.mynotebooknew.MyNotebookNewDestinationsArgs.USER_ID_ARG
 import com.tolgakurucay.mynotebooknew.MyNotebookNewDestinationsArgs.USER_NAME_ARG
-import com.tolgakurucay.mynotebooknew.appstate.MyNotebookAppState
-import com.tolgakurucay.mynotebooknew.appstate.rememberMyNotebookAppState
 import com.tolgakurucay.mynotebooknew.modules.forgot_password.ForgotPassword
 import com.tolgakurucay.mynotebooknew.modules.home.Home
 import com.tolgakurucay.mynotebooknew.modules.login.Login
@@ -31,7 +29,6 @@ fun MyNotebookAppGraph(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
     startDestination: String = MyNotebookNewDestinations.REGISTER_ROUTE,
-    appState: MyNotebookAppState = rememberMyNotebookAppState(),
     navActions: MyNotebookNavigationActions = remember(navController) {
         MyNotebookNavigationActions(navController)
     }
@@ -42,64 +39,64 @@ fun MyNotebookAppGraph(
     val currentNavBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = currentNavBackStackEntry?.destination?.route ?: startDestination
 
-    if (appState.isOnline) {
-        NavHost(
-            navController = navController,
-            startDestination = startDestination,
-            modifier = modifier
-        ) {
+    NavHost(
+        navController = navController,
+        startDestination = startDestination,
+        modifier = modifier
+    ) {
 
-            composable(
-                MyNotebookNewDestinations.HOME_ROUTE,
-                arguments = listOf(
-                    navArgument(USER_ID_ARG) {
-                        type = NavType.IntType
-                        nullable = false
-                    },
-                    navArgument(USER_NAME_ARG) {
-                        type = NavType.StringType
-                        nullable = true
-                    }
-                ),
-            ) { entry ->
-                val userId = remember {
-                    entry.arguments?.getInt(USER_ID_ARG)
+        composable(
+            MyNotebookNewDestinations.HOME_ROUTE,
+            arguments = listOf(
+                navArgument(USER_ID_ARG) {
+                    type = NavType.IntType
+                    nullable = false
+                },
+                navArgument(USER_NAME_ARG) {
+                    type = NavType.StringType
+                    nullable = true
                 }
-                val userName = remember {
-                    entry.arguments?.getString(USER_NAME_ARG)
-                }
-                Home(userId = userId, userName = userName)
+            ),
+        ) { entry ->
+            val userId = remember {
+                entry.arguments?.getInt(USER_ID_ARG)
             }
-
-            composable(MyNotebookNewDestinations.PROFILE_ROUTE) {
-
+            val userName = remember {
+                entry.arguments?.getString(USER_NAME_ARG)
             }
+            Home(userId = userId, userName = userName)
+        }
 
-            composable(MyNotebookNewDestinations.LOGIN_ROUTE) {
-                Login(
-                    onNavigateToForgotPasswordMain = {
-                        navActions.navigateToHome(100,"Tolga")
-                        //navActions.navigateToForgotPassword()
-                    },
-                    onNavigateToRegisterMain = {
-                        navActions.navigateToRegister()
-                    },
-                )
-            }
-
-            composable(MyNotebookNewDestinations.FORGOT_PASSWORD_ROUTE) {
-                ForgotPassword()
-            }
-
-            composable(MyNotebookNewDestinations.REGISTER_ROUTE) {
-                Register(onNavigateToLoginParent = {
-                    navActions.navigateToLogin()
-                })
-            }
-
+        composable(MyNotebookNewDestinations.PROFILE_ROUTE) {
 
         }
 
+        composable(MyNotebookNewDestinations.LOGIN_ROUTE) {
+            Login(
+                onNavigateToForgotPasswordMain = {
+                    navActions.navigateToHome(100, "Tolga")
+                    //navActions.navigateToForgotPassword()
+                },
+                onNavigateToRegisterMain = {
+                    navActions.navigateToRegister()
+                },
+            )
+        }
+
+        composable(MyNotebookNewDestinations.FORGOT_PASSWORD_ROUTE) {
+            ForgotPassword()
+        }
+
+        composable(MyNotebookNewDestinations.REGISTER_ROUTE) {
+            Register(
+                onNavigateToLoginParent = {
+                    navActions.navigateToLogin()
+                },
+            )
+        }
+
+
     }
+
 
 }

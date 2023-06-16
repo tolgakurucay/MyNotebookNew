@@ -41,16 +41,14 @@ class MainActivity : ComponentActivity() {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                     val notificationState =
                         rememberPermissionState(permission = android.Manifest.permission.POST_NOTIFICATIONS)
-
                     SideEffect {
                         notificationState.launchPermissionRequest()
                     }
-                    MyNotebookAppGraph(
-                        windowSizeClass = windowSizeClass,
-                        displayFeature = displayFeatures
-                    )
                 }
-
+                MyNotebookAppGraph(
+                    windowSizeClass = windowSizeClass,
+                    displayFeature = displayFeatures
+                )
 
             }
 
