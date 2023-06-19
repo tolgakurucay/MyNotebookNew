@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name" translatable="false">MyNotebookNew</string>
     <string name="common_login_uppercase">LOGIN</string>
     <string name="common_email">E-mail</string>
     <string name="common_password">Password</string>

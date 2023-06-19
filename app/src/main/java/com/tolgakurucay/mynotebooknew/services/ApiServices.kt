@@ -1,6 +1,6 @@
 package com.tolgakurucay.mynotebooknew.services
 
-import com.tolgakurucay.mynotebooknew.Config
+import com.tolgakurucay.mynotebooknew.BuildConfig
 import com.tolgakurucay.mynotebooknew.services.register.RegisterRequest
 import com.tolgakurucay.mynotebooknew.services.register.RegisterResponse
 
@@ -17,15 +17,12 @@ sealed class ApiServices<T>(
     class Register(request: RegisterRequest) : ApiServices<RegisterResponse>(
         path = "v1/accounts:signUp", request = request,
         fieldMap = mapOf(
-            Pair("key", API_KEY),
+            Pair("key",BuildConfig.API_KEY),
         ),
     )
 
 
-    companion object {
-        var ENDPOINT = Config.ENDPOINT_RELEASE
-        var API_KEY = Config.API_KEY
-    }
+
 
 }
 

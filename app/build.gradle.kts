@@ -1,3 +1,5 @@
+import org.gradle.api.JavaVersion.VERSION_17
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -7,58 +9,89 @@ plugins {
     id("com.google.gms.google-services")
 }
 
+
 android {
 
-    namespace = ("com.tolgakurucay.mynotebooknew")
-    compileSdk = 33
+    val cSdk = Integer.parseInt(findProperty("android.compileSdkVersion") as String)
+    val appId = findProperty("android.applicationId") as String
+    val mSdk = Integer.parseInt(findProperty("android.minSdkVersion") as String)
+    val tSdk = Integer.parseInt(findProperty("android.targetSdkVersion") as String)
+    val versCode = Integer.parseInt(findProperty("android.versionCode") as String)
+    val versName = findProperty("android.versionName") as String
+    val nameSpc = findProperty("android.namespace") as String
+    val apiKey = findProperty("apiKey") as String
+    val bUrlDev = findProperty("baseUrlDev") as String
+    val bUrl = findProperty("baseUrl") as String
+    val appName = findProperty("appName") as String
+    val appNameTest = findProperty("appNameTest") as String
+
+
+    namespace = nameSpc
+    compileSdk = cSdk
+
 
     defaultConfig {
-        applicationId = "com.tolgakurucay.mynotebooknew"
 
-        minSdk = 28
-        targetSdk = 33
-        versionCode = 1
-        versionName = ("1.0")
+
+        applicationId = appId
+        minSdk = mSdk
+        targetSdk = tSdk
+        versionCode = versCode
+        versionName = versName
+        multiDexEnabled = true
 
         testInstrumentationRunner = ("androidx.test.runner.AndroidJUnitRunner")
         vectorDrawables {
             useSupportLibrary = true
         }
 
-        val baseUrl: String by project
-        buildConfigField("String","BASE_URL",baseUrl)
+
+        buildConfigField("String", "API_KEY", apiKey)
+
 
     }
 
 
 
     buildTypes {
-        named("debug"){
+
+        named("debug") {
             isMinifyEnabled = false
-            resValue("string", "notebook_app_name", "My Notebook Test")
+            buildConfigField("String", "BASE_URL", bUrlDev)
+            resValue("string","app_name",appNameTest)
 
         }
+
+
         named("release") {
             isMinifyEnabled = true
-            resValue("string", "my_notebook_app_name","My Notebook")
+            buildConfigField("String", "BASE_URL", bUrl)
+            resValue("string","app_name",appName)
 
+
+            @Suppress("UnstableApiUsage")
             setProguardFiles(
                 listOf(
                     getDefaultProguardFile("proguard-android-optimize.txt"),
                     "proguard-rules.pro"
                 )
             )
-
         }
+
+
     }
+
+
     kotlinOptions {
         jvmTarget = "17"
     }
+
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = VERSION_17
+        targetCompatibility = VERSION_17
     }
 
+    @Suppress("UnstableApiUsage")
     buildFeatures {
         compose = true
         buildConfig = true
@@ -113,16 +146,16 @@ android {
 
         //Retrofit
 
-        implementation ("com.squareup.retrofit2:retrofit:2.9.0")
-        implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
+        implementation("com.squareup.retrofit2:retrofit:2.9.0")
+        implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 
         //Chucker Implementation
         implementation("com.github.chuckerteam.chucker:library:3.5.2")
-        releaseImplementation("com.github.chuckerteam.chucker:library-no-op:3.5.2")
+        //releaseImplementation("com.github.chuckerteam.chucker:library-no-op:3.5.2")
 
         //Coroutine
-        implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
-        implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
+        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
+        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
 
         //Firebase
         implementation(platform("com.google.firebase:firebase-bom:32.1.0"))
