@@ -47,7 +47,7 @@ fun Register(
 
 
 @Composable
-fun RegisterContent( onNavigateToLoginChild: () -> Unit) {
+fun RegisterContent(onNavigateToLoginChild: () -> Unit) {
 
     var email by remember { mutableStateOf<String?>(null) }
     var password by remember { mutableStateOf<String?>(null) }

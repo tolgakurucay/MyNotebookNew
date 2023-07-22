@@ -13,7 +13,7 @@ fun <T> CoroutineScope.callService(
     success: (data: T) -> Unit,
     service: suspend () -> Flow<Result<T>>,
     shouldShowDialog: Boolean = true,
-    fail: (error: Throwable?) -> Unit = { vm?.myNotebookError?.value = it}
+    fail: (error: String?) -> Unit = { vm?.myNotebookError?.value =it}
 ) {
     launch {
         service()
@@ -27,7 +27,7 @@ fun <T> CoroutineScope.callService(
                     }
                     Result.Status.ERROR -> {
                         if (shouldShowDialog) vm?.showWaitingDialog(false)
-                        fail(it.error)
+                        fail(it.errorMessage)
                     }
                     Result.Status.SUCCESS -> {
                         if (shouldShowDialog) vm?.showWaitingDialog(false)

@@ -39,11 +39,7 @@ object NetworkModule {
         builder.addInterceptor(
             ChuckerInterceptor.Builder(context).collector(ChuckerCollector(context)).build()
         )
-
-
         return builder.build()
-
-
     }
 
 

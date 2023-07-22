@@ -7,7 +7,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 open class BaseViewModel @Inject constructor(): ViewModel() {
-    var myNotebookError: MutableStateFlow<Throwable?> = MutableStateFlow(null)
+    var myNotebookError: MutableStateFlow<String?> = MutableStateFlow(null)
     val isShowLoading: MutableStateFlow<Boolean?> = MutableStateFlow(null)
 
     fun showWaitingDialog(isShow: Boolean){
