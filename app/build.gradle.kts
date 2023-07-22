@@ -143,7 +143,7 @@ android {
         implementation("com.google.dagger:hilt-android:2.44.2")
         kapt("com.google.dagger:hilt-android-compiler:2.44.2")
         implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
-
+3
         //Retrofit
 
         implementation("com.squareup.retrofit2:retrofit:2.9.0")
