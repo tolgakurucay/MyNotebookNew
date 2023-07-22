@@ -45,6 +45,7 @@ fun Register(
     }
 }
 
+
 @Composable
 fun RegisterContent( onNavigateToLoginChild: () -> Unit) {
 

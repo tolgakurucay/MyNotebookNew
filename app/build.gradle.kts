@@ -167,6 +167,9 @@ android {
         //Permissions
         implementation("com.google.accompanist:accompanist-permissions:0.28.0")
 
+        //Firestore
+        implementation("com.google.firebase:firebase-firestore-ktx")
+
     }
     kapt {
         correctErrorTypes = true

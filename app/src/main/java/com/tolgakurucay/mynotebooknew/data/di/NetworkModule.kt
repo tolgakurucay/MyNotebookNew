@@ -3,6 +3,8 @@ package com.tolgakurucay.mynotebooknew.data.di
 import android.content.Context
 import com.chuckerteam.chucker.api.ChuckerCollector
 import com.chuckerteam.chucker.api.ChuckerInterceptor
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.tolgakurucay.mynotebooknew.BuildConfig
 import com.tolgakurucay.mynotebooknew.domain.model.MyNotebookNewService
 import dagger.Module
@@ -54,4 +56,14 @@ object NetworkModule {
             .client(okHttpClient)
             .build()
             .create(MyNotebookNewService::class.java)
+
+
+    @Singleton
+    @Provides
+    fun provideFirebaseAuth(): FirebaseAuth = FirebaseAuth.getInstance()
+
+    @Singleton
+    @Provides
+    fun provideFirestore(): FirebaseFirestore = FirebaseFirestore.getInstance()
+
 }

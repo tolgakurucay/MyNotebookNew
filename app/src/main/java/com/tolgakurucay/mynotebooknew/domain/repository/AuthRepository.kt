@@ -1,14 +1,14 @@
 package com.tolgakurucay.mynotebooknew.domain.repository
 
 import com.tolgakurucay.mynotebooknew.domain.model.auth.CreateUserEmailPasswordRequest
-import com.tolgakurucay.mynotebooknew.domain.model.auth.CreateUserEmailPasswordResponse
 import com.tolgakurucay.mynotebooknew.domain.model.auth.SignInEmailPasswordRequest
-import com.tolgakurucay.mynotebooknew.domain.model.auth.SignInEmailPasswordResponse
+import com.tolgakurucay.mynotebooknew.domain.model.Result
+import kotlinx.coroutines.flow.Flow
 
 interface AuthRepository {
 
-    fun isUserAuthenticatedInFirebase(): Boolean
-    suspend fun createUserWithEmailAndPassword(request: CreateUserEmailPasswordRequest)
-    suspend fun signInWithEmailAndPassword(requestModel: SignInEmailPasswordRequest)
+    fun isUserAuthenticatedInFirebase(): Flow<Result<Boolean>>
+    suspend fun createUserWithEmailAndPassword(request: CreateUserEmailPasswordRequest): Flow<Result<Boolean>>
+    suspend fun signInWithEmailAndPassword(requestModel: SignInEmailPasswordRequest): Flow<Result<Boolean>>
 
 }

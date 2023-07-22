@@ -5,7 +5,7 @@ package com.tolgakurucay.mynotebooknew.domain.model
 data class Result<out T>(
     val status: Status,
     val data: T?,
-    val error: Throwable?,
+    val errorMessage: String?,
     val isFinishScreen: Boolean = false
 ) {
 
@@ -21,11 +21,11 @@ data class Result<out T>(
         }
 
         fun <T> error(
-            error: Throwable,
+            errorMessage: String,
             data: T? = null,
             isFinishScreen: Boolean = false
         ): Result<T> {
-            return Result(Status.ERROR,data,error)
+            return Result(Status.ERROR,data,errorMessage)
         }
 
         fun <T> loading(data: T? = null): Result<T> {
