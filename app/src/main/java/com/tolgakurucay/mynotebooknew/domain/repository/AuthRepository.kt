@@ -7,8 +7,8 @@ import kotlinx.coroutines.flow.Flow
 
 interface AuthRepository {
 
-    fun isUserAuthenticatedInFirebase(): Flow<Result<Boolean>>
-    suspend fun createUserWithEmailAndPassword(request: CreateUserEmailPasswordRequest): Flow<Result<Boolean>>
-    suspend fun signInWithEmailAndPassword(requestModel: SignInEmailPasswordRequest): Flow<Result<Boolean>>
+    fun isUserAuthenticatedInFirebase(): Result<Boolean>
+    suspend fun createUserWithEmailAndPassword(request: CreateUserEmailPasswordRequest): Result<Boolean>
+    suspend fun signInWithEmailAndPassword(requestModel: SignInEmailPasswordRequest): Result<Boolean>
 
 }

@@ -35,7 +35,7 @@ fun BaseColumn(
         }
         if (isShownError.value!=null) {
             CustomAlertDialog(
-                type = AlertDialogType.OKAY, descriptionRes = isShownError.value?.message,
+                type = AlertDialogType.OKAY, descriptionRes = isShownError.value?.let { "" } ?: kotlin.run { "" },
                 onConfirm = {
                     viewModel.myNotebookError.value = null
                 },

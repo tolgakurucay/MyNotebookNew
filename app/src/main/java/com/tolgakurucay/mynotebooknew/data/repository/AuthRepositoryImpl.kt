@@ -6,8 +6,6 @@ import com.tolgakurucay.mynotebooknew.domain.model.Result
 import com.tolgakurucay.mynotebooknew.domain.model.auth.CreateUserEmailPasswordRequest
 import com.tolgakurucay.mynotebooknew.domain.model.auth.SignInEmailPasswordRequest
 import com.tolgakurucay.mynotebooknew.domain.repository.AuthRepository
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
@@ -16,79 +14,82 @@ class AuthRepositoryImpl @Inject constructor(
     private val auth: FirebaseAuth,
     private val firestore: FirebaseFirestore
 ) : AuthRepository {
-    override fun isUserAuthenticatedInFirebase(): Flow<Result<Boolean>> = flow {
+    val TAG = "bilgitolga"
+    override fun isUserAuthenticatedInFirebase(): Result<Boolean> {
         try {
             auth.currentUser?.let {
-                emit(Result.success(true))
+                return Result.success(true)
             } ?: kotlin.run {
-                emit(Result.success(false))
+                return Result.success(false)
             }
         } catch (ex: Exception) {
-            emit(Result.error(ex.localizedMessage ?: ""))
+            return Result.error(ex.localizedMessage ?: "")
+        }
+
+    }
+
+    override suspend fun createUserWithEmailAndPassword(request: CreateUserEmailPasswordRequest): Result<Boolean> {
+        try {
+            val response = auth.createUserWithEmailAndPassword(
+                request.email,
+                request.password
+            ).await()
+
+            response?.let {
+                val task = firestore.collection("Users").add(
+                    CreateUserEmailPasswordRequest(
+                        request.email,
+                        request.password,
+                        request.name,
+                        request.surname,
+                        request.phoneNumber
+                    )
+                ).await()
+                task?.let {
+                    return Result.success(true)
+
+                } ?: kotlin.run {
+                    return Result.error("")
+
+                }
+
+            } ?: kotlin.run {
+                return Result.error("")
+
+            }
+
+        } catch (ex: Exception) {
+            return Result.error(ex.localizedMessage ?: "")
+        }
+
+    }
+
+    override suspend fun signInWithEmailAndPassword(requestModel: SignInEmailPasswordRequest): Result<Boolean> {
+        try {
+            val response =
+                auth.signInWithEmailAndPassword(requestModel.email, requestModel.password)
+                    .await()
+            response?.let {
+                it.user?.let {
+                    return Result.success(true)
+                } ?: kotlin.run {
+                    return Result.error("")
+                }
+            } ?: kotlin.run {
+                return Result.error("")
+
+            }
+
+        } catch (ex: Exception) {
+            return Result.error(ex.localizedMessage ?: "")
         }
 
     }
 
 
-    override suspend fun createUserWithEmailAndPassword(request: CreateUserEmailPasswordRequest): Flow<Result<Boolean>> =
-        flow {
-            try {
-                val response = auth.createUserWithEmailAndPassword(
-                    request.email,
-                    request.password
-                ).await()
-
-                response?.let {
-                    val task = firestore.collection("Users").add(
-                        CreateUserEmailPasswordRequest(
-                            request.email,
-                            request.password,
-                            request.name,
-                            request.surname,
-                            request.phoneNumber
-                        )
-                    ).await()
-                    task?.let {
-                        emit(Result.success(true))
-
-                    } ?: kotlin.run {
-                        emit(Result.error(""))
-
-                    }
-
-                } ?: kotlin.run {
-                    emit(Result.error(""))
-
-                }
-
-            } catch (ex: Exception) {
-                emit(Result.error(ex.localizedMessage ?: ""))
-            }
-
-        }
-
-    override suspend fun signInWithEmailAndPassword(requestModel: SignInEmailPasswordRequest): Flow<Result<Boolean>> =
-        flow {
-            try {
-                val response =
-                    auth.signInWithEmailAndPassword(requestModel.email, requestModel.password)
-                        .await()
-                response?.let {
-                    it.user?.let {
-                        emit(Result.success(true))
-                    } ?: kotlin.run {
-                        emit(Result.error(""))
-                    }
-                } ?: kotlin.run {
-                    emit(Result.error(""))
-
-                }
-
-            } catch (ex: Exception) {
-                emit(Result.error(ex.localizedMessage ?: ""))
-            }
-
-        }
-
-
 }
+
+
+
+
+

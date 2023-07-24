@@ -26,7 +26,7 @@ fun MyNotebookAppGraph(
     displayFeature: List<DisplayFeature>,
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
-    startDestination: String = MyNotebookNewDestinations.REGISTER_ROUTE,
+    startDestination: String = MyNotebookNewDestinations.LOGIN_ROUTE,
     navActions: MyNotebookNavigationActions = remember(navController) {
         MyNotebookNavigationActions(navController)
     }
@@ -88,7 +88,7 @@ fun MyNotebookAppGraph(
         composable(MyNotebookNewDestinations.REGISTER_ROUTE) {
             Register(
                 onNavigateToLoginParent = {
-                    navActions.navigateToLogin()
+                    navActions.navigateToRegister()
                 },
             )
         }

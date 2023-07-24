@@ -21,6 +21,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.tolgakurucay.mynotebooknew.R
 import com.tolgakurucay.mynotebooknew.domain.base.arePasswordsSame
 import com.tolgakurucay.mynotebooknew.domain.base.validateCustomTextFields
@@ -38,16 +39,20 @@ import com.tolgakurucay.mynotebooknew.presentation.theme.spacing70
 
 @Composable
 fun Register(
-    onNavigateToLoginParent : () -> Unit
+    onNavigateToLoginParent: () -> Unit,
+    registerViewModel: RegisterViewModel = hiltViewModel()
 ) {
     Surface(modifier = Modifier.fillMaxSize()) {
-        RegisterContent(onNavigateToLoginChild = onNavigateToLoginParent)
+        RegisterContent(
+            onNavigateToLoginChild = onNavigateToLoginParent,
+            registerViewModel = registerViewModel
+        )
     }
 }
 
 
 @Composable
-fun RegisterContent(onNavigateToLoginChild: () -> Unit) {
+fun RegisterContent(onNavigateToLoginChild: () -> Unit, registerViewModel: RegisterViewModel) {
 
     var email by remember { mutableStateOf<String?>(null) }
     var password by remember { mutableStateOf<String?>(null) }
@@ -66,7 +71,8 @@ fun RegisterContent(onNavigateToLoginChild: () -> Unit) {
         modifier = Modifier
             .fillMaxSize()
             .windowInsetsPadding(WindowInsets.systemBars)
-            .verticalScroll(rememberScrollState())
+            .verticalScroll(rememberScrollState()),
+
     ) {
         Text(
             text = stringResource(id = R.string.common_register_uppercase),
@@ -132,6 +138,8 @@ fun RegisterContent(onNavigateToLoginChild: () -> Unit) {
                 ) {
                     if (arePasswordsSame(password = password, passwordAgain = passwordAgain)) {
                         //Viewmodel processes
+                        registerViewModel.registerUser(name!!,surname!!,email!!,password!!,"")
+//                        registerViewModel.isUserAuthenticated()
 
                     } else {
                         isShowPasswordAlert = true
@@ -169,7 +177,6 @@ fun RegisterContent(onNavigateToLoginChild: () -> Unit) {
                 },
             )
         }
-
 
 
     }
