@@ -48,6 +48,9 @@ fun BaseColumn(
                     ExceptionType.CREATE_EMAIL_PASSWORD -> {
                         stringResource(id = R.string.error_register_email_password)
                     }
+                    ExceptionType.EMAIL_NOT_VERIFIED -> {
+                        stringResource(id = R.string.error_email_not_verified)
+                    }
                 }
 
                 CustomAlertDialog(

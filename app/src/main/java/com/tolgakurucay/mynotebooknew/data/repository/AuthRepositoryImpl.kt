@@ -51,7 +51,10 @@ class AuthRepositoryImpl @Inject constructor(
                         )
                     ).await()
                     task?.let {
-                        emit(Result.success(true))
+                        auth.signInWithEmailAndPassword(request.mail,request.password).await()?.let {
+                            it.user?.sendEmailVerification()?.await()
+                            emit(Result.success(true))
+                        }
 
                     } ?: kotlin.run {
                         emit(Result.error(BaseException(ExceptionType.CREATE_EMAIL_PASSWORD)))
@@ -82,7 +85,7 @@ class AuthRepositoryImpl @Inject constructor(
                             emit(Result.success(true))
                         }
                         else{
-                            emit(Result.error(BaseException(exceptionType = ExceptionType.SIGNIN)))
+                            emit(Result.error(BaseException(exceptionType = ExceptionType.EMAIL_NOT_VERIFIED)))
                         }
                     } ?: kotlin.run {
                         emit(Result.error(BaseException(exceptionType = ExceptionType.SIGNIN)))
@@ -114,6 +117,15 @@ class AuthRepositoryImpl @Inject constructor(
         try {
             auth.currentUser?.sendEmailVerification()?.await()
             emit(Result.success(true))
+        }
+        catch (ex: Exception){
+            emit(Result.error(BaseException(cause = ex)))
+        }
+    }
+
+    override suspend fun isUserVerifiedEmail(email: String): Flow<Result<Boolean>> = flow{
+        try {
+            if(auth.currentUser?.isEmailVerified == true) emit(Result.success(true)) else emit(Result.success(false))
         }
         catch (ex: Exception){
             emit(Result.error(BaseException(cause = ex)))

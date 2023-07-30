@@ -1,6 +1,5 @@
 package com.tolgakurucay.mynotebooknew.presentation.login
 
-import android.content.res.Configuration.UI_MODE_NIGHT_MASK
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -37,6 +36,8 @@ import com.tolgakurucay.mynotebooknew.presentation.custom.CustomTextField
 import com.tolgakurucay.mynotebooknew.R
 import com.tolgakurucay.mynotebooknew.domain.base.BaseColumn
 import com.tolgakurucay.mynotebooknew.domain.base.validateCustomTextFields
+import com.tolgakurucay.mynotebooknew.presentation.custom.AlertDialogType
+import com.tolgakurucay.mynotebooknew.presentation.custom.CustomAlertDialog
 import com.tolgakurucay.mynotebooknew.presentation.custom.TextFieldType
 import com.tolgakurucay.mynotebooknew.presentation.theme.Black
 import com.tolgakurucay.mynotebooknew.presentation.theme.size125
@@ -51,7 +52,7 @@ import com.tolgakurucay.mynotebooknew.presentation.theme.spacing5
 import com.tolgakurucay.mynotebooknew.presentation.theme.spacing70
 import com.tolgakurucay.mynotebooknew.util.safeLet
 
-@Preview(uiMode = UI_MODE_NIGHT_MASK)
+@Preview
 @Composable
 fun Login(
     viewModel: LoginViewModel = hiltViewModel(),
@@ -97,10 +98,22 @@ fun LoginContent(
 
     val state = viewModel.state.value
 
-    fun listenEvents(){
-        if(state.isUserAuthenticated){
+    @Composable
+    fun listenEvents() {
+        if (state.isUserAuthenticated) {
             state.isUserAuthenticated = false
             onNavigateToHome.invoke()
+        }
+        if (state.sendEmailVerificationLink) {
+            CustomAlertDialog(
+                type = AlertDialogType.OKAY, titleRes = R.string.common_information,
+                descriptionRes = stringResource(
+                    id = R.string.action_email_verification
+                ),
+                onConfirm = {
+                    state.sendEmailVerificationLink = false
+                }
+            )
         }
     }
 

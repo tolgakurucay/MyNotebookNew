@@ -13,6 +13,7 @@ interface AuthRepository {
     suspend fun signInWithEmailAndPassword(requestModel: SignInEmailPasswordRequest): Flow<Result<Boolean>>
     suspend fun forgotPassword(requestModel: ForgotPasswordRequest): Flow<Result<Boolean>>
     suspend fun sendEmailVerificationLink(email: String): Flow<Result<Boolean>>
+    suspend fun isUserVerifiedEmail(email: String): Flow<Result<Boolean>>
 
 
 }

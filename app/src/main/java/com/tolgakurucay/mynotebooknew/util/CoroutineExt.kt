@@ -14,7 +14,7 @@ fun <T> CoroutineScope.callService(
     success: suspend (data: T) -> Unit,
     service: suspend () -> Flow<Result<T>>,
     shouldShowDialog: Boolean = true,
-    fail: (exception: BaseException?) -> Unit = {
+    fail: suspend (exception: BaseException?) -> Unit = {
         baseViewModel?.myNotebookException?.value = it
     }
 ) {

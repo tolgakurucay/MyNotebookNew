@@ -42,9 +42,11 @@
     <string name="action_fill_empty_fields_correctly">Lütfen boş alanları düzgünce doldurunuz</string>
     <string name="common_passwords_not_same">Şifreler uyuşmuyor</string>
     <string name="common_error">Hata</string>
-    <string name="screen_register_successful">Kayıt başarılı!. Hesabınızı doğrulamak için lütfen mail veya spam kutunuzu kontrol ediniz.</string>
+    <string name="screen_register_successful">Kayıt başarılı!,E-posta doğrulama linki adresinize gönderildi</string>
     <string name="screen_forgotpassword_successful">Şifre sıfırlama maili mail adresinize yollanmıştır. Lütfen kontrol ediniz</string>
     <string name="error_signin">Giriş başarısız. Lütfen tekrar deneyiniz</string>
     <string name="error_register_email_password">Kayıt başarısız. Lütfen tekrar deneyiniz</string>
     <string name="error_forgot_password">Şifre sıfırlama maili gönderilemedi. Lütfen tekrar deneyiniz</string>
+    <string name="error_email_not_verified">E-posta doğrulanmadı. Lütfen mail adresinizi kontrol ediniz</string>
+    <string name="action_email_verification">E-posta doğrulama linki adresinize gönderildi</string>
 </resources>

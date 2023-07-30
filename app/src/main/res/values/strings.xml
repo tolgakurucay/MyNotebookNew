@@ -41,9 +41,11 @@
     <string name="action_fill_empty_fields_correctly">Please fill the empty fields correctly</string>
     <string name="common_passwords_not_same">Passwords are not same</string>
     <string name="common_error">Error</string>
-    <string name="screen_register_successful">Registration is successful!. Please check your mail or spambox to verify your account</string>
+    <string name="screen_register_successful">Registration is successful!,E-mail verification link sent to your address</string>
     <string name="screen_forgotpassword_successful">Reset mail sent to your mail address. Please check your mailbox</string>
     <string name="error_signin">Sign in error. Please try again</string>
     <string name="error_register_email_password">Register error. Please try again</string>
     <string name="error_forgot_password">Reset password mail not send. Please try again</string>
+    <string name="error_email_not_verified">Email not verified. Please check your mail</string>
+    <string name="action_email_verification">E-mail verification link sent to your address</string>
 </resources>

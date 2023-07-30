@@ -9,7 +9,8 @@ class BaseException constructor(
 
 enum class ExceptionType {
     SIGNIN,
-    CREATE_EMAIL_PASSWORD
+    CREATE_EMAIL_PASSWORD,
+    EMAIL_NOT_VERIFIED
 }
 
 
