@@ -72,24 +72,30 @@ fun MyNotebookAppGraph(
         composable(MyNotebookNewDestinations.LOGIN_ROUTE) {
             Login(
                 onNavigateToForgotPasswordMain = {
-                    navActions.navigateToHome(100, "Tolga")
-                    //navActions.navigateToForgotPassword()
+                    navActions.navigateToForgotPassword()
                 },
                 onNavigateToRegisterMain = {
                     navActions.navigateToRegister()
                 },
+                onNavigateToHome = {
+                    navActions.navigateToHome()
+                }
             )
         }
 
         composable(MyNotebookNewDestinations.FORGOT_PASSWORD_ROUTE) {
-            ForgotPassword()
+            ForgotPassword(
+                onNavigateToLogin = {
+                    navActions.navigateToLogin()
+                },
+            )
         }
 
         composable(MyNotebookNewDestinations.REGISTER_ROUTE) {
             Register(
-                onNavigateToLoginParent = {
-                    navActions.navigateToRegister()
-                },
+                onNavigateToLogin = {
+                    navActions.navigateToLogin()
+                }
             )
         }
 

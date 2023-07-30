@@ -14,6 +14,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -21,7 +22,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.tolgakurucay.mynotebooknew.R
 import com.tolgakurucay.mynotebooknew.domain.base.arePasswordsSame
 import com.tolgakurucay.mynotebooknew.domain.base.validateCustomTextFields
@@ -35,16 +39,17 @@ import com.tolgakurucay.mynotebooknew.presentation.theme.spacing30
 import com.tolgakurucay.mynotebooknew.presentation.theme.spacing40
 import com.tolgakurucay.mynotebooknew.presentation.theme.spacing5
 import com.tolgakurucay.mynotebooknew.presentation.theme.spacing70
+import com.tolgakurucay.mynotebooknew.util.safeLet
 
 
 @Composable
 fun Register(
-    onNavigateToLoginParent: () -> Unit,
+    onNavigateToLogin: () -> Unit,
     registerViewModel: RegisterViewModel = hiltViewModel()
 ) {
     Surface(modifier = Modifier.fillMaxSize()) {
         RegisterContent(
-            onNavigateToLoginChild = onNavigateToLoginParent,
+            onNavigateToLoginChild = onNavigateToLogin,
             registerViewModel = registerViewModel
         )
     }
@@ -64,6 +69,73 @@ fun RegisterContent(onNavigateToLoginChild: () -> Unit, registerViewModel: Regis
     var isShowPasswordAlert by remember { mutableStateOf(false) }
 
 
+    val uiState = registerViewModel.state.value
+
+
+    fun register() {
+        if (validateCustomTextFields(
+                arrayOf(
+                    email,
+                    password,
+                    passwordAgain,
+                    name,
+                    surname
+                )
+            )
+        ) {
+            if (arePasswordsSame(password = password, passwordAgain = passwordAgain)) {
+                //Viewmodel processes
+                safeLet(name, surname, email, password, "") { name, sname, email, password, phone ->
+                    registerViewModel.registerUser(name, sname, email, password, "")
+                }
+
+            } else {
+                isShowPasswordAlert = true
+            }
+
+        } else {
+            isShowEmptyFieldsAlert = true
+        }
+    }
+
+    @Composable
+    fun observeData() {
+        if (isShowEmptyFieldsAlert) {
+            CustomAlertDialog(
+                type = AlertDialogType.OKAY,
+                titleRes = R.string.common_information,
+                descriptionRes = stringResource(id = R.string.action_fill_empty_fields_correctly),
+                onConfirm = {
+                    isShowEmptyFieldsAlert = false
+                },
+            )
+        } else if (isShowPasswordAlert) {
+            CustomAlertDialog(
+                type = AlertDialogType.OKAY,
+                titleRes = R.string.common_information,
+                descriptionRes = stringResource(id = R.string.common_passwords_not_same),
+                onConfirm = {
+                    isShowPasswordAlert = false
+                },
+            )
+        }
+
+        if (uiState.isUserRegistered) {
+            uiState.isUserRegistered = false
+            CustomAlertDialog(
+                type = AlertDialogType.OKAY,
+                titleRes = R.string.common_information,
+                descriptionRes = stringResource(
+                    id = R.string.screen_register_successful
+                ), onConfirm = {
+                    onNavigateToLoginChild.invoke()
+
+                }
+            )
+        }
+    }
+
+
 
 
 
@@ -72,6 +144,7 @@ fun RegisterContent(onNavigateToLoginChild: () -> Unit, registerViewModel: Regis
             .fillMaxSize()
             .windowInsetsPadding(WindowInsets.systemBars)
             .verticalScroll(rememberScrollState()),
+        viewModel = registerViewModel
 
     ) {
         Text(
@@ -126,28 +199,7 @@ fun RegisterContent(onNavigateToLoginChild: () -> Unit, registerViewModel: Regis
         Spacer(modifier = Modifier.padding(top = spacing40))
         Button(
             onClick = {
-                if (validateCustomTextFields(
-                        arrayOf(
-                            email,
-                            password,
-                            passwordAgain,
-                            name,
-                            surname
-                        )
-                    )
-                ) {
-                    if (arePasswordsSame(password = password, passwordAgain = passwordAgain)) {
-                        //Viewmodel processes
-                        registerViewModel.registerUser(name!!,surname!!,email!!,password!!,"")
-//                        registerViewModel.isUserAuthenticated()
-
-                    } else {
-                        isShowPasswordAlert = true
-                    }
-
-                } else {
-                    isShowEmptyFieldsAlert = true
-                }
+                register()
             }, modifier = Modifier
                 .fillMaxSize()
                 .padding(horizontal = spacing10)
@@ -155,33 +207,14 @@ fun RegisterContent(onNavigateToLoginChild: () -> Unit, registerViewModel: Regis
             Text(text = stringResource(id = R.string.common_login_now_uppercase))
         }
         Spacer(modifier = Modifier.padding(top = spacing40))
-
-
-
-        if (isShowEmptyFieldsAlert) {
-            CustomAlertDialog(
-                type = AlertDialogType.OKAY,
-                titleRes = R.string.common_information,
-                descriptionRes = stringResource(id = R.string.action_fill_empty_fields_correctly),
-                onConfirm = {
-                    isShowEmptyFieldsAlert = false
-                },
-            )
-        } else if (isShowPasswordAlert) {
-            CustomAlertDialog(
-                type = AlertDialogType.OKAY,
-                titleRes = R.string.common_information,
-                descriptionRes = stringResource(id = R.string.common_passwords_not_same),
-                onConfirm = {
-                    isShowPasswordAlert = false
-                },
-            )
-        }
+        observeData()
 
 
     }
 
 
 }
+
+
 
 

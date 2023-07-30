@@ -1,5 +1,6 @@
 package com.tolgakurucay.mynotebooknew.presentation.register
 
 data class RegisterState(
-    val isUserRegistered: Boolean = false
+    var isUserRegistered: Boolean = false,
+    var isLoggedIn: Boolean? = null
 )

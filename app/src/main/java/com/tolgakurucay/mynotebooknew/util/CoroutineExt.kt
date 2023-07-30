@@ -1,5 +1,6 @@
 package com.tolgakurucay.mynotebooknew.util
 
+import com.tolgakurucay.mynotebooknew.domain.base.BaseException
 import com.tolgakurucay.mynotebooknew.domain.base.BaseViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
@@ -9,12 +10,15 @@ import com.tolgakurucay.mynotebooknew.domain.model.Result
 
 
 fun <T> CoroutineScope.callService(
-    vm: BaseViewModel?,
-    success: (data: T) -> Unit,
+    baseViewModel: BaseViewModel?,
+    success: suspend (data: T) -> Unit,
     service: suspend () -> Flow<Result<T>>,
     shouldShowDialog: Boolean = true,
-    fail: (error: String?) -> Unit = { vm?.myNotebookError?.value =it}
+    fail: (exception: BaseException?) -> Unit = {
+        baseViewModel?.myNotebookException?.value = it
+    }
 ) {
+
     launch {
         service()
             .onStart {
@@ -23,16 +27,19 @@ fun <T> CoroutineScope.callService(
             .collect {
                 when (it.status) {
                     Result.Status.LOADING -> {
-                        if (shouldShowDialog) vm?.showWaitingDialog(true)
+                        if (shouldShowDialog) baseViewModel?.showWaitingDialog(true)
                     }
+
                     Result.Status.ERROR -> {
-                        if (shouldShowDialog) vm?.showWaitingDialog(false)
-                        fail(it.errorMessage)
+                        if (shouldShowDialog) baseViewModel?.showWaitingDialog(false)
+                        fail(it.exception)
                     }
+
                     Result.Status.SUCCESS -> {
-                        if (shouldShowDialog) vm?.showWaitingDialog(false)
+                        if (shouldShowDialog) baseViewModel?.showWaitingDialog(false)
                         it.data?.apply { success(this) }
                     }
+
                 }
             }
     }

@@ -39,15 +39,13 @@ object MyNotebookNewDestinationsArgs {
  */
 
 object MyNotebookNewDestinations {
-    //    const val TASKS_ROUTE = "$TASKS_SCREEN?$USER_MESSAGE_ARG={$USER_MESSAGE_ARG}"
-//    const val STATISTICS_ROUTE = STATISTICS_SCREEN
-//    const val TASK_DETAIL_ROUTE = "$TASK_DETAIL_SCREEN/{$TASK_ID_ARG}"
-//    const val ADD_EDIT_TASK_ROUTE = "$ADD_EDIT_TASK_SCREEN/{$TITLE_ARG}?$TASK_ID_ARG={$TASK_ID_ARG}"
+
     const val LOGIN_ROUTE = LOGIN_SCREEN
     const val FORGOT_PASSWORD_ROUTE = FORGOT_PASSWORD_SCREEN
     const val REGISTER_ROUTE = REGISTER_SCREEN
-    const val HOME_ROUTE = "$HOME_SCREEN/{$USER_ID_ARG}/{$USER_NAME_ARG}"
+    const val HOME_ROUTE = HOME_SCREEN
     const val PROFILE_ROUTE = "$PROFILE_SCREEN/{$USER_ID_ARG}"
+    const val TEST_ROUTE ="$HOME_SCREEN/{$USER_ID_ARG}/{$USER_NAME_ARG}"
 
 
 }
@@ -73,8 +71,13 @@ class MyNotebookNavigationActions(private val navController: NavHostController) 
         }
     }
 
-    fun navigateToHome(userId : Int, userName : String){
+    fun navigateToHome(){
+        navController.navigate(MyNotebookNewDestinations.HOME_ROUTE)
+    }
+
+    fun navigateToTest(userId : Int, userName : String){
         navController.navigate("$HOME_SCREEN/$userId/$userName")
+
     }
 
 }

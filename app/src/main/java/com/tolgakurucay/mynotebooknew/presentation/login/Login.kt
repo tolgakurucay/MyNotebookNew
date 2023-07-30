@@ -1,8 +1,8 @@
 package com.tolgakurucay.mynotebooknew.presentation.login
 
+import android.content.res.Configuration.UI_MODE_NIGHT_MASK
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
@@ -31,9 +31,12 @@ import androidx.compose.ui.draw.paint
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.tolgakurucay.mynotebooknew.presentation.custom.CustomTextField
 import com.tolgakurucay.mynotebooknew.R
+import com.tolgakurucay.mynotebooknew.domain.base.BaseColumn
+import com.tolgakurucay.mynotebooknew.domain.base.validateCustomTextFields
 import com.tolgakurucay.mynotebooknew.presentation.custom.TextFieldType
 import com.tolgakurucay.mynotebooknew.presentation.theme.Black
 import com.tolgakurucay.mynotebooknew.presentation.theme.size125
@@ -46,12 +49,15 @@ import com.tolgakurucay.mynotebooknew.presentation.theme.spacing32
 import com.tolgakurucay.mynotebooknew.presentation.theme.spacing40
 import com.tolgakurucay.mynotebooknew.presentation.theme.spacing5
 import com.tolgakurucay.mynotebooknew.presentation.theme.spacing70
+import com.tolgakurucay.mynotebooknew.util.safeLet
 
+@Preview(uiMode = UI_MODE_NIGHT_MASK)
 @Composable
 fun Login(
     viewModel: LoginViewModel = hiltViewModel(),
-    onNavigateToRegisterMain: () -> Unit,
-    onNavigateToForgotPasswordMain: () -> Unit
+    onNavigateToRegisterMain: () -> Unit = {},
+    onNavigateToForgotPasswordMain: () -> Unit = {},
+    onNavigateToHome: () -> Unit = {}
 ) {
 
     Surface(
@@ -61,10 +67,14 @@ fun Login(
         LoginContent(
             onNavigateToRegisterContent = {
                 onNavigateToRegisterMain.invoke()
-            }, onNavigateToForgotPasswordContent = {
+            },
+            onNavigateToForgotPasswordContent = {
                 onNavigateToForgotPasswordMain.invoke()
-            }
-
+            },
+            onNavigateToHome = {
+                onNavigateToHome.invoke()
+            },
+            viewModel = viewModel,
         )
     }
 
@@ -74,7 +84,9 @@ fun Login(
 fun LoginContent(
     modifier: Modifier = Modifier,
     onNavigateToRegisterContent: () -> Unit,
-    onNavigateToForgotPasswordContent: () -> Unit
+    onNavigateToForgotPasswordContent: () -> Unit,
+    onNavigateToHome: () -> Unit,
+    viewModel: LoginViewModel
 
 ) {
 
@@ -83,12 +95,22 @@ fun LoginContent(
     var password by remember { mutableStateOf<String?>(null) }
 
 
+    val state = viewModel.state.value
 
-    Column(
+    fun listenEvents(){
+        if(state.isUserAuthenticated){
+            state.isUserAuthenticated = false
+            onNavigateToHome.invoke()
+        }
+    }
+
+    BaseColumn(
         modifier = modifier
             .windowInsetsPadding(WindowInsets.systemBars)
-            .verticalScroll(rememberScrollState())
-    ) {
+            .verticalScroll(rememberScrollState()),
+        viewModel = viewModel,
+
+        ) {
 
         Text(
             text = stringResource(id = R.string.common_login_uppercase),
@@ -128,6 +150,11 @@ fun LoginContent(
         Spacer(modifier = Modifier.padding(top = spacing18))
         Button(
             onClick = {
+                if (validateCustomTextFields(arrayOf(email, password))) {
+                    safeLet(email, password) { p1, p2 ->
+                        viewModel.signInWithEmailAndPassword(p1, p2)
+                    }
+                }
 
             },
             modifier = Modifier
@@ -203,6 +230,7 @@ fun LoginContent(
             }
         }
 
+        listenEvents()
 
     }
 

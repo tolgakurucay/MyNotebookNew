@@ -170,6 +170,8 @@ android {
         //Firestore
         implementation("com.google.firebase:firebase-firestore-ktx")
 
+        implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.0-beta01")
+
     }
     kapt {
         correctErrorTypes = true

@@ -1,6 +1,5 @@
 package com.tolgakurucay.mynotebooknew.presentation.forgot_password
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
@@ -23,9 +22,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.tolgakurucay.mynotebooknew.R
+import com.tolgakurucay.mynotebooknew.domain.base.BaseColumn
+import com.tolgakurucay.mynotebooknew.domain.base.validateCustomTextFields
+import com.tolgakurucay.mynotebooknew.presentation.custom.AlertDialogType
+import com.tolgakurucay.mynotebooknew.presentation.custom.CustomAlertDialog
 import com.tolgakurucay.mynotebooknew.presentation.custom.CustomTextField
 import com.tolgakurucay.mynotebooknew.presentation.custom.TextFieldType
 import com.tolgakurucay.mynotebooknew.presentation.theme.spacing10
@@ -33,26 +35,45 @@ import com.tolgakurucay.mynotebooknew.presentation.theme.spacing30
 import com.tolgakurucay.mynotebooknew.presentation.theme.spacing40
 import com.tolgakurucay.mynotebooknew.presentation.theme.spacing70
 
-@Preview
 @Composable
-fun ForgotPassword(viewModel: ForgotPasswordViewModel = hiltViewModel()) {
+fun ForgotPassword(
+    viewModel: ForgotPasswordViewModel = hiltViewModel(),
+    onNavigateToLogin: () -> Unit
+) {
     Surface(Modifier.fillMaxSize()) {
-        ForgotPasswordContent()
+        ForgotPasswordContent(viewModel, onNavigateToLogin)
     }
 }
 
-@Preview
 @Composable
-fun ForgotPasswordContent() {
+fun ForgotPasswordContent(viewModel: ForgotPasswordViewModel, onNavigateToLogin: () -> Unit) {
 
     var email by remember { mutableStateOf<String?>(null) }
 
+    val state = viewModel.state.value
 
-    Column(
+    @Composable
+    fun listenEvents() {
+        if (state.sendResetMail) {
+            state.sendResetMail = false
+            CustomAlertDialog(
+                type = AlertDialogType.OKAY, titleRes = R.string.common_information,
+                descriptionRes = stringResource(
+                    id = R.string.screen_forgotpassword_successful
+                ),
+                onConfirm = { onNavigateToLogin.invoke() }
+            )
+        }
+    }
+
+
+    BaseColumn(
         modifier = Modifier
             .windowInsetsPadding(WindowInsets.systemBars)
-            .verticalScroll(rememberScrollState())
-    ) {
+            .verticalScroll(rememberScrollState()),
+        viewModel = viewModel,
+
+        ) {
 
         Text(
             text = stringResource(id = R.string.common_forgot_password),
@@ -72,18 +93,23 @@ fun ForgotPasswordContent() {
             },
         )
         Spacer(modifier = Modifier.padding(top = spacing40))
-        Button(onClick = {
+        Button(
+            onClick = {
+                validateCustomTextFields(arrayOf(email)).let {
+                    if (it) viewModel.forgotPassword(email!!)
+                }
 
-        }, modifier = Modifier
-            .align(Alignment.CenterHorizontally)
-            .fillMaxSize()
-            .padding(horizontal = spacing10)) {
+            }, modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .fillMaxSize()
+                .padding(horizontal = spacing10)
+        ) {
             Text(text = stringResource(id = R.string.common_login_now_uppercase))
         }
         Spacer(modifier = Modifier.padding(top = spacing40))
 
-
-
-
+        listenEvents()
     }
+
+
 }

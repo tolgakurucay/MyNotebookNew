@@ -2,10 +2,15 @@ package com.tolgakurucay.mynotebooknew.data.repository
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.tolgakurucay.mynotebooknew.domain.base.BaseException
+import com.tolgakurucay.mynotebooknew.domain.base.ExceptionType
 import com.tolgakurucay.mynotebooknew.domain.model.Result
 import com.tolgakurucay.mynotebooknew.domain.model.auth.CreateUserEmailPasswordRequest
+import com.tolgakurucay.mynotebooknew.domain.model.auth.ForgotPasswordRequest
 import com.tolgakurucay.mynotebooknew.domain.model.auth.SignInEmailPasswordRequest
 import com.tolgakurucay.mynotebooknew.domain.repository.AuthRepository
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
@@ -14,76 +19,105 @@ class AuthRepositoryImpl @Inject constructor(
     private val auth: FirebaseAuth,
     private val firestore: FirebaseFirestore
 ) : AuthRepository {
-    val TAG = "bilgitolga"
-    override fun isUserAuthenticatedInFirebase(): Result<Boolean> {
+    override fun isUserAuthenticatedInFirebase(): Flow<Result<Boolean>> = flow {
         try {
             auth.currentUser?.let {
-                return Result.success(true)
+                emit(Result.success(true))
             } ?: kotlin.run {
-                return Result.success(false)
+                emit(Result.success(false))
             }
         } catch (ex: Exception) {
-            return Result.error(ex.localizedMessage ?: "")
+            emit(Result.error(BaseException(cause = ex)))
         }
 
     }
 
-    override suspend fun createUserWithEmailAndPassword(request: CreateUserEmailPasswordRequest): Result<Boolean> {
-        try {
-            val response = auth.createUserWithEmailAndPassword(
-                request.email,
-                request.password
-            ).await()
-
-            response?.let {
-                val task = firestore.collection("Users").add(
-                    CreateUserEmailPasswordRequest(
-                        request.email,
-                        request.password,
-                        request.name,
-                        request.surname,
-                        request.phoneNumber
-                    )
+    override suspend fun createUserWithEmailAndPassword(request: CreateUserEmailPasswordRequest): Flow<Result<Boolean>> =
+        flow {
+            try {
+                val response = auth.createUserWithEmailAndPassword(
+                    request.mail,
+                    request.password
                 ).await()
-                task?.let {
-                    return Result.success(true)
+
+                response?.let {
+                    val task = firestore.collection("Users").add(
+                        CreateUserEmailPasswordRequest(
+                            request.mail,
+                            request.password,
+                            request.name,
+                            request.surname,
+                            request.phoneNumber
+                        )
+                    ).await()
+                    task?.let {
+                        emit(Result.success(true))
+
+                    } ?: kotlin.run {
+                        emit(Result.error(BaseException(ExceptionType.CREATE_EMAIL_PASSWORD)))
+
+                    }
 
                 } ?: kotlin.run {
-                    return Result.error("")
+                    emit(Result.error(BaseException(ExceptionType.CREATE_EMAIL_PASSWORD)))
+
 
                 }
 
-            } ?: kotlin.run {
-                return Result.error("")
+            } catch (ex: Exception) {
+                emit(Result.error(BaseException(cause = ex)))
+            }
+
+        }
+
+    override suspend fun signInWithEmailAndPassword(requestModel: SignInEmailPasswordRequest): Flow<Result<Boolean>> =
+        flow {
+            try {
+                val response =
+                    auth.signInWithEmailAndPassword(requestModel.email, requestModel.password)
+                        .await()
+                response?.let {
+                    it.user?.let {
+                        if(it.isEmailVerified){
+                            emit(Result.success(true))
+                        }
+                        else{
+                            emit(Result.error(BaseException(exceptionType = ExceptionType.SIGNIN)))
+                        }
+                    } ?: kotlin.run {
+                        emit(Result.error(BaseException(exceptionType = ExceptionType.SIGNIN)))
+                    }
+                } ?: kotlin.run {
+                    emit(Result.error(BaseException(exceptionType = ExceptionType.SIGNIN)))
+                }
+
+            } catch (ex: Exception) {
+                emit(Result.error(BaseException(cause = ex)))
 
             }
 
-        } catch (ex: Exception) {
-            return Result.error(ex.localizedMessage ?: "")
         }
 
+    override suspend fun forgotPassword(requestModel: ForgotPasswordRequest): Flow<Result<Boolean>> {
+        return flow {
+            try {
+                auth.sendPasswordResetEmail(requestModel.email).await()
+                emit(Result.success(true))
+            } catch (ex: Exception) {
+                emit(Result.error(BaseException(cause = ex)))
+            }
+
+        }
     }
 
-    override suspend fun signInWithEmailAndPassword(requestModel: SignInEmailPasswordRequest): Result<Boolean> {
+    override suspend fun sendEmailVerificationLink(email: String): Flow<Result<Boolean>> = flow{
         try {
-            val response =
-                auth.signInWithEmailAndPassword(requestModel.email, requestModel.password)
-                    .await()
-            response?.let {
-                it.user?.let {
-                    return Result.success(true)
-                } ?: kotlin.run {
-                    return Result.error("")
-                }
-            } ?: kotlin.run {
-                return Result.error("")
-
-            }
-
-        } catch (ex: Exception) {
-            return Result.error(ex.localizedMessage ?: "")
+            auth.currentUser?.sendEmailVerification()?.await()
+            emit(Result.success(true))
         }
-
+        catch (ex: Exception){
+            emit(Result.error(BaseException(cause = ex)))
+        }
     }
 
 

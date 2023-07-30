@@ -1,18 +1,19 @@
 package com.tolgakurucay.mynotebooknew.domain.model
 
+import com.tolgakurucay.mynotebooknew.domain.base.BaseException
 
 
 data class Result<out T>(
     val status: Status,
     val data: T?,
-    val errorMessage: String?,
+    val exception: BaseException?,
     val isFinishScreen: Boolean = false
 ) {
 
     enum class Status {
         SUCCESS,
         ERROR,
-        LOADING
+        LOADING,
     }
 
     companion object {
@@ -21,15 +22,16 @@ data class Result<out T>(
         }
 
         fun <T> error(
-            errorMessage: String,
+            exception: BaseException?,
             data: T? = null,
             isFinishScreen: Boolean = false
         ): Result<T> {
-            return Result(Status.ERROR,data,errorMessage)
+            return Result(Status.ERROR,data,exception)
         }
 
         fun <T> loading(data: T? = null): Result<T> {
             return Result(Status.LOADING, data, null)
         }
+
     }
 }
