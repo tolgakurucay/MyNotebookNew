@@ -15,9 +15,14 @@ import androidx.navigation.navArgument
 import androidx.window.layout.DisplayFeature
 import com.tolgakurucay.mynotebooknew.presentation.MyNotebookNewDestinationsArgs.USER_ID_ARG
 import com.tolgakurucay.mynotebooknew.presentation.MyNotebookNewDestinationsArgs.USER_NAME_ARG
+import com.tolgakurucay.mynotebooknew.presentation.add_note.AddNotePage
+import com.tolgakurucay.mynotebooknew.presentation.cloud.CloudPage
+import com.tolgakurucay.mynotebooknew.presentation.favorites.FavoritesPage
 import com.tolgakurucay.mynotebooknew.presentation.forgot_password.ForgotPassword
 import com.tolgakurucay.mynotebooknew.presentation.home.Home
+import com.tolgakurucay.mynotebooknew.presentation.home.HomeNavigations
 import com.tolgakurucay.mynotebooknew.presentation.login.Login
+import com.tolgakurucay.mynotebooknew.presentation.profile.ProfilePage
 import com.tolgakurucay.mynotebooknew.presentation.register.Register
 
 @Composable
@@ -26,7 +31,7 @@ fun MyNotebookAppGraph(
     displayFeature: List<DisplayFeature>,
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
-    startDestination: String = MyNotebookNewDestinations.LOGIN_ROUTE,
+    startDestination: String = MyNotebookNewDestinations.HOME_ROUTE,
     navActions: MyNotebookNavigationActions = remember(navController) {
         MyNotebookNavigationActions(navController)
     }
@@ -45,28 +50,23 @@ fun MyNotebookAppGraph(
 
         composable(
             MyNotebookNewDestinations.HOME_ROUTE,
-            arguments = listOf(
-                navArgument(USER_ID_ARG) {
-                    type = NavType.IntType
-                    nullable = false
-                },
-                navArgument(USER_NAME_ARG) {
-                    type = NavType.StringType
-                    nullable = true
+        ) {
+            Home(
+                homeNavigations = { homeNavigation ->
+                    when (homeNavigation) {
+                        HomeNavigations.FAVORITES -> { navActions.navigateToFavorites() }
+                        HomeNavigations.CLOUD -> { navActions.navigateToCloud() }
+                        HomeNavigations.PROFILE -> { navActions.navigateToProfile() }
+                        HomeNavigations.LOGOUT -> {  }
+                        HomeNavigations.ADD_NOTE -> { navActions.navigateToAddNote() }
+
+                    }
                 }
-            ),
-        ) { entry ->
-            val userId = remember {
-                entry.arguments?.getInt(USER_ID_ARG)
-            }
-            val userName = remember {
-                entry.arguments?.getString(USER_NAME_ARG)
-            }
-            Home(userId = userId, userName = userName)
+            )
         }
 
         composable(MyNotebookNewDestinations.PROFILE_ROUTE) {
-
+            ProfilePage()
         }
 
         composable(MyNotebookNewDestinations.LOGIN_ROUTE) {
@@ -97,6 +97,17 @@ fun MyNotebookAppGraph(
                     navActions.navigateToLogin()
                 }
             )
+        }
+
+        composable(MyNotebookNewDestinations.FAVORITES_ROUTE){
+            FavoritesPage()
+        }
+
+        composable(MyNotebookNewDestinations.ADD_NOTE_ROUTE){
+            AddNotePage()
+        }
+        composable(MyNotebookNewDestinations.CLOUD_ROUTE){
+            CloudPage()
         }
 
 

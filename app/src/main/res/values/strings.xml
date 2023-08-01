@@ -48,4 +48,14 @@
     <string name="error_forgot_password">Reset password mail not send. Please try again</string>
     <string name="error_email_not_verified">Email not verified. Please check your mail</string>
     <string name="action_email_verification">E-mail verification link sent to your address</string>
+    <string name="cd_cloud">Cloud icon</string>
+    <string name="cd_favorite">Favorite icon</string>
+    <string name="cd_add_note">" Add note icon"</string>
+    <string name="cd_profile">Profile icon</string>
+    <string name="cd_logout">Logout icon</string>
+    <string name="common_cloud">Cloud</string>
+    <string name="common_favorite">Favorite</string>
+    <string name="common_add">Add</string>
+    <string name="common_profile">Profile</string>
+    <string name="common_logout">Logout</string>
 </resources>

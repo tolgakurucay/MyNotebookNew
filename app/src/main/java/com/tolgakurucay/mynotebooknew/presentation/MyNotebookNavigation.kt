@@ -7,6 +7,9 @@ import com.tolgakurucay.mynotebooknew.presentation.MyNotebookNewScreens.LOGIN_SC
 import com.tolgakurucay.mynotebooknew.presentation.MyNotebookNewScreens.REGISTER_SCREEN
 import com.tolgakurucay.mynotebooknew.presentation.MyNotebookNewDestinationsArgs.USER_ID_ARG
 import com.tolgakurucay.mynotebooknew.presentation.MyNotebookNewDestinationsArgs.USER_NAME_ARG
+import com.tolgakurucay.mynotebooknew.presentation.MyNotebookNewScreens.ADD_NOTE_SCREEN
+import com.tolgakurucay.mynotebooknew.presentation.MyNotebookNewScreens.CLOUD_SCREEN
+import com.tolgakurucay.mynotebooknew.presentation.MyNotebookNewScreens.FAVORITES_SCREEN
 import com.tolgakurucay.mynotebooknew.presentation.MyNotebookNewScreens.PROFILE_SCREEN
 
 
@@ -19,6 +22,10 @@ private object MyNotebookNewScreens {
     const val FORGOT_PASSWORD_SCREEN = "forgotPassword"
     const val REGISTER_SCREEN = "register"
     const val PROFILE_SCREEN = "profile"
+    const val ADD_NOTE_SCREEN = "addNote"
+    const val FAVORITES_SCREEN = "favorites"
+    const val CLOUD_SCREEN = "cloud"
+
 }
 
 
@@ -26,9 +33,6 @@ private object MyNotebookNewScreens {
  * Arguments used in [MyNotebookNewDestinations] routes
  */
 object MyNotebookNewDestinationsArgs {
-    //    const val USER_MESSAGE_ARG = "userMessage"
-//    const val TASK_ID_ARG = "taskId"
-//    const val TITLE_ARG = "title"
     const val USER_ID_ARG = "userId"
     const val USER_NAME_ARG = "userName"
 }
@@ -46,6 +50,9 @@ object MyNotebookNewDestinations {
     const val HOME_ROUTE = HOME_SCREEN
     const val PROFILE_ROUTE = "$PROFILE_SCREEN/{$USER_ID_ARG}"
     const val TEST_ROUTE ="$HOME_SCREEN/{$USER_ID_ARG}/{$USER_NAME_ARG}"
+    const val ADD_NOTE_ROUTE = ADD_NOTE_SCREEN
+    const val FAVORITES_ROUTE = FAVORITES_SCREEN
+    const val CLOUD_ROUTE = CLOUD_SCREEN
 
 
 }
@@ -75,8 +82,25 @@ class MyNotebookNavigationActions(private val navController: NavHostController) 
         navController.navigate(MyNotebookNewDestinations.HOME_ROUTE)
     }
 
+    fun navigateToAddNote(){
+        navController.navigate(MyNotebookNewDestinations.ADD_NOTE_ROUTE)
+    }
+
+    fun navigateToFavorites(){
+        navController.navigate(MyNotebookNewDestinations.FAVORITES_ROUTE)
+    }
+
+    fun navigateToCloud(){
+        navController.navigate(MyNotebookNewDestinations.CLOUD_ROUTE)
+
+    }
+    fun navigateToProfile(){
+        navController.navigate(MyNotebookNewDestinations.PROFILE_ROUTE)
+    }
+
     fun navigateToTest(userId : Int, userName : String){
         navController.navigate("$HOME_SCREEN/$userId/$userName")
+//        navController.navigate(MyNotebookNewDestinations.TEST_ROUTE)
 
     }
 

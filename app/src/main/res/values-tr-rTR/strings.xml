@@ -49,4 +49,14 @@
     <string name="error_forgot_password">Şifre sıfırlama maili gönderilemedi. Lütfen tekrar deneyiniz</string>
     <string name="error_email_not_verified">E-posta doğrulanmadı. Lütfen mail adresinizi kontrol ediniz</string>
     <string name="action_email_verification">E-posta doğrulama linki adresinize gönderildi</string>
+    <string name="cd_cloud">Bulut ikonu</string>
+    <string name="cd_favorite">Favori ikonu</string>
+    <string name="cd_add_note">Not ekle ikonu</string>
+    <string name="cd_profile">Profil ikonu</string>
+    <string name="cd_logout">Çıkış ikonu</string>
+    <string name="common_cloud">Bulut</string>
+    <string name="common_favorite">Favori</string>
+    <string name="common_add">Ekle</string>
+    <string name="common_profile">Profil</string>
+    <string name="common_logout">Çıkış Yap</string>
 </resources>
