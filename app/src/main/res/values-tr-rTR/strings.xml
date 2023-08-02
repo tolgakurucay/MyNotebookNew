@@ -59,4 +59,8 @@
     <string name="common_add">Ekle</string>
     <string name="common_profile">Profil</string>
     <string name="common_logout">Çıkış Yap</string>
+    <string name="cd_navigate_to_home">Ana sayfaya geri dön</string>
+    <string name="common_not_titled">Başlıklandırılmadı</string>
+    <string name="common_not_added_description">Açıklama eklenmedi</string>
+    <string name="cd_note_image">Not görseli</string>
 </resources>

@@ -58,4 +58,8 @@
     <string name="common_add">Add</string>
     <string name="common_profile">Profile</string>
     <string name="common_logout">Logout</string>
+    <string name="cd_navigate_to_home">Navigate to home</string>
+    <string name="common_not_titled">Not titled</string>
+    <string name="common_not_added_description">Not added description</string>
+    <string name="cd_note_image">Note image</string>
 </resources>

@@ -1,5 +1,9 @@
 package com.tolgakurucay.mynotebooknew.presentation.home
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.FloatingActionButton
@@ -30,7 +34,6 @@ fun HomeBottomBar(
                     ),
                 )
             }
-
             IconButton(onClick = { homeNavigation.invoke(HomeNavigations.CLOUD) }) {
                 Icon(
                     painter = painterResource(id = R.drawable.cloud_black),
@@ -39,7 +42,6 @@ fun HomeBottomBar(
                     ),
                 )
             }
-
             IconButton(onClick = { homeNavigation.invoke(HomeNavigations.PROFILE) }) {
                 Icon(
                     painter = painterResource(id = R.drawable.profile_black),
@@ -56,6 +58,8 @@ fun HomeBottomBar(
                     ),
                 )
             }
+
+
         },
         modifier = Modifier.clip(
             RoundedCornerShape(topStart = radius30, topEnd = radius30)
