@@ -47,6 +47,20 @@ class LoginViewModel @Inject constructor(
         )
     }
 
+    // TODO:
+    fun signInWithFacebook(){
+    }
+
+    // TODO:
+    fun signInWithGoogle(){
+
+    }
+
+    // TODO:
+    fun signInWithPhone(){
+
+    }
+
 
 
 

@@ -32,7 +32,7 @@
     <string name="cd_person_tree">Person tree icon</string>
     <string name="empty_password_again">Password again field must not empty</string>
     <string name="action_enter_password_again">Enter password again</string>
-    <string name="common_forgot_password">FORGOT PASSWORD</string>
+    <string name="common_forgot_password_uppercase">FORGOT PASSWORD</string>
     <string name="common_okay">Okay</string>
     <string name="common_yes">Yes</string>
     <string name="common_no">No</string>
@@ -62,4 +62,13 @@
     <string name="common_not_titled">Not titled</string>
     <string name="common_not_added_description">Not added description</string>
     <string name="cd_note_image">Note image</string>
+    <string name="screen_add_note">Add note</string>
+    <string name="cd_title">Title icon</string>
+    <string name="cd_description">Description icon</string>
+    <string name="empty_title">Title field musn\'t empty</string>
+    <string name="empty_description">Description field musn\'t empty</string>
+    <string name="action_enter_title">Enter title</string>
+    <string name="action_enter_description">Enter description</string>
+    <string name="common_space"></string>
+    <string name="common_add_note_uppercase">ADD NOTE</string>
 </resources>

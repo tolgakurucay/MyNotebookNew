@@ -33,7 +33,7 @@
     <string name="cd_person_tree">Soyağacı ikonu</string>
     <string name="empty_password_again">Tekrar şifre alanı boş olamaz</string>
     <string name="action_enter_password_again">Şifreyi tekrar giriniz</string>
-    <string name="common_forgot_password">ŞİFREMİ UNUTTUM</string>
+    <string name="common_forgot_password_uppercase">ŞİFREMİ UNUTTUM</string>
     <string name="common_okay">Tamam</string>
     <string name="common_yes">Evet</string>
     <string name="common_no">Hayır</string>
@@ -63,4 +63,13 @@
     <string name="common_not_titled">Başlıklandırılmadı</string>
     <string name="common_not_added_description">Açıklama eklenmedi</string>
     <string name="cd_note_image">Not görseli</string>
+    <string name="screen_add_note">Not ekle</string>
+    <string name="cd_title">Başlık görseli</string>
+    <string name="cd_description">Açıklama görseli</string>
+    <string name="empty_title">Başlık alanı boş olamaz</string>
+    <string name="empty_description">Açıklama alanı boş olamaz</string>
+    <string name="action_enter_title">Başlık giriniz</string>
+    <string name="action_enter_description">Açıklama giriniz</string>
+    <string name="common_space">" "</string>
+    <string name="common_add_note_uppercase">NOT EKLE</string>
 </resources>

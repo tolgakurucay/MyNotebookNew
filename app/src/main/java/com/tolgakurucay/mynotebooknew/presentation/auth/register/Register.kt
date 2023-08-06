@@ -32,6 +32,8 @@ import com.tolgakurucay.mynotebooknew.domain.base.validateCustomTextFields
 import com.tolgakurucay.mynotebooknew.presentation.custom.AlertDialogType
 import com.tolgakurucay.mynotebooknew.presentation.custom.CustomAlertDialog
 import com.tolgakurucay.mynotebooknew.domain.base.BaseColumn
+import com.tolgakurucay.mynotebooknew.presentation.custom.ButtonType
+import com.tolgakurucay.mynotebooknew.presentation.custom.CustomButton
 import com.tolgakurucay.mynotebooknew.presentation.custom.CustomTextField
 import com.tolgakurucay.mynotebooknew.presentation.custom.TextFieldType
 import com.tolgakurucay.mynotebooknew.presentation.theme.spacing10
@@ -41,10 +43,10 @@ import com.tolgakurucay.mynotebooknew.presentation.theme.spacing5
 import com.tolgakurucay.mynotebooknew.presentation.theme.spacing70
 import com.tolgakurucay.mynotebooknew.util.safeLet
 
-
+@Preview
 @Composable
 fun Register(
-    onNavigateToLogin: () -> Unit,
+    onNavigateToLogin: () -> Unit = {},
     registerViewModel: RegisterViewModel = hiltViewModel()
 ) {
     Surface(modifier = Modifier.fillMaxSize()) {
@@ -197,15 +199,7 @@ fun RegisterContent(onNavigateToLoginChild: () -> Unit, registerViewModel: Regis
         )
 
         Spacer(modifier = Modifier.padding(top = spacing40))
-        Button(
-            onClick = {
-                register()
-            }, modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = spacing10)
-        ) {
-            Text(text = stringResource(id = R.string.common_login_now_uppercase))
-        }
+        CustomButton(buttonType = ButtonType.REGISTER, horizontalMargin = spacing10, onClick = {register()})
         Spacer(modifier = Modifier.padding(top = spacing40))
         observeData()
 

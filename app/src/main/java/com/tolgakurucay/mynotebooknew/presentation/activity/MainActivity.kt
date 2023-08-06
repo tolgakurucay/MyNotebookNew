@@ -70,7 +70,7 @@ class MainActivity @Inject constructor() : ComponentActivity() {
 
     @Composable
     private fun observeState() {
-        var state = mainViewModel.state.value
+        val state = mainViewModel.state.value
         if(state.isUserLoggedIn){
             MyNotebookAppGraph(startDestination = MyNotebookNewDestinations.HOME_ROUTE)
         }

@@ -12,7 +12,7 @@ import androidx.navigation.compose.rememberNavController
 import com.tolgakurucay.mynotebooknew.presentation.main.add_note.AddNotePage
 import com.tolgakurucay.mynotebooknew.presentation.main.cloud.CloudPage
 import com.tolgakurucay.mynotebooknew.presentation.main.favorites.FavoritesPage
-import com.tolgakurucay.mynotebooknew.presentation.auth.forgot_password.ForgotPassword
+import com.tolgakurucay.mynotebooknew.presentation.auth.forgot_password.ForgotPasswordPage
 import com.tolgakurucay.mynotebooknew.presentation.main.home.Home
 import com.tolgakurucay.mynotebooknew.presentation.main.home.HomeNavigations
 import com.tolgakurucay.mynotebooknew.presentation.auth.login.Login
@@ -91,7 +91,7 @@ fun MyNotebookAppGraph(
         }
 
         composable(MyNotebookNewDestinations.FORGOT_PASSWORD_ROUTE) {
-            ForgotPassword(
+            ForgotPasswordPage(
                 onNavigateToLogin = {
                     navActions.navigateToLogin()
                 },
@@ -111,7 +111,7 @@ fun MyNotebookAppGraph(
         }
 
         composable(MyNotebookNewDestinations.ADD_NOTE_ROUTE) {
-            AddNotePage()
+            AddNotePage(onBackPressed = { navActions.onBackPressed() })
         }
         composable(MyNotebookNewDestinations.CLOUD_ROUTE) {
             CloudPage()

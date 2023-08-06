@@ -104,4 +104,8 @@ class MyNotebookNavigationActions(private val navController: NavHostController) 
 
     }
 
+    fun onBackPressed(){
+        navController.popBackStack()
+    }
+
 }

@@ -37,7 +37,9 @@ import com.tolgakurucay.mynotebooknew.R
 import com.tolgakurucay.mynotebooknew.domain.base.BaseColumn
 import com.tolgakurucay.mynotebooknew.domain.base.validateCustomTextFields
 import com.tolgakurucay.mynotebooknew.presentation.custom.AlertDialogType
+import com.tolgakurucay.mynotebooknew.presentation.custom.ButtonType
 import com.tolgakurucay.mynotebooknew.presentation.custom.CustomAlertDialog
+import com.tolgakurucay.mynotebooknew.presentation.custom.CustomButton
 import com.tolgakurucay.mynotebooknew.presentation.custom.TextFieldType
 import com.tolgakurucay.mynotebooknew.presentation.theme.Black
 import com.tolgakurucay.mynotebooknew.presentation.theme.size125
@@ -162,25 +164,17 @@ fun LoginContent(
                 }, style = MaterialTheme.typography.bodyMedium
         )
         Spacer(modifier = Modifier.padding(top = spacing18))
-        Button(
+
+        CustomButton(
+            buttonType = ButtonType.LOGIN, horizontalMargin = spacing10,
             onClick = {
                 if (validateCustomTextFields(arrayOf(email, password))) {
                     safeLet(email, password) { p1, p2 ->
                         viewModel.signInWithEmailAndPassword(p1, p2)
                     }
                 }
-
             },
-            modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-                .fillMaxSize()
-                .padding(horizontal = spacing10)
-        ) {
-            Text(
-                text = stringResource(id = R.string.common_login_now_uppercase),
-                style = MaterialTheme.typography.bodyMedium
-            )
-        }
+        )
         Row(
             modifier = Modifier
                 .fillMaxWidth()

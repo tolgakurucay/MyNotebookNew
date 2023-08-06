@@ -9,7 +9,9 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountTree
+import androidx.compose.material.icons.filled.Description
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Title
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Icon
@@ -34,12 +36,13 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.Dp
 import com.tolgakurucay.mynotebooknew.R
+import com.tolgakurucay.mynotebooknew.presentation.theme.spacing0
 
 
 @Composable
 fun CustomTextField(
     textFieldType: TextFieldType,
-    horizontalMargin: Dp,
+    horizontalMargin: Dp = spacing0,
     onValueChange: (newValue: String?) -> Unit
 ) {
 
@@ -66,7 +69,7 @@ fun CustomTextField(
 
         },
         keyboardOptions = KeyboardOptions(
-            imeAction = ImeAction.Go,
+            imeAction = ImeAction.Next,
             keyboardType =
             when (textFieldType) {
                 TextFieldType.EMAIL -> KeyboardType.Email
@@ -74,9 +77,15 @@ fun CustomTextField(
                 TextFieldType.PASSWORD_AGAIN -> KeyboardType.Password
                 TextFieldType.NAME -> KeyboardType.Text
                 TextFieldType.SURNAME -> KeyboardType.Text
+                TextFieldType.TITLE -> KeyboardType.Text
+                TextFieldType.DESCRIPTION -> KeyboardType.Text
             },
         ),
-        singleLine = true,
+        singleLine = when (textFieldType) {
+            TextFieldType.TITLE -> false
+            TextFieldType.DESCRIPTION -> false
+            else -> true
+        },
         textStyle = MaterialTheme.typography.bodyMedium,
         leadingIcon = {
             when (textFieldType) {
@@ -224,6 +233,70 @@ fun CustomTextField(
                     }
 
                 }
+
+                TextFieldType.TITLE -> {
+                    if (value.isEmpty()) {
+                        Image(
+                            imageVector = Icons.Filled.Title,
+                            contentDescription = stringResource(
+                                id = R.string.cd_title
+                            ),
+                        )
+                    } else {
+                        when (supportingText) {
+                            "" -> {
+                                Image(
+                                    painter = painterResource(id = R.drawable.baseline_check_circle_outline_24),
+                                    contentDescription = stringResource(
+                                        id = R.string.cd_true
+                                    ),
+                                )
+                            }
+
+                            else -> {
+                                Image(
+                                    painter =
+                                    painterResource(id = R.drawable.baseline_error_outline_24),
+                                    contentDescription = stringResource(
+                                        id = R.string.cd_false
+                                    )
+                                )
+                            }
+                        }
+                    }
+                }
+
+                TextFieldType.DESCRIPTION -> {
+                    if (value.isEmpty()) {
+                        Image(
+                            imageVector = Icons.Filled.Description,
+                            contentDescription = stringResource(
+                                id = R.string.cd_description
+                            ),
+                        )
+                    } else {
+                        when (supportingText) {
+                            "" -> {
+                                Image(
+                                    painter = painterResource(id = R.drawable.baseline_check_circle_outline_24),
+                                    contentDescription = stringResource(
+                                        id = R.string.cd_true
+                                    ),
+                                )
+                            }
+
+                            else -> {
+                                Image(
+                                    painter =
+                                    painterResource(id = R.drawable.baseline_error_outline_24),
+                                    contentDescription = stringResource(
+                                        id = R.string.cd_false
+                                    )
+                                )
+                            }
+                        }
+                    }
+                }
             }
 
         },
@@ -232,9 +305,11 @@ fun CustomTextField(
             .padding(horizontal = horizontalMargin),
         supportingText = {
             //Validation rules
+            supportingText = supportingMessage(textFieldType, value, LocalContext.current)
+
             when (textFieldType) {
+
                 TextFieldType.EMAIL -> {
-                    supportingText = supportingMessage(textFieldType, value, LocalContext.current)
                     Text(
                         text = supportingText,
                         style = MaterialTheme.typography.bodySmall,
@@ -243,7 +318,6 @@ fun CustomTextField(
                 }
 
                 TextFieldType.PASSWORD -> {
-                    supportingText = supportingMessage(textFieldType, value, LocalContext.current)
                     Text(
                         text = supportingText,
                         style = MaterialTheme.typography.bodySmall,
@@ -253,7 +327,6 @@ fun CustomTextField(
                 }
 
                 TextFieldType.PASSWORD_AGAIN -> {
-                    supportingText = supportingMessage(textFieldType, value, LocalContext.current)
                     Text(
                         text = supportingText,
                         style = MaterialTheme.typography.bodySmall,
@@ -263,7 +336,6 @@ fun CustomTextField(
                 }
 
                 TextFieldType.NAME -> {
-                    supportingText = supportingMessage(textFieldType, value, LocalContext.current)
                     Text(
                         text = supportingText,
                         style = MaterialTheme.typography.bodySmall,
@@ -272,7 +344,22 @@ fun CustomTextField(
                 }
 
                 TextFieldType.SURNAME -> {
-                    supportingText = supportingMessage(textFieldType, value, LocalContext.current)
+                    Text(
+                        text = supportingText,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = Color.Red
+                    )
+                }
+
+                TextFieldType.TITLE -> {
+                    Text(
+                        text = supportingText,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = Color.Red
+                    )
+                }
+
+                TextFieldType.DESCRIPTION -> {
                     Text(
                         text = supportingText,
                         style = MaterialTheme.typography.bodySmall,
@@ -307,6 +394,16 @@ fun CustomTextField(
 
                 TextFieldType.SURNAME -> Text(
                     text = stringResource(id = R.string.action_enter_surname),
+                    style = MaterialTheme.typography.bodyMedium
+                )
+
+                TextFieldType.TITLE -> Text(
+                    text = stringResource(id = R.string.action_enter_title),
+                    style = MaterialTheme.typography.bodyMedium
+                )
+
+                TextFieldType.DESCRIPTION -> Text(
+                    text = stringResource(id = R.string.action_enter_description),
                     style = MaterialTheme.typography.bodyMedium
                 )
             }
@@ -388,9 +485,9 @@ fun CustomTextField(
                     }
                 }
             }
-        }
+        },
 
-    )
+        )
 
 }
 
@@ -400,7 +497,9 @@ enum class TextFieldType {
     PASSWORD,
     NAME,
     SURNAME,
-    PASSWORD_AGAIN
+    PASSWORD_AGAIN,
+    TITLE,
+    DESCRIPTION
 }
 
 private fun isTextFieldValidated(type: TextFieldType, value: String): Boolean {
@@ -424,6 +523,14 @@ private fun isTextFieldValidated(type: TextFieldType, value: String): Boolean {
         }
 
         TextFieldType.PASSWORD_AGAIN -> {
+            value.isNotEmpty()
+        }
+
+        TextFieldType.TITLE -> {
+            value.isNotEmpty()
+        }
+
+        TextFieldType.DESCRIPTION -> {
             value.isNotEmpty()
         }
     }
@@ -479,6 +586,22 @@ private fun supportingMessage(type: TextFieldType, value: String, context: Conte
                 ""
             }
 
+        }
+
+        TextFieldType.TITLE -> {
+            if (value.isEmpty()) {
+                context.getString(R.string.empty_title)
+            } else {
+                ""
+            }
+        }
+
+        TextFieldType.DESCRIPTION -> {
+            if (value.isEmpty()) {
+                context.getString(R.string.empty_description)
+            } else {
+                ""
+            }
         }
     }
 }

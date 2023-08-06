@@ -22,12 +22,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.tolgakurucay.mynotebooknew.R
 import com.tolgakurucay.mynotebooknew.domain.base.BaseColumn
 import com.tolgakurucay.mynotebooknew.domain.base.validateCustomTextFields
 import com.tolgakurucay.mynotebooknew.presentation.custom.AlertDialogType
+import com.tolgakurucay.mynotebooknew.presentation.custom.ButtonType
 import com.tolgakurucay.mynotebooknew.presentation.custom.CustomAlertDialog
+import com.tolgakurucay.mynotebooknew.presentation.custom.CustomButton
 import com.tolgakurucay.mynotebooknew.presentation.custom.CustomTextField
 import com.tolgakurucay.mynotebooknew.presentation.custom.TextFieldType
 import com.tolgakurucay.mynotebooknew.presentation.theme.spacing10
@@ -35,10 +38,11 @@ import com.tolgakurucay.mynotebooknew.presentation.theme.spacing30
 import com.tolgakurucay.mynotebooknew.presentation.theme.spacing40
 import com.tolgakurucay.mynotebooknew.presentation.theme.spacing70
 
+@Preview
 @Composable
-fun ForgotPassword(
+fun ForgotPasswordPage(
     viewModel: ForgotPasswordViewModel = hiltViewModel(),
-    onNavigateToLogin: () -> Unit
+    onNavigateToLogin: () -> Unit = {}
 ) {
     Surface(Modifier.fillMaxSize()) {
         ForgotPasswordContent(viewModel, onNavigateToLogin)
@@ -76,7 +80,7 @@ fun ForgotPasswordContent(viewModel: ForgotPasswordViewModel, onNavigateToLogin:
         ) {
 
         Text(
-            text = stringResource(id = R.string.common_forgot_password),
+            text = stringResource(id = R.string.common_forgot_password_uppercase),
             textAlign = TextAlign.Start,
             modifier = Modifier
                 .fillMaxWidth()
@@ -93,19 +97,16 @@ fun ForgotPasswordContent(viewModel: ForgotPasswordViewModel, onNavigateToLogin:
             },
         )
         Spacer(modifier = Modifier.padding(top = spacing40))
-        Button(
+
+        CustomButton(
+            buttonType = ButtonType.FORGOT_PASSWORD,
+            horizontalMargin = spacing10,
             onClick = {
                 validateCustomTextFields(arrayOf(email)).let {
                     if (it) viewModel.forgotPassword(email!!)
                 }
-
-            }, modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-                .fillMaxSize()
-                .padding(horizontal = spacing10)
-        ) {
-            Text(text = stringResource(id = R.string.common_login_now_uppercase))
-        }
+            },
+        )
         Spacer(modifier = Modifier.padding(top = spacing40))
 
         listenEvents()
