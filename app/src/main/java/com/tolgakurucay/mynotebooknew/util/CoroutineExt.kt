@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import com.tolgakurucay.mynotebooknew.domain.model.Result
+import kotlinx.coroutines.flow.catch
 
 
 fun <T> CoroutineScope.callService(
@@ -23,6 +24,9 @@ fun <T> CoroutineScope.callService(
         service()
             .onStart {
                 if (shouldShowDialog) emit(Result.loading())
+            }
+            .catch {
+                fail.invoke(BaseException(cause = it))
             }
             .collect {
                 when (it.status) {
@@ -42,5 +46,6 @@ fun <T> CoroutineScope.callService(
 
                 }
             }
+
     }
 }

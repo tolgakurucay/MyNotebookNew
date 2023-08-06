@@ -1,37 +1,29 @@
 package com.tolgakurucay.mynotebooknew.presentation
 
-import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
-import androidx.window.layout.DisplayFeature
-import com.tolgakurucay.mynotebooknew.presentation.MyNotebookNewDestinationsArgs.USER_ID_ARG
-import com.tolgakurucay.mynotebooknew.presentation.MyNotebookNewDestinationsArgs.USER_NAME_ARG
-import com.tolgakurucay.mynotebooknew.presentation.add_note.AddNotePage
-import com.tolgakurucay.mynotebooknew.presentation.cloud.CloudPage
-import com.tolgakurucay.mynotebooknew.presentation.favorites.FavoritesPage
-import com.tolgakurucay.mynotebooknew.presentation.forgot_password.ForgotPassword
-import com.tolgakurucay.mynotebooknew.presentation.home.Home
-import com.tolgakurucay.mynotebooknew.presentation.home.HomeNavigations
-import com.tolgakurucay.mynotebooknew.presentation.login.Login
-import com.tolgakurucay.mynotebooknew.presentation.profile.ProfilePage
-import com.tolgakurucay.mynotebooknew.presentation.register.Register
+import com.tolgakurucay.mynotebooknew.presentation.main.add_note.AddNotePage
+import com.tolgakurucay.mynotebooknew.presentation.main.cloud.CloudPage
+import com.tolgakurucay.mynotebooknew.presentation.main.favorites.FavoritesPage
+import com.tolgakurucay.mynotebooknew.presentation.auth.forgot_password.ForgotPassword
+import com.tolgakurucay.mynotebooknew.presentation.main.home.Home
+import com.tolgakurucay.mynotebooknew.presentation.main.home.HomeNavigations
+import com.tolgakurucay.mynotebooknew.presentation.auth.login.Login
+import com.tolgakurucay.mynotebooknew.presentation.main.profile.ProfilePage
+import com.tolgakurucay.mynotebooknew.presentation.auth.register.Register
 
 @Composable
 fun MyNotebookAppGraph(
-    windowSizeClass: WindowSizeClass,
-    displayFeature: List<DisplayFeature>,
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
-    startDestination: String = MyNotebookNewDestinations.HOME_ROUTE,
+    startDestination: String = MyNotebookNewDestinations.LOGIN_ROUTE,
     navActions: MyNotebookNavigationActions = remember(navController) {
         MyNotebookNavigationActions(navController)
     }
@@ -54,13 +46,28 @@ fun MyNotebookAppGraph(
             Home(
                 homeNavigations = { homeNavigation ->
                     when (homeNavigation) {
-                        HomeNavigations.FAVORITES -> { navActions.navigateToFavorites() }
-                        HomeNavigations.CLOUD -> { navActions.navigateToCloud() }
-                        HomeNavigations.PROFILE -> { navActions.navigateToProfile() }
-                        HomeNavigations.LOGOUT -> {  }
-                        HomeNavigations.ADD_NOTE -> { navActions.navigateToAddNote() }
+                        HomeNavigations.FAVORITES -> {
+                            navActions.navigateToFavorites()
+                        }
+
+                        HomeNavigations.CLOUD -> {
+                            navActions.navigateToCloud()
+                        }
+
+                        HomeNavigations.PROFILE -> {
+                            navActions.navigateToProfile()
+                        }
+
+                        HomeNavigations.ADD_NOTE -> {
+                            navActions.navigateToAddNote()
+                        }
+
+                        else -> {}
 
                     }
+                },
+                loggedOut = {
+                    navActions.navigateToLogin()
                 }
             )
         }
@@ -99,14 +106,14 @@ fun MyNotebookAppGraph(
             )
         }
 
-        composable(MyNotebookNewDestinations.FAVORITES_ROUTE){
+        composable(MyNotebookNewDestinations.FAVORITES_ROUTE) {
             FavoritesPage()
         }
 
-        composable(MyNotebookNewDestinations.ADD_NOTE_ROUTE){
+        composable(MyNotebookNewDestinations.ADD_NOTE_ROUTE) {
             AddNotePage()
         }
-        composable(MyNotebookNewDestinations.CLOUD_ROUTE){
+        composable(MyNotebookNewDestinations.CLOUD_ROUTE) {
             CloudPage()
         }
 

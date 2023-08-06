@@ -32,6 +32,16 @@ class AuthRepositoryImpl @Inject constructor(
 
     }
 
+    override fun logOut(): Flow<Result<Boolean>> = flow{
+        try {
+            auth.signOut()
+            emit(Result.success(true))
+        }
+        catch (ex: Exception){
+            emit(Result.error(BaseException(cause = ex)))
+        }
+    }
+
     override suspend fun createUserWithEmailAndPassword(request: CreateUserEmailPasswordRequest): Flow<Result<Boolean>> =
         flow {
             try {

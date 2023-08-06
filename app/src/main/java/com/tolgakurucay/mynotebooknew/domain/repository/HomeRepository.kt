@@ -6,6 +6,8 @@ import kotlinx.coroutines.flow.Flow
 
 interface HomeRepository {
 
-    fun getNotes() : Flow<Result<List<NoteModel>>>
+    suspend fun getNotes() : Flow<Result<List<NoteModel>>>
+
+
 
 }
