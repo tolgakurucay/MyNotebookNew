@@ -71,4 +71,16 @@
     <string name="action_enter_description">Enter description</string>
     <string name="common_space"></string>
     <string name="common_add_note_uppercase">ADD NOTE</string>
+    <string name="action_set_an_alarm">Set an alarm</string>
+    <string name="action_add_favorite">Add to favorite</string>
+    <string name="cd_add_an_alarm">Add an alarm image</string>
+    <string name="cd_add_to_favorites">Add to favorites image</string>
+    <string name="cd_add_to_cloud">Add to cloud icon</string>
+    <string name="cd_delete">Delete icon</string>
+    <string name="cd_edit">Edit icon</string>
+    <string name="common_alarm_has_set">Alarm has set</string>
+    <string name="common_added_to_favorite">Added to favorite</string>
+    <string name="common_added_to_cloud">Added to cloud</string>
+    <string name="cd_more">More icon</string>
+    <string name="action_add_to_cloud">Add to cloud</string>
 </resources>

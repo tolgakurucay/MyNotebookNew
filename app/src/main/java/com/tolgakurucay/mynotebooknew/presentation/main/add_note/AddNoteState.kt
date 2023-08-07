@@ -1,6 +1,8 @@
 package com.tolgakurucay.mynotebooknew.presentation.main.add_note
 
 data class AddNoteState(
-    var visiblePhoto : Boolean= false,
-    var visibleAlarm: Boolean = false,
+   var isAddedAlarm: Boolean = false,
+   var isAddedCloud: Boolean = false,
+   var isAddedFavorite: Boolean = false,
+   var isAddedPhoto: Boolean = false
 )
