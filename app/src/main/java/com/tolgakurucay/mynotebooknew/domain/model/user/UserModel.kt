@@ -5,5 +5,4 @@ data class UserModel(
     val surname: String?,
     val phoneNumber: String?,
     val photoReference: String?
-
 )

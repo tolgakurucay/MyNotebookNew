@@ -36,7 +36,7 @@ fun <T> CoroutineScope.callService(
 
                     Result.Status.ERROR -> {
                         if (shouldShowDialog) baseViewModel?.showWaitingDialog(false)
-                        fail(it.exception)
+                        fail.invoke(it.exception)
                     }
 
                     Result.Status.SUCCESS -> {
@@ -49,3 +49,37 @@ fun <T> CoroutineScope.callService(
 
     }
 }
+
+
+fun <T> CoroutineScope.callServiceOneShot(
+    baseViewModel: BaseViewModel?,
+    success: (data: T) -> Unit,
+    service: suspend () -> Result<T>,
+    shouldShowDialog: Boolean = true,
+    fail: (exception: BaseException?) -> Unit = {
+        baseViewModel?.myNotebookException?.value = it
+    }
+) {
+    launch {
+        val runService = service.invoke()
+
+        when (runService.status) {
+            Result.Status.LOADING -> {
+                if (shouldShowDialog) baseViewModel?.showWaitingDialog(true)
+            }
+
+            Result.Status.ERROR -> {
+                if (shouldShowDialog) baseViewModel?.showWaitingDialog(false)
+                fail.invoke(runService.exception)
+            }
+
+            Result.Status.SUCCESS -> {
+                if (shouldShowDialog) baseViewModel?.showWaitingDialog(false)
+                runService.data?.apply { success(this) }
+            }
+
+        }
+    }
+}
+
+

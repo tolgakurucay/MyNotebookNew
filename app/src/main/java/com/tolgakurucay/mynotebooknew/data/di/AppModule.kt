@@ -2,6 +2,7 @@ package com.tolgakurucay.mynotebooknew.data.di
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.tolgakurucay.mynotebooknew.data.database.NoteDao
 import com.tolgakurucay.mynotebooknew.data.repository.AddNoteRepositoryImp
 import com.tolgakurucay.mynotebooknew.data.repository.AuthRepositoryImpl
 import com.tolgakurucay.mynotebooknew.data.repository.HomeRepositoryImp
@@ -30,8 +31,8 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideHomeRepository(auth: FirebaseAuth, firestore: FirebaseFirestore): HomeRepository =
-        HomeRepositoryImp(auth, firestore)
+    fun provideHomeRepository(auth: FirebaseAuth, firestore: FirebaseFirestore,noteDao: NoteDao): HomeRepository =
+        HomeRepositoryImp(auth, firestore,noteDao)
 
 
 

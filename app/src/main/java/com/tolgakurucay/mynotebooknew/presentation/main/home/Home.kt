@@ -16,6 +16,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.tolgakurucay.mynotebooknew.domain.base.BaseColumn
+import com.tolgakurucay.mynotebooknew.domain.model.main.NoteModel
 import com.tolgakurucay.mynotebooknew.presentation.theme.size15
 import com.tolgakurucay.mynotebooknew.util.showLog
 
@@ -28,7 +29,7 @@ fun Home(
 
 ) {
 
-    viewModel.getNotes(LocalContext.current)
+    viewModel.addNote(model = NoteModel("Tolgagın defteri","asdasdasdasd",null,0))
 
     Surface(
         Modifier
@@ -57,6 +58,7 @@ fun HomeContent(
             state.isUserLoggedOut = false
             loggedOut.invoke()
         }
+
     }
 
     observeState()
