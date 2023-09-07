@@ -2,8 +2,8 @@ package com.tolgakurucay.mynotebooknew.presentation.auth.register
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.tolgakurucay.mynotebooknew.domain.base.BaseViewModel
 import com.tolgakurucay.mynotebooknew.domain.model.auth.CreateUserEmailPasswordRequest
 import com.tolgakurucay.mynotebooknew.domain.use_case.auth.CreateUser
 import com.tolgakurucay.mynotebooknew.util.callService
@@ -13,32 +13,22 @@ import javax.inject.Inject
 @HiltViewModel
 class RegisterViewModel @Inject constructor(
     private val createUserUseCase: CreateUser,
-) : BaseViewModel() {
+) : ViewModel() {
 
     private val _state = mutableStateOf(RegisterState())
     val state: State<RegisterState> = _state
 
 
     fun registerUser(
-        name: String,
-        surname: String,
-        email: String,
-        password: String,
-        phoneNumber: String = ""
+        request: CreateUserEmailPasswordRequest
     ) {
-        viewModelScope.callService(this,
+        viewModelScope.callService(_state.value,
             success = {
                 _state.value = RegisterState(isUserRegistered = true)
             },
             service = {
                 createUserUseCase.invoke(
-                    CreateUserEmailPasswordRequest(
-                        mail = email,
-                        password = password,
-                        name = name,
-                        surname = surname,
-                        phoneNumber = phoneNumber
-                    )
+                    request
                 )
             }
         )

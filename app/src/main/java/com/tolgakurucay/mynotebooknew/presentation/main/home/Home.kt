@@ -16,45 +16,45 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.tolgakurucay.mynotebooknew.domain.base.BaseColumn
+import com.tolgakurucay.mynotebooknew.domain.base.BaseScaffold
 import com.tolgakurucay.mynotebooknew.domain.model.main.NoteModel
 import com.tolgakurucay.mynotebooknew.presentation.theme.size15
 import com.tolgakurucay.mynotebooknew.util.showLog
 
-@Preview
 @Composable
 fun Home(
     viewModel: HomeViewModel = hiltViewModel(),
     homeNavigations: (HomeNavigations) -> Unit = {},
-    loggedOut: () -> Unit = {}
+    loggedOut: () -> Unit = {},
 
-) {
-
-    viewModel.addNote(model = NoteModel("Tolgagın defteri","asdasdasdasd",null,0))
-
+    ) {
+    viewModel.getNotes()
     Surface(
         Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
     ) {
         HomeContent(
-            viewModel,
+            viewModel.state.value,
             homeNavigations = homeNavigations,
             loggedOut = loggedOut,
+            logout = { viewModel.logout() }
         )
     }
 }
 
+@Preview
 @Composable
 fun HomeContent(
-    viewModel: HomeViewModel,
-    homeNavigations: (HomeNavigations) -> Unit,
-    loggedOut: () -> Unit
+    state: HomeState = HomeState(),
+    homeNavigations: (HomeNavigations) -> Unit = {},
+    loggedOut: () -> Unit = {},
+    logout: () -> Unit = {}
 ) {
 
-    val state = viewModel.state.value
 
-    fun observeState(){
-        if(state.isUserLoggedOut == true){
+    fun observeState() {
+        if (state.isUserLoggedOut == true) {
             state.isUserLoggedOut = false
             loggedOut.invoke()
         }
@@ -63,32 +63,29 @@ fun HomeContent(
 
     observeState()
 
-
-
-
-    Scaffold(
+    BaseScaffold(
+        state = state,
         topBar = {
             HomeTopBar()
         },
         bottomBar = {
-            HomeBottomBar{
-                if(it == HomeNavigations.LOGOUT){
-                    viewModel.logout()
-                }
-                else{
+            HomeBottomBar {
+                if (it == HomeNavigations.LOGOUT) {
+                    logout.invoke()
+                } else {
                     homeNavigations.invoke(it)
                 }
             }
         },
         content = {
-            BaseColumn(modifier = Modifier.padding(it), viewModel = viewModel) {
+            BaseColumn(modifier = Modifier.padding(it), state = state) {
                 LazyVerticalGrid(
                     columns = GridCells.Fixed(count = 2), contentPadding = PaddingValues(
                         size15
                     )
                 ) {
                     items(state.notes) { model ->
-                        NoteItem(model){
+                        NoteItem(model) {
                             showLog(model)
                         }
                     }
@@ -97,7 +94,6 @@ fun HomeContent(
             }
         }
     )
-
 
 
 }

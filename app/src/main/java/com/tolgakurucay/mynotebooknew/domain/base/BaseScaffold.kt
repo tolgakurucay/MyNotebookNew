@@ -27,20 +27,21 @@ import com.tolgakurucay.mynotebooknew.presentation.custom.CustomLoading
 @Composable
 fun BaseScaffold(
     modifier: Modifier = Modifier,
-    viewModel: BaseViewModel = hiltViewModel(),
+    state: BaseState,
     topBar: @Composable () -> Unit = {},
+    bottomBar: @Composable () -> Unit = {},
     content: @Composable (PaddingValues) -> Unit = {  }
 ) {
-    val isShownLoading = viewModel.isShowLoading.collectAsStateWithLifecycle()
-    val isShownError = viewModel.myNotebookException.collectAsStateWithLifecycle()
+    val isShownLoading = state.isShowLoading
+    val isShownError = state.myNotebookException
 
 
-    Scaffold(modifier = modifier, content = content, topBar = topBar)
-    if (isShownLoading.value == true) {
+    Scaffold(modifier = modifier, content = content, topBar = topBar, bottomBar = bottomBar)
+    if (isShownLoading == true) {
         CustomLoading()
     }
 
-    isShownError.value?.let { baseExc ->
+    isShownError?.let { baseExc ->
         var message: String
 
         baseExc.exceptionType?.let {
@@ -61,18 +62,18 @@ fun BaseScaffold(
             CustomAlertDialog(
                 type = AlertDialogType.OKAY, descriptionRes = message,
                 onConfirm = {
-                    viewModel.myNotebookException.value = null
+                    state.myNotebookException = null
                 },
             )
 
-        } ?: kotlin.run {
+        } ?: run {
             CustomAlertDialog(
                 type = AlertDialogType.OKAY,
                 descriptionRes = baseExc.cause?.localizedMessage ?: stringResource(
                     id = R.string.common_error
                 ),
                 onConfirm = {
-                    viewModel.myNotebookException.value = null
+                    state.myNotebookException = null
                 },
             )
         }

@@ -8,15 +8,15 @@ import com.tolgakurucay.mynotebooknew.domain.base.BaseColumn
 @Preview
 @Composable
 fun CloudPage(cloudViewModel: CloudViewModel = hiltViewModel()) {
-    
-    CloudContent(viewModel = cloudViewModel)
-    
+
+    CloudContent(state = cloudViewModel.state.value)
+
 
 }
 
 @Composable
-fun CloudContent(viewModel: CloudViewModel){
-    BaseColumn(viewModel = viewModel) {
+fun CloudContent(state: CloudState) {
+    BaseColumn(state = state) {
 
 
     }

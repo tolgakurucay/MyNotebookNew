@@ -23,20 +23,20 @@ import com.tolgakurucay.mynotebooknew.util.isNotNull
 @Composable
 fun BaseColumn(
     modifier: Modifier = Modifier,
-    viewModel: BaseViewModel = hiltViewModel(),
+    state: BaseState,
     content: @Composable ColumnScope.() -> Unit
 ) {
-    val isShownLoading = viewModel.isShowLoading.collectAsStateWithLifecycle()
-    val isShownError = viewModel.myNotebookException.collectAsStateWithLifecycle()
+    val isShownLoading = state.isShowLoading
+    val isShownError = state.myNotebookException
 
 
     Box(contentAlignment = Alignment.Center) {
         Column(modifier = modifier, content = content)
-        if (isShownLoading.value == true) {
+        if (isShownLoading == true) {
             CustomLoading()
         }
 
-        isShownError.value?.let { baseExc ->
+        isShownError?.let { baseExc ->
             var message: String
 
             baseExc.exceptionType?.let {
@@ -56,7 +56,7 @@ fun BaseColumn(
                 CustomAlertDialog(
                     type = AlertDialogType.OKAY, descriptionRes = message,
                     onConfirm = {
-                        viewModel.myNotebookException.value = null
+                        state.myNotebookException = null
                     },
                 )
 
@@ -67,7 +67,7 @@ fun BaseColumn(
                         id = R.string.common_error
                     ),
                     onConfirm = {
-                        viewModel.myNotebookException.value = null
+                        state.myNotebookException = null
                     },
                 )
             }

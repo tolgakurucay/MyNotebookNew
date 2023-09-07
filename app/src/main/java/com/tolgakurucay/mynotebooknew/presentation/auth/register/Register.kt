@@ -32,6 +32,7 @@ import com.tolgakurucay.mynotebooknew.domain.base.validateCustomTextFields
 import com.tolgakurucay.mynotebooknew.presentation.custom.AlertDialogType
 import com.tolgakurucay.mynotebooknew.presentation.custom.CustomAlertDialog
 import com.tolgakurucay.mynotebooknew.domain.base.BaseColumn
+import com.tolgakurucay.mynotebooknew.domain.model.auth.CreateUserEmailPasswordRequest
 import com.tolgakurucay.mynotebooknew.presentation.custom.ButtonType
 import com.tolgakurucay.mynotebooknew.presentation.custom.CustomButton
 import com.tolgakurucay.mynotebooknew.presentation.custom.CustomTextField
@@ -43,7 +44,6 @@ import com.tolgakurucay.mynotebooknew.presentation.theme.spacing5
 import com.tolgakurucay.mynotebooknew.presentation.theme.spacing70
 import com.tolgakurucay.mynotebooknew.util.safeLet
 
-@Preview
 @Composable
 fun Register(
     onNavigateToLogin: () -> Unit = {},
@@ -52,14 +52,22 @@ fun Register(
     Surface(modifier = Modifier.fillMaxSize()) {
         RegisterContent(
             onNavigateToLoginChild = onNavigateToLogin,
-            registerViewModel = registerViewModel
+            uiState = registerViewModel.state.value,
+            register = { request ->
+                registerViewModel.registerUser(request)
+            }
         )
     }
 }
 
 
+@Preview
 @Composable
-fun RegisterContent(onNavigateToLoginChild: () -> Unit, registerViewModel: RegisterViewModel) {
+fun RegisterContent(
+    onNavigateToLoginChild: () -> Unit = {},
+    uiState: RegisterState = RegisterState(),
+    register: (model: CreateUserEmailPasswordRequest) -> Unit = {}
+) {
 
     var email by remember { mutableStateOf<String?>(null) }
     var password by remember { mutableStateOf<String?>(null) }
@@ -71,24 +79,28 @@ fun RegisterContent(onNavigateToLoginChild: () -> Unit, registerViewModel: Regis
     var isShowPasswordAlert by remember { mutableStateOf(false) }
 
 
-    val uiState = registerViewModel.state.value
-
-
     fun register() {
-        if (validateCustomTextFields(
-                arrayOf(
-                    email,
-                    password,
-                    passwordAgain,
-                    name,
-                    surname
-                )
+        if (arrayOf(
+                email,
+                password,
+                passwordAgain,
+                name,
+                surname
             )
+                .validateCustomTextFields()
         ) {
             if (arePasswordsSame(password = password, passwordAgain = passwordAgain)) {
                 //Viewmodel processes
                 safeLet(name, surname, email, password, "") { name, sname, email, password, phone ->
-                    registerViewModel.registerUser(name, sname, email, password, "")
+                    register.invoke(
+                        CreateUserEmailPasswordRequest(
+                            email,
+                            password,
+                            name,
+                            sname,
+                            phone
+                        )
+                    )
                 }
 
             } else {
@@ -146,7 +158,7 @@ fun RegisterContent(onNavigateToLoginChild: () -> Unit, registerViewModel: Regis
             .fillMaxSize()
             .windowInsetsPadding(WindowInsets.systemBars)
             .verticalScroll(rememberScrollState()),
-        viewModel = registerViewModel
+        state = uiState
 
     ) {
         Text(
@@ -199,7 +211,10 @@ fun RegisterContent(onNavigateToLoginChild: () -> Unit, registerViewModel: Regis
         )
 
         Spacer(modifier = Modifier.padding(top = spacing40))
-        CustomButton(buttonType = ButtonType.REGISTER, horizontalMargin = spacing10, onClick = {register()})
+        CustomButton(
+            buttonType = ButtonType.REGISTER,
+            horizontalMargin = spacing10,
+            onClick = { register() })
         Spacer(modifier = Modifier.padding(top = spacing40))
         observeData()
 

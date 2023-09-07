@@ -9,14 +9,14 @@ import com.tolgakurucay.mynotebooknew.domain.base.BaseColumn
 @Composable
 fun FavoritesPage(viewModel: FavoritesViewModel = hiltViewModel()){
 
-    FavoritesContent(viewModel)
+    FavoritesContent(viewModel.state.value)
 
 }
 
 @Composable
-private fun FavoritesContent(viewModel: FavoritesViewModel){
+private fun FavoritesContent(state: FavoritesState){
 
-    BaseColumn(viewModel = viewModel) {
+    BaseColumn(state = state) {
 
     }
 }

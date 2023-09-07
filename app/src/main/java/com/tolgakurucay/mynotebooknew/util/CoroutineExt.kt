@@ -1,7 +1,7 @@
 package com.tolgakurucay.mynotebooknew.util
 
 import com.tolgakurucay.mynotebooknew.domain.base.BaseException
-import com.tolgakurucay.mynotebooknew.domain.base.BaseViewModel
+import com.tolgakurucay.mynotebooknew.domain.base.BaseState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.onStart
@@ -11,12 +11,12 @@ import kotlinx.coroutines.flow.catch
 
 
 fun <T> CoroutineScope.callService(
-    baseViewModel: BaseViewModel?,
+    baseState: BaseState,
     success: suspend (data: T) -> Unit,
     service: suspend () -> Flow<Result<T>>,
     shouldShowDialog: Boolean = true,
     fail: suspend (exception: BaseException?) -> Unit = {
-        baseViewModel?.myNotebookException?.value = it
+        baseState.myNotebookException = it
     }
 ) {
 
@@ -31,16 +31,16 @@ fun <T> CoroutineScope.callService(
             .collect {
                 when (it.status) {
                     Result.Status.LOADING -> {
-                        if (shouldShowDialog) baseViewModel?.showWaitingDialog(true)
+                        if (shouldShowDialog) baseState.isShowLoading = true
                     }
 
                     Result.Status.ERROR -> {
-                        if (shouldShowDialog) baseViewModel?.showWaitingDialog(false)
+                        if (shouldShowDialog) baseState.isShowLoading = false
                         fail.invoke(it.exception)
                     }
 
                     Result.Status.SUCCESS -> {
-                        if (shouldShowDialog) baseViewModel?.showWaitingDialog(false)
+                        if (shouldShowDialog) baseState.isShowLoading = false
                         it.data?.apply { success(this) }
                     }
 
@@ -52,12 +52,12 @@ fun <T> CoroutineScope.callService(
 
 
 fun <T> CoroutineScope.callServiceOneShot(
-    baseViewModel: BaseViewModel?,
+    baseState: BaseState,
     success: (data: T) -> Unit,
     service: suspend () -> Result<T>,
     shouldShowDialog: Boolean = true,
     fail: (exception: BaseException?) -> Unit = {
-        baseViewModel?.myNotebookException?.value = it
+        baseState.myNotebookException = it
     }
 ) {
     launch {
@@ -65,16 +65,16 @@ fun <T> CoroutineScope.callServiceOneShot(
 
         when (runService.status) {
             Result.Status.LOADING -> {
-                if (shouldShowDialog) baseViewModel?.showWaitingDialog(true)
+                if (shouldShowDialog) baseState.isShowLoading = true
             }
 
             Result.Status.ERROR -> {
-                if (shouldShowDialog) baseViewModel?.showWaitingDialog(false)
+                if (shouldShowDialog) baseState.isShowLoading = false
                 fail.invoke(runService.exception)
             }
 
             Result.Status.SUCCESS -> {
-                if (shouldShowDialog) baseViewModel?.showWaitingDialog(false)
+                if (shouldShowDialog) baseState.isShowLoading = false
                 runService.data?.apply { success(this) }
             }
 

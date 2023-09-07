@@ -9,16 +9,16 @@ import com.tolgakurucay.mynotebooknew.domain.base.BaseColumn
 @Composable
 fun ProfilePage(viewModel: ProfileViewModel = hiltViewModel()){
 
-    ProfileContent(viewModel)
+    ProfileContent(viewModel.state.value)
 
 }
 
 
 
 @Composable
-fun ProfileContent(viewModel: ProfileViewModel){
+fun ProfileContent(state : ProfileState){
 
-    BaseColumn(viewModel = viewModel) {
+    BaseColumn(state = state) {
 
     }
 }

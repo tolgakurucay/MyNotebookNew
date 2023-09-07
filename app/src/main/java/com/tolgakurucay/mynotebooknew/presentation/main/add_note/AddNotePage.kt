@@ -23,6 +23,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.tolgakurucay.mynotebooknew.R
 import com.tolgakurucay.mynotebooknew.domain.base.BaseScaffold
+import com.tolgakurucay.mynotebooknew.domain.base.validateCustomTextFields
+import com.tolgakurucay.mynotebooknew.domain.model.main.NoteModel
+import com.tolgakurucay.mynotebooknew.domain.model.main.NoteType
 import com.tolgakurucay.mynotebooknew.presentation.custom.ButtonType
 import com.tolgakurucay.mynotebooknew.presentation.custom.CustomButton
 import com.tolgakurucay.mynotebooknew.presentation.custom.CustomTextField
@@ -30,17 +33,30 @@ import com.tolgakurucay.mynotebooknew.presentation.custom.TextFieldType
 import com.tolgakurucay.mynotebooknew.presentation.theme.spacing15
 import com.tolgakurucay.mynotebooknew.presentation.theme.spacing5
 
-@Preview
 @Composable
-fun AddNotePage(viewModel: AddNoteViewModel = hiltViewModel(), onBackPressed: () -> Unit = {}) {
-
-    AddNoteContent(viewModel, onBackPressed = onBackPressed)
-
+fun AddNotePage(
+    viewModel: AddNoteViewModel = hiltViewModel(),
+    onBackPressed: () -> Unit = {},
+    goToHome: () -> Unit = {}
+) {
+    AddNoteContent(
+        onBackPressed = onBackPressed,
+        goToHome = goToHome,
+        saveNoteToLocale = {
+            viewModel.saveNoteToLocalDatabase(it)
+        },
+        uiState = viewModel.state.value
+    )
 }
 
+@Preview
 @Composable
-private fun AddNoteContent(viewModel: AddNoteViewModel, onBackPressed: () -> Unit) {
-
+private fun AddNoteContent(
+    onBackPressed: () -> Unit = {},
+    goToHome: () -> Unit = {},
+    saveNoteToLocale: (NoteModel) -> Unit = {},
+    uiState: AddNoteState = AddNoteState()
+) {
     var title by remember { mutableStateOf<String?>(null) }
     var description by remember { mutableStateOf<String?>(null) }
 
@@ -49,13 +65,13 @@ private fun AddNoteContent(viewModel: AddNoteViewModel, onBackPressed: () -> Uni
             // process eith the received image uri
         }
 
-    val state = viewModel.state.value
-
-
-
     BaseScaffold(
-        viewModel = viewModel,
-        topBar = { AddNoteTopBar(onBackPressed = onBackPressed) },
+        state = uiState,
+        topBar = {
+            AddNoteTopBar(
+                onBackPressed = onBackPressed,
+            )
+        },
     ) {
 
         Column(
@@ -64,16 +80,16 @@ private fun AddNoteContent(viewModel: AddNoteViewModel, onBackPressed: () -> Uni
                 .padding(horizontal = spacing15)
                 .verticalScroll(rememberScrollState())
         ) {
-            AnimatedVisibility(visible = state.isAddedPhoto) {
-                Image(
-                    painterResource(id = R.drawable.star_black),
-                    contentDescription = stringResource(id = R.string.cd_add_note),
-                    modifier = Modifier
-                        .fillMaxWidth(0.5f)
-                        .fillMaxHeight()
-                )
+            /* AnimatedVisibility(visible = state.isAddedPhoto) {
+                 Image(
+                     painterResource(id = R.drawable.star_black),
+                     contentDescription = stringResource(id = R.string.cd_add_note),
+                     modifier = Modifier
+                         .fillMaxWidth(0.5f)
+                         .fillMaxHeight()
+                 )
 
-            }
+             }*/
             CustomTextField(
                 textFieldType = TextFieldType.TITLE,
                 onValueChange = {
@@ -88,12 +104,21 @@ private fun AddNoteContent(viewModel: AddNoteViewModel, onBackPressed: () -> Uni
                 },
             )
             Spacer(modifier = Modifier.padding(vertical = spacing5))
-            CustomButton(buttonType = ButtonType.ADD_NOTE, horizontalMargin = spacing15, onClick = {
-
-            })
+            CustomButton(
+                buttonType = ButtonType.ADD_NOTE, horizontalMargin = spacing15,
+                onClick = {
+                    if (arrayOf(title, description).validateCustomTextFields()) {
+                        saveNoteToLocale.invoke(
+                            NoteModel(title = title, description = description)
+                        )
+                    }
+                },
+            )
 
         }
 
+
     }
+
 
 }

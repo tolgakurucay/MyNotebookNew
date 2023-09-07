@@ -2,8 +2,8 @@ package com.tolgakurucay.mynotebooknew.presentation.main.home
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.tolgakurucay.mynotebooknew.domain.base.BaseViewModel
 import com.tolgakurucay.mynotebooknew.domain.model.main.NoteModel
 import com.tolgakurucay.mynotebooknew.domain.use_case.auth.LogOut
 import com.tolgakurucay.mynotebooknew.domain.use_case.main.AddNote
@@ -20,7 +20,7 @@ class HomeViewModel @Inject constructor(
     private val logOut: LogOut,
     private val addNote: AddNote,
     private val getNote: GetNote
-) : BaseViewModel() {
+) : ViewModel() {
 
 
     private val _state = mutableStateOf(HomeState())
@@ -29,7 +29,7 @@ class HomeViewModel @Inject constructor(
 
     fun logout() {
         viewModelScope.callService(
-            baseViewModel = this,
+            baseState = _state.value,
             success = {
                 _state.value = HomeState(isUserLoggedOut = true)
             },
@@ -42,7 +42,7 @@ class HomeViewModel @Inject constructor(
     //_state.value = HomeState(notes = context.fromJsonToList("note_item.json",NoteModel::class) ?: listOf())
     fun getNotes() {
         viewModelScope.callServiceOneShot(
-            baseViewModel = this,
+            baseState = _state.value,
             success = {
                 _state.value = HomeState(notes = it)
             },

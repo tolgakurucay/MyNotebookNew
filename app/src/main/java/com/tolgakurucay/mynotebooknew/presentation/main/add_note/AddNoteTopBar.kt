@@ -34,7 +34,7 @@ import com.tolgakurucay.mynotebooknew.presentation.theme.LightOrange
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
-fun AddNoteTopBar(onBackPressed: () -> Unit = {}, addNoteState: (AddNoteState) -> Unit = {}) {
+fun AddNoteTopBar(onBackPressed: () -> Unit = {}) {
     CenterAlignedTopAppBar(
         title = {
             Text(
@@ -51,128 +51,10 @@ fun AddNoteTopBar(onBackPressed: () -> Unit = {}, addNoteState: (AddNoteState) -
                 modifier = Modifier.clickable { onBackPressed.invoke() }
             )
         },
-        modifier = Modifier.fillMaxWidth(),
-        actions = {
-            DropDownMenu()
-        }
+        modifier = Modifier.fillMaxWidth()
     )
 }
 
 
-@Composable
-@Preview
-private fun DropDownMenu(addNoteState: (AddNoteState) -> Unit = {}) {
-    val context = LocalContext.current
-    var expanded by remember { mutableStateOf(false) }
-    val state by remember { mutableStateOf(AddNoteState()) }
-
-    var alarmMessage by remember { mutableStateOf(context.getString(R.string.action_set_an_alarm)) }
-    var cloudMessage by remember { mutableStateOf(context.getString(R.string.action_add_to_cloud)) }
-    var favoriteMessage by remember { mutableStateOf(context.getString(R.string.action_add_favorite)) }
-
-    var alarmColor by remember { mutableStateOf(Black) }
-    var cloudColor by remember { mutableStateOf(Black) }
-    var favoriteColor by remember { mutableStateOf(Black) }
-
-
-
-
-    IconButton(onClick = { expanded = !expanded }) {
-        Icon(
-            imageVector = Icons.Default.MoreVert,
-            contentDescription = stringResource(id = R.string.cd_more)
-        )
-    }
-
-    DropdownMenu(
-        expanded = expanded,
-        onDismissRequest = { expanded = false },
-    ) {
-
-        //Alarm item
-        DropdownMenuItem(
-            text = { Text(text = alarmMessage) },
-            leadingIcon = {
-                Icon(
-                    imageVector = Icons.Default.AddAlarm,
-                    contentDescription = stringResource(
-                        id = R.string.cd_add_an_alarm
-                    ),
-                )
-            },
-            onClick = {
-                if (state.isAddedAlarm) {
-                    state.isAddedAlarm = false
-                    alarmColor = Black
-                    alarmMessage = context.getString(R.string.cd_add_an_alarm)
-                } else {
-                    state.isAddedAlarm = true
-                    alarmColor = LightOrange
-                    alarmMessage = context.getString(R.string.common_alarm_has_set)
-                }
-            },
-            colors = MenuDefaults.itemColors(
-                textColor = alarmColor,
-                leadingIconColor = alarmColor
-            )
-        )
-
-        //Favorite Item
-        DropdownMenuItem(
-            text = { Text(text = favoriteMessage) },
-            leadingIcon = {
-                Icon(
-                    imageVector = Icons.Default.Favorite,
-                    contentDescription = stringResource(
-                        id = R.string.cd_favorite
-                    ),
-                )
-            },
-            onClick = {
-                if (state.isAddedFavorite) {
-                    state.isAddedFavorite = false
-                    favoriteColor = Black
-                    favoriteMessage = context.getString(R.string.action_add_favorite)
-                } else {
-                    state.isAddedFavorite = true
-                    favoriteColor = LightOrange
-                    favoriteMessage = context.getString(R.string.common_added_to_favorite)
-                }
-            },
-            colors = MenuDefaults.itemColors(
-                textColor = favoriteColor,
-                leadingIconColor = favoriteColor
-            )
-        )
-
-        //Cloud Item
-        DropdownMenuItem(
-            text = { Text(text = cloudMessage) },
-            leadingIcon = {
-                Icon(
-                    imageVector = Icons.Default.Cloud,
-                    contentDescription = stringResource(
-                        id = R.string.cd_cloud
-                    ),
-                )
-            },
-            onClick = {
-                if (state.isAddedCloud) {
-                    state.isAddedCloud = false
-                    cloudColor = Black
-                    cloudMessage = context.getString(R.string.action_add_to_cloud)
-                } else {
-                    state.isAddedCloud = true
-                    cloudColor = LightOrange
-                    cloudMessage = context.getString(R.string.common_added_to_cloud)
-                }
-            },
-            colors = MenuDefaults.itemColors(
-                textColor = cloudColor,
-                leadingIconColor = cloudColor
-            )
-        )
-    }
-}
 
 

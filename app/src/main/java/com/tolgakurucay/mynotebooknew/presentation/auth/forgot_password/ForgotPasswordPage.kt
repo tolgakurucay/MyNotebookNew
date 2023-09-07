@@ -38,23 +38,30 @@ import com.tolgakurucay.mynotebooknew.presentation.theme.spacing30
 import com.tolgakurucay.mynotebooknew.presentation.theme.spacing40
 import com.tolgakurucay.mynotebooknew.presentation.theme.spacing70
 
-@Preview
 @Composable
 fun ForgotPasswordPage(
     viewModel: ForgotPasswordViewModel = hiltViewModel(),
     onNavigateToLogin: () -> Unit = {}
 ) {
     Surface(Modifier.fillMaxSize()) {
-        ForgotPasswordContent(viewModel, onNavigateToLogin)
+        ForgotPasswordContent(
+            onNavigateToLogin,
+            state = viewModel.state.value,
+            forgotPassword = {
+                viewModel.forgotPassword(it)
+            },
+        )
     }
 }
 
+@Preview
 @Composable
-fun ForgotPasswordContent(viewModel: ForgotPasswordViewModel, onNavigateToLogin: () -> Unit) {
-
+fun ForgotPasswordContent(
+    onNavigateToLogin: () -> Unit = {},
+    state: ForgotPasswordState = ForgotPasswordState(),
+    forgotPassword: (email: String) -> Unit = {}
+) {
     var email by remember { mutableStateOf<String?>(null) }
-
-    val state = viewModel.state.value
 
     @Composable
     fun listenEvents() {
@@ -75,9 +82,8 @@ fun ForgotPasswordContent(viewModel: ForgotPasswordViewModel, onNavigateToLogin:
         modifier = Modifier
             .windowInsetsPadding(WindowInsets.systemBars)
             .verticalScroll(rememberScrollState()),
-        viewModel = viewModel,
-
-        ) {
+        state = state
+    ) {
 
         Text(
             text = stringResource(id = R.string.common_forgot_password_uppercase),
@@ -102,8 +108,8 @@ fun ForgotPasswordContent(viewModel: ForgotPasswordViewModel, onNavigateToLogin:
             buttonType = ButtonType.FORGOT_PASSWORD,
             horizontalMargin = spacing10,
             onClick = {
-                validateCustomTextFields(arrayOf(email)).let {
-                    if (it) viewModel.forgotPassword(email!!)
+                if (arrayOf(email).validateCustomTextFields()) {
+                    forgotPassword.invoke(email!!)
                 }
             },
         )

@@ -3,9 +3,9 @@ package com.tolgakurucay.mynotebooknew.domain.base
 import com.tolgakurucay.mynotebooknew.util.isNull
 
 
-fun validateCustomTextFields(array: Array<String?>): Boolean {
+fun Array<String?>.validateCustomTextFields(): Boolean {
     var isValidated = true
-    array.forEach { field ->
+    forEach { field ->
         if (field.isNull()) isValidated = false
 
     }
