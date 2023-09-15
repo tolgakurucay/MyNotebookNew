@@ -1,4 +1,4 @@
-package com.tolgakurucay.mynotebooknew.domain.model
+package com.tolgakurucay.mynotebooknew.domain.base
 
 import com.google.gson.JsonObject
 import retrofit2.Response

@@ -16,12 +16,13 @@ class AddNoteViewModel @Inject constructor(private val addNote: AddNote) : ViewM
     private val _state = mutableStateOf(AddNoteState())
     val state: State<AddNoteState> = _state
 
+
     fun saveNoteToLocalDatabase(noteModel: NoteModel) {
         viewModelScope.callServiceOneShot(
             _state.value,
             success = {
                 if (it) {
-                   _state.value = AddNoteState(isAddedTheNote = true)
+                    _state.value = AddNoteState(isAddedTheNote = true)
                 } else {
                     _state.value = AddNoteState(isAddedTheNote = false)
                 }

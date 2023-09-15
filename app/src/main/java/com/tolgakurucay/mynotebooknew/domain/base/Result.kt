@@ -1,6 +1,4 @@
-package com.tolgakurucay.mynotebooknew.domain.model
-
-import com.tolgakurucay.mynotebooknew.domain.base.BaseException
+package com.tolgakurucay.mynotebooknew.domain.base
 
 
 data class Result<out T>(

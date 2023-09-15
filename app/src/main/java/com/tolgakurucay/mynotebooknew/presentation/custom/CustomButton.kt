@@ -35,6 +35,7 @@ fun CustomButton(
                     ButtonType.LOGIN -> R.string.common_login_uppercase
                     ButtonType.REGISTER -> R.string.common_register_uppercase
                     ButtonType.FORGOT_PASSWORD -> R.string.common_forgot_password_uppercase
+                    ButtonType.UPDATE_NOTE -> R.string.common_update_note_uppercase
                     else -> R.string.common_space
                 },
             ), style = MaterialTheme.typography.labelMedium
@@ -50,7 +51,8 @@ enum class ButtonType {
     REGISTER,
     LOGIN,
     FORGOT_PASSWORD,
-    ADD_NOTE
+    ADD_NOTE,
+    UPDATE_NOTE
 }
 
 

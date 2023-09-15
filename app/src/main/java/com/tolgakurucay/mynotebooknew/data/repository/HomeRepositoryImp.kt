@@ -4,7 +4,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.tolgakurucay.mynotebooknew.data.database.NoteDao
 import com.tolgakurucay.mynotebooknew.domain.base.BaseException
-import com.tolgakurucay.mynotebooknew.domain.model.Result
+import com.tolgakurucay.mynotebooknew.domain.base.Result
 import com.tolgakurucay.mynotebooknew.domain.model.main.NoteModel
 import com.tolgakurucay.mynotebooknew.domain.repository.HomeRepository
 import com.tolgakurucay.mynotebooknew.util.flowService

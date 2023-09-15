@@ -1,31 +1,30 @@
 package com.tolgakurucay.mynotebooknew.presentation.main.home
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
+import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.tolgakurucay.mynotebooknew.domain.base.BaseColumn
 import com.tolgakurucay.mynotebooknew.domain.base.BaseScaffold
 import com.tolgakurucay.mynotebooknew.domain.model.main.NoteModel
 import com.tolgakurucay.mynotebooknew.presentation.theme.size15
-import com.tolgakurucay.mynotebooknew.util.showLog
 
 @Composable
 fun Home(
     viewModel: HomeViewModel = hiltViewModel(),
-    homeNavigations: (HomeNavigations) -> Unit = {},
-    loggedOut: () -> Unit = {},
+    homeNavigations: (HomeNavigations) -> Unit,
+    loggedOut: () -> Unit,
+    gotToEditOrView: (NoteModel) -> Unit
 
     ) {
     viewModel.getNotes()
@@ -38,18 +37,22 @@ fun Home(
             viewModel.state.value,
             homeNavigations = homeNavigations,
             loggedOut = loggedOut,
-            logout = { viewModel.logout() }
+            logout = { viewModel.logout() },
+            goToEditOrView = gotToEditOrView
         )
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Preview
 @Composable
 fun HomeContent(
     state: HomeState = HomeState(),
     homeNavigations: (HomeNavigations) -> Unit = {},
     loggedOut: () -> Unit = {},
-    logout: () -> Unit = {}
+    logout: () -> Unit = {},
+    goToEditOrView: (NoteModel) -> Unit = {}
+
 ) {
 
 
@@ -79,14 +82,17 @@ fun HomeContent(
         },
         content = {
             BaseColumn(modifier = Modifier.padding(it), state = state) {
-                LazyVerticalGrid(
-                    columns = GridCells.Fixed(count = 2), contentPadding = PaddingValues(
+                LazyVerticalStaggeredGrid(
+                    columns = StaggeredGridCells.Fixed(2),
+                    contentPadding = PaddingValues(
                         size15
-                    )
+                    ),
                 ) {
                     items(state.notes) { model ->
                         NoteItem(model) {
-                            showLog(model)
+                            it?.let {
+                                goToEditOrView.invoke(it)
+                            }
                         }
                     }
                 }

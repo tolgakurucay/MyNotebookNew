@@ -1,13 +1,10 @@
-package com.tolgakurucay.mynotebooknew.presentation.main.add_note
+package com.tolgakurucay.mynotebooknew.presentation.main.edit_or_view_note
+
 
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -17,16 +14,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.tolgakurucay.mynotebooknew.R
 import com.tolgakurucay.mynotebooknew.domain.base.BaseScaffold
 import com.tolgakurucay.mynotebooknew.domain.base.validateCustomTextFields
 import com.tolgakurucay.mynotebooknew.domain.model.main.NoteModel
-import com.tolgakurucay.mynotebooknew.domain.model.main.NoteType
 import com.tolgakurucay.mynotebooknew.presentation.custom.ButtonType
 import com.tolgakurucay.mynotebooknew.presentation.custom.CustomButton
 import com.tolgakurucay.mynotebooknew.presentation.custom.CustomTextField
@@ -35,16 +27,17 @@ import com.tolgakurucay.mynotebooknew.presentation.theme.spacing15
 import com.tolgakurucay.mynotebooknew.presentation.theme.spacing5
 
 @Composable
-fun AddNotePage(
-    viewModel: AddNoteViewModel = hiltViewModel(),
-    onBackPressed: () -> Unit = {},
-    goToHome: () -> Unit = {}
+fun EditOrViewNotePage(
+    noteModel: NoteModel,
+    viewModel: EditOrViewViewModel = hiltViewModel(),
+    onBackPressed: () -> Unit,
+    goToHome: () -> Unit
 ) {
-    AddNoteContent(
+    EditOrViewNoteContent(
         onBackPressed = onBackPressed,
         goToHome = goToHome,
-        saveNoteToLocale = {
-            viewModel.saveNoteToLocalDatabase(it)
+        updateNoteToLocale = {
+            viewModel.updateNoteFromLocale(it)
         },
         uiState = viewModel.state.value
     )
@@ -52,11 +45,11 @@ fun AddNotePage(
 
 @Preview
 @Composable
-private fun AddNoteContent(
+private fun EditOrViewNoteContent(
     onBackPressed: () -> Unit = {},
     goToHome: () -> Unit = {},
-    saveNoteToLocale: (NoteModel) -> Unit = {},
-    uiState: AddNoteState = AddNoteState()
+    updateNoteToLocale: (NoteModel) -> Unit = {},
+    uiState: EditOrViewState = EditOrViewState()
 ) {
     var title by remember { mutableStateOf<String?>(null) }
     var description by remember { mutableStateOf<String?>(null) }
@@ -66,7 +59,7 @@ private fun AddNoteContent(
             // process eith the received image uri
         }
 
-    if (uiState.isAddedTheNote == true) goToHome.invoke(); uiState.isAddedTheNote = false
+    if (uiState.hasUpdated) goToHome.invoke(); uiState.hasUpdated = false
 
 
 
@@ -74,7 +67,7 @@ private fun AddNoteContent(
     BaseScaffold(
         state = uiState,
         topBar = {
-            AddNoteTopBar(
+            EditOrViewTopBar(
                 onBackPressed = onBackPressed,
             )
         },
@@ -102,10 +95,10 @@ private fun AddNoteContent(
             )
             Spacer(modifier = Modifier.padding(vertical = spacing5))
             CustomButton(
-                buttonType = ButtonType.ADD_NOTE, horizontalMargin = spacing15,
+                buttonType = ButtonType.UPDATE_NOTE, horizontalMargin = spacing15,
                 onClick = {
                     if (arrayOf(title, description).validateCustomTextFields()) {
-                        saveNoteToLocale.invoke(
+                        updateNoteToLocale.invoke(
                             NoteModel(title = title, description = description)
                         )
                     }

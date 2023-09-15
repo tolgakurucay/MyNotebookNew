@@ -6,7 +6,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
-import com.tolgakurucay.mynotebooknew.domain.model.Result
+import com.tolgakurucay.mynotebooknew.domain.base.Result
 import kotlinx.coroutines.flow.catch
 
 
@@ -53,7 +53,7 @@ fun <T> CoroutineScope.callService(
 
 fun <T> CoroutineScope.callServiceOneShot(
     baseState: BaseState,
-    success: (data: T) -> Unit,
+    success: suspend (data: T) -> Unit,
     service: suspend () -> Result<T>,
     shouldShowDialog: Boolean = true,
     fail: (exception: BaseException?) -> Unit = {

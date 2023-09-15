@@ -3,7 +3,7 @@ package com.tolgakurucay.mynotebooknew.data.repository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.tolgakurucay.mynotebooknew.domain.base.BaseException
-import com.tolgakurucay.mynotebooknew.domain.model.Result
+import com.tolgakurucay.mynotebooknew.domain.base.Result
 import com.tolgakurucay.mynotebooknew.domain.repository.AddNoteRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

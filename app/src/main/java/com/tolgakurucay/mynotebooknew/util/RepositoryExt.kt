@@ -1,7 +1,7 @@
 package com.tolgakurucay.mynotebooknew.util
 
 import com.tolgakurucay.mynotebooknew.domain.base.BaseException
-import com.tolgakurucay.mynotebooknew.domain.model.Result
+import com.tolgakurucay.mynotebooknew.domain.base.Result
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow

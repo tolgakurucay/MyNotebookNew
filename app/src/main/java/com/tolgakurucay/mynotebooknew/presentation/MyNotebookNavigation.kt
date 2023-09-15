@@ -1,6 +1,10 @@
 package com.tolgakurucay.mynotebooknew.presentation
 
+import androidx.navigation.NavDirections
 import androidx.navigation.NavHostController
+import com.tolgakurucay.mynotebooknew.domain.model.main.NoteModel
+import com.tolgakurucay.mynotebooknew.presentation.MyNotebookNewDestinations.EDIT_OR_VIEW_ROUTE
+import com.tolgakurucay.mynotebooknew.presentation.MyNotebookNewDestinationsArgs.NOTE_ID_ARG
 import com.tolgakurucay.mynotebooknew.presentation.MyNotebookNewScreens.FORGOT_PASSWORD_SCREEN
 import com.tolgakurucay.mynotebooknew.presentation.MyNotebookNewScreens.HOME_SCREEN
 import com.tolgakurucay.mynotebooknew.presentation.MyNotebookNewScreens.LOGIN_SCREEN
@@ -9,8 +13,10 @@ import com.tolgakurucay.mynotebooknew.presentation.MyNotebookNewDestinationsArgs
 import com.tolgakurucay.mynotebooknew.presentation.MyNotebookNewDestinationsArgs.USER_NAME_ARG
 import com.tolgakurucay.mynotebooknew.presentation.MyNotebookNewScreens.ADD_NOTE_SCREEN
 import com.tolgakurucay.mynotebooknew.presentation.MyNotebookNewScreens.CLOUD_SCREEN
+import com.tolgakurucay.mynotebooknew.presentation.MyNotebookNewScreens.EDIT_OR_VIEW_NOTE_SCREEN
 import com.tolgakurucay.mynotebooknew.presentation.MyNotebookNewScreens.FAVORITES_SCREEN
 import com.tolgakurucay.mynotebooknew.presentation.MyNotebookNewScreens.PROFILE_SCREEN
+import com.tolgakurucay.mynotebooknew.presentation.main.home.HomeNavigations
 
 
 /**
@@ -25,7 +31,7 @@ private object MyNotebookNewScreens {
     const val ADD_NOTE_SCREEN = "addNote"
     const val FAVORITES_SCREEN = "favorites"
     const val CLOUD_SCREEN = "cloud"
-
+    const val EDIT_OR_VIEW_NOTE_SCREEN = "editOrViewNote"
 }
 
 
@@ -35,6 +41,8 @@ private object MyNotebookNewScreens {
 object MyNotebookNewDestinationsArgs {
     const val USER_ID_ARG = "userId"
     const val USER_NAME_ARG = "userName"
+    const val NOTE_ID_ARG = "noteId"
+    const val NOTE_MODEL_ARG = "noteModel"
 }
 
 
@@ -53,6 +61,7 @@ object MyNotebookNewDestinations {
     const val ADD_NOTE_ROUTE = ADD_NOTE_SCREEN
     const val FAVORITES_ROUTE = FAVORITES_SCREEN
     const val CLOUD_ROUTE = CLOUD_SCREEN
+    const val EDIT_OR_VIEW_ROUTE = "$EDIT_OR_VIEW_NOTE_SCREEN/$NOTE_ID_ARG"
 
 
 }
@@ -102,6 +111,10 @@ class MyNotebookNavigationActions(private val navController: NavHostController) 
         navController.navigate("$HOME_SCREEN/$userId/$userName")
 //        navController.navigate(MyNotebookNewDestinations.TEST_ROUTE)
 
+    }
+
+    fun navigateToEditOrView(noteModel: NoteModel){
+        navController.navigate("$EDIT_OR_VIEW_NOTE_SCREEN/$noteModel")
     }
 
     fun onBackPressed(){

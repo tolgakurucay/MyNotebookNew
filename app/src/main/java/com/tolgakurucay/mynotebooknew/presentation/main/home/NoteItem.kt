@@ -6,6 +6,9 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -41,10 +44,11 @@ fun NoteItem(model: NoteModel? = null, onClicked: (NoteModel?) -> Unit = {}) {
         Column(
             modifier = Modifier
                 .border(width = size1, color = LightOrange, shape = RoundedCornerShape(radius10))
+                .fillMaxWidth()
                 .padding(spacing5)
         ) {
 
-            Row {
+            Row(modifier = Modifier.fillMaxWidth()) {
                 Image(
                     painter = painterResource(id = R.drawable.plus_black),
                     contentDescription = stringResource(

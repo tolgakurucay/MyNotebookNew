@@ -4,7 +4,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.tolgakurucay.mynotebooknew.domain.base.BaseException
 import com.tolgakurucay.mynotebooknew.domain.base.ExceptionType
-import com.tolgakurucay.mynotebooknew.domain.model.Result
+import com.tolgakurucay.mynotebooknew.domain.base.Result
 import com.tolgakurucay.mynotebooknew.domain.model.auth.CreateUserEmailPasswordRequest
 import com.tolgakurucay.mynotebooknew.domain.model.auth.ForgotPasswordRequest
 import com.tolgakurucay.mynotebooknew.domain.model.auth.SignInEmailPasswordRequest
@@ -135,7 +135,8 @@ class AuthRepositoryImpl @Inject constructor(
 
     override suspend fun isUserVerifiedEmail(email: String): Flow<Result<Boolean>> = flow{
         try {
-            if(auth.currentUser?.isEmailVerified == true) emit(Result.success(true)) else emit(Result.success(false))
+            if(auth.currentUser?.isEmailVerified == true) emit(Result.success(true)) else emit(
+                Result.success(false))
         }
         catch (ex: Exception){
             emit(Result.error(BaseException(cause = ex)))

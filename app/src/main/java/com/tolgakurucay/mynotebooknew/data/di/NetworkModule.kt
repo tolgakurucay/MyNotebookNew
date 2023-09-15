@@ -6,7 +6,7 @@ import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.tolgakurucay.mynotebooknew.BuildConfig
-import com.tolgakurucay.mynotebooknew.domain.model.MyNotebookNewService
+import com.tolgakurucay.mynotebooknew.domain.base.MyNotebookNewService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

@@ -83,4 +83,6 @@
     <string name="common_added_to_cloud">Added to cloud</string>
     <string name="cd_more">More icon</string>
     <string name="action_add_to_cloud">Add to cloud</string>
+    <string name="common_update_note_uppercase">UPDATE NOTE</string>
+    <string name="screen_edit_or_view">View / Edit Note</string>
 </resources>
