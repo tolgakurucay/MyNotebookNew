@@ -5,20 +5,18 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tolgakurucay.mynotebooknew.domain.model.auth.ForgotPasswordRequest
-import com.tolgakurucay.mynotebooknew.domain.use_case.auth.ForgotPassword
 import com.tolgakurucay.mynotebooknew.util.callService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class ForgotPasswordViewModel @Inject constructor(
-    private val request: ForgotPassword
 ) : ViewModel() {
 
     private val _state = mutableStateOf(ForgotPasswordState())
     val state: State<ForgotPasswordState> = _state
 
-    fun forgotPassword(email: String) {
+    /*fun forgotPassword(email: String) {
         viewModelScope.callService(
             baseState = _state.value,
             success = {
@@ -30,7 +28,7 @@ class ForgotPasswordViewModel @Inject constructor(
                 )
             },
         )
-    }
+    }*/
 
 
 }

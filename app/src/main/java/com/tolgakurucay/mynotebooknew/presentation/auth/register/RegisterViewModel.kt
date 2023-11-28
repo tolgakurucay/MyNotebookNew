@@ -27,9 +27,7 @@ class RegisterViewModel @Inject constructor(
                 _state.value = RegisterState(isUserRegistered = true)
             },
             service = {
-                createUserUseCase.invoke(
-                    request
-                )
+               createUserUseCase.invoke(request)
             }
         )
 

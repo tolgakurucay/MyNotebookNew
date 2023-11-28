@@ -46,7 +46,7 @@ fun AddNotePage(
         saveNoteToLocale = {
             viewModel.saveNoteToLocalDatabase(it)
         },
-        uiState = viewModel.state.value
+        uiState = viewModel.state.collectAsStateWithLifecycle().value
     )
 }
 

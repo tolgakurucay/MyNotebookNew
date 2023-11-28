@@ -1,20 +1,13 @@
 package com.tolgakurucay.mynotebooknew.domain.use_case.main
 
+import com.tolgakurucay.mynotebooknew.domain.base.BaseUseCase
 import com.tolgakurucay.mynotebooknew.domain.repository.HomeRepository
 import javax.inject.Inject
 
-class GetNote @Inject constructor(private val homeRepository: HomeRepository) {
+class GetNotesFromLocale @Inject constructor(private val homeRepository: HomeRepository) :
+    BaseUseCase() {
 
-    suspend fun getAllFromLocale() = homeRepository.getAllNotesFromLocale()
+    suspend operator fun invoke() = executeFlow(homeRepository.getAllNotesFromLocale())
 
-    suspend fun getAllFromRemote() = homeRepository.getAllNotesFromRemote()
-
-    suspend fun getAllFromLocaleDesc() = homeRepository.getAllNotesFromLocaleDesc()
-
-    suspend fun getAllFromRemoteDesc() = homeRepository.getAllNotesFromRemoteDesc()
-
-    suspend fun searchByTitleFromLocale(title: String) = homeRepository.searchNotesByTitleFromLocale(title)
-
-    suspend fun searchByTitleFromRemote(title: String) = homeRepository.searchNotesByTitleFromRemote(title)
 
 }

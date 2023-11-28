@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
 import androidx.compose.material3.Divider
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -32,14 +31,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tolgakurucay.mynotebooknew.presentation.custom.CustomTextField
 import com.tolgakurucay.mynotebooknew.R
 import com.tolgakurucay.mynotebooknew.domain.base.BaseColumn
 import com.tolgakurucay.mynotebooknew.domain.base.validateCustomTextFields
 import com.tolgakurucay.mynotebooknew.domain.model.auth.SignInEmailPasswordRequest
-import com.tolgakurucay.mynotebooknew.presentation.custom.AlertDialogType
 import com.tolgakurucay.mynotebooknew.presentation.custom.ButtonType
-import com.tolgakurucay.mynotebooknew.presentation.custom.CustomAlertDialog
 import com.tolgakurucay.mynotebooknew.presentation.custom.CustomButton
 import com.tolgakurucay.mynotebooknew.presentation.custom.TextFieldType
 import com.tolgakurucay.mynotebooknew.presentation.theme.Black
@@ -65,6 +63,9 @@ fun Login(
 ) {
 
 
+    val state = viewModel.state.collectAsStateWithLifecycle().value
+
+
     Surface(
         Modifier
             .fillMaxSize()
@@ -79,9 +80,9 @@ fun Login(
             onNavigateToHome = {
                 onNavigateToHome.invoke()
             },
-            state = viewModel.state.value,
+            state = state,
             signInWithEmailAndPassword = {
-                viewModel.signInWithEmailAndPassword(it.email, it.password)
+                //viewModel.signInWithEmailAndPassword(it.email, it.password)
             }
         )
     }
@@ -105,25 +106,6 @@ fun LoginContent(
     var password by remember { mutableStateOf<String?>(null) }
 
 
-    @Composable
-    fun listenEvents() {
-        if (state.isUserAuthenticated) {
-            state.isUserAuthenticated = false
-            onNavigateToHome.invoke()
-        }
-        if (state.sendEmailVerificationLink) {
-            CustomAlertDialog(
-                type = AlertDialogType.OKAY, titleRes = R.string.common_information,
-                descriptionRes = stringResource(
-                    id = R.string.action_email_verification
-                ),
-                onConfirm = {
-                    state.sendEmailVerificationLink = false
-                }
-            )
-        }
-
-    }
 
     BaseColumn(
         modifier = modifier
@@ -243,7 +225,7 @@ fun LoginContent(
             }
         }
 
-        listenEvents()
+        //  listenEvents()
 
     }
 

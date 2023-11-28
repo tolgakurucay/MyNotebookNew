@@ -48,7 +48,7 @@ fun ForgotPasswordPage(
             onNavigateToLogin,
             state = viewModel.state.value,
             forgotPassword = {
-                viewModel.forgotPassword(it)
+               // viewModel.forgotPassword(it)
             },
         )
     }

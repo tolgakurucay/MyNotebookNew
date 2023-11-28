@@ -1,5 +1,6 @@
 package com.tolgakurucay.mynotebooknew.presentation.main.home
 
+import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
@@ -11,9 +12,11 @@ import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tolgakurucay.mynotebooknew.domain.base.BaseColumn
 import com.tolgakurucay.mynotebooknew.domain.base.BaseScaffold
 import com.tolgakurucay.mynotebooknew.domain.model.main.NoteModel
@@ -25,19 +28,26 @@ fun Home(
     homeNavigations: (HomeNavigations) -> Unit,
     loggedOut: () -> Unit,
     gotToEditOrView: (NoteModel) -> Unit
-
     ) {
-    viewModel.getNotes()
+
+    LaunchedEffect(key1 = Unit){
+        viewModel.getNotes()
+        Log.d("bilgitolga", "Home: getnotes")
+    }
+
+    val observableState = viewModel.state.collectAsStateWithLifecycle().value
+
     Surface(
         Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
     ) {
+
         HomeContent(
-            viewModel.state.value,
+            observableState,
             homeNavigations = homeNavigations,
             loggedOut = loggedOut,
-            logout = { viewModel.logout() },
+            logout = {},
             goToEditOrView = gotToEditOrView
         )
     }
@@ -56,15 +66,6 @@ fun HomeContent(
 ) {
 
 
-    fun observeState() {
-        if (state.isUserLoggedOut == true) {
-            state.isUserLoggedOut = false
-            loggedOut.invoke()
-        }
-
-    }
-
-    observeState()
 
     BaseScaffold(
         state = state,

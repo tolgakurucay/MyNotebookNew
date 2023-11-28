@@ -181,6 +181,8 @@ android {
         annotationProcessor("androidx.room:room-compiler:$roomVersion")
         kapt ("androidx.room:room-compiler:$roomVersion")
 
+        implementation ("androidx.compose.runtime:runtime-livedata:1.0.0-beta01")
+
 
 
     }

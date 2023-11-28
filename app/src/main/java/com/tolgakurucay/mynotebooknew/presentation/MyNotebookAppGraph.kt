@@ -1,15 +1,17 @@
 package com.tolgakurucay.mynotebooknew.presentation
 
 import android.os.Build
+import android.util.Log
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import androidx.navigation.NavDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.tolgakurucay.mynotebooknew.domain.model.main.NoteModel
 import com.tolgakurucay.mynotebooknew.presentation.main.add_note.AddNotePage
@@ -21,22 +23,19 @@ import com.tolgakurucay.mynotebooknew.presentation.main.home.HomeNavigations
 import com.tolgakurucay.mynotebooknew.presentation.auth.login.Login
 import com.tolgakurucay.mynotebooknew.presentation.main.profile.ProfilePage
 import com.tolgakurucay.mynotebooknew.presentation.auth.register.Register
-import com.tolgakurucay.mynotebooknew.presentation.main.edit_or_view_note.EditOrViewNotePage
+import com.tolgakurucay.mynotebooknew.util.showLog
+
 
 @Composable
 fun MyNotebookAppGraph(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
-    startDestination: String = MyNotebookNewDestinations.LOGIN_ROUTE,
+    startDestination: String = MyNotebookNewDestinations.HOME_ROUTE,
     navActions: MyNotebookNavigationActions = remember(navController) {
         MyNotebookNavigationActions(navController)
     }
 
 ) {
-
-    //Use this when you use drawer
-    val currentNavBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentRoute = currentNavBackStackEntry?.destination?.route ?: startDestination
 
     NavHost(
         navController = navController,
@@ -44,30 +43,35 @@ fun MyNotebookAppGraph(
         modifier = modifier
     ) {
 
+
         composable(
             MyNotebookNewDestinations.HOME_ROUTE,
         ) {
+         /*   SideEffect {
+                showLog("sideEffect girildi")
+            }
+
+            LaunchedEffect(key1 = null){
+                showLog("launchedEffect girildi")
+            }
+
+            DisposableEffect(key1 = Unit,effect = {
+                onDispose {
+                    showLog("DisposableEffect")
+                }
+            })*/
+
+
+            showLog("home girildi")
+
             Home(
                 homeNavigations = { homeNavigation ->
                     when (homeNavigation) {
-                        HomeNavigations.FAVORITES -> {
-                            navActions.navigateToFavorites()
-                        }
-
-                        HomeNavigations.CLOUD -> {
-                            navActions.navigateToCloud()
-                        }
-
-                        HomeNavigations.PROFILE -> {
-                            navActions.navigateToProfile()
-                        }
-
-                        HomeNavigations.ADD_NOTE -> {
-                            navActions.navigateToAddNote()
-                        }
-
+                        HomeNavigations.FAVORITES -> navActions.navigateToFavorites()
+                        HomeNavigations.CLOUD -> navActions.navigateToCloud()
+                        HomeNavigations.PROFILE -> navActions.navigateToProfile()
+                        HomeNavigations.ADD_NOTE -> navActions.navigateToAddNote()
                         else -> {}
-
                     }
                 },
                 loggedOut = {
@@ -77,6 +81,7 @@ fun MyNotebookAppGraph(
                     navActions.navigateToEditOrView(it)
                 }
             )
+
         }
 
         composable(MyNotebookNewDestinations.PROFILE_ROUTE) {
@@ -130,13 +135,15 @@ fun MyNotebookAppGraph(
         }
 
         composable(MyNotebookNewDestinations.EDIT_OR_VIEW_ROUTE) {
-          if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.TIRAMISU){
-              it.arguments?.getParcelable(MyNotebookNewDestinationsArgs.NOTE_MODEL_ARG,NoteModel::class.java)
-              
-          }
-            else{
-              // TODO: convert this parceable to noteId and insert to the repository and create usecase 
-          }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                it.arguments?.getParcelable(
+                    MyNotebookNewDestinationsArgs.NOTE_MODEL_ARG,
+                    NoteModel::class.java
+                )
+
+            } else {
+                // TODO: convert this parceable to noteId and insert to the repository and create usecase
+            }
             /*it.arguments?.getParcelable(MyNotebookNewDestinationsArgs.NOTE_ID_ARG)?.let {
                 EditOrViewNotePage(
                     noteModel = ,

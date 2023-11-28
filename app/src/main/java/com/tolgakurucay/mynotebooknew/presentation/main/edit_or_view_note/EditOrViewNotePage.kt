@@ -37,7 +37,7 @@ fun EditOrViewNotePage(
         onBackPressed = onBackPressed,
         goToHome = goToHome,
         updateNoteToLocale = {
-            viewModel.updateNoteFromLocale(it)
+            //viewModel.updateNoteFromLocale(it)
         },
         uiState = viewModel.state.value
     )

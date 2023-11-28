@@ -1,33 +1,35 @@
 package com.tolgakurucay.mynotebooknew.presentation.main.home
 
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.tolgakurucay.mynotebooknew.domain.model.main.NoteModel
 import com.tolgakurucay.mynotebooknew.domain.use_case.auth.LogOut
-import com.tolgakurucay.mynotebooknew.domain.use_case.main.AddNote
-import com.tolgakurucay.mynotebooknew.domain.use_case.main.GetNote
+import com.tolgakurucay.mynotebooknew.domain.use_case.main.AddNoteToLocale
+import com.tolgakurucay.mynotebooknew.domain.use_case.main.GetNotesFromLocale
 import com.tolgakurucay.mynotebooknew.util.callService
-import com.tolgakurucay.mynotebooknew.util.callServiceOneShot
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val logOut: LogOut,
-    private val addNote: AddNote,
-    private val getNote: GetNote
+    private val addNoteToLocale: AddNoteToLocale,
+    private val getNote: GetNotesFromLocale
 ) : ViewModel() {
 
 
-    private val _state = mutableStateOf(HomeState())
-    val state: State<HomeState> = _state
+    private val _state = MutableStateFlow(HomeState())
+    val state: StateFlow<HomeState> = _state
+
+    init {
+        getNotes()
+    }
 
 
-    fun logout() {
+  /*  fun logout() {
         viewModelScope.callService(
             baseState = _state.value,
             success = {
@@ -37,32 +39,23 @@ class HomeViewModel @Inject constructor(
                 logOut.invoke()
             },
         )
-    }
+    }*/
 
-    //_state.value = HomeState(notes = context.fromJsonToList("note_item.json",NoteModel::class) ?: listOf())
     fun getNotes() {
-        viewModelScope.callServiceOneShot(
+        Log.d("bilgitolga", "getNotes: vvv")
+        viewModelScope.callService(
             baseState = _state.value,
             success = {
+                Log.d("bilgitolga", "getNotes: $it")
                 _state.value = HomeState(notes = it)
             },
             service = {
-                getNote.getAllFromLocale()
+                getNote.invoke()
             },
         )
 
     }
 
-    fun addNote(model: NoteModel){
-        viewModelScope.launch {
-            addNote.toLocale(model).data?.let {
-                if(it){
-                    getNotes()
-                }
-            }
-
-        }
-    }
 
 
 }

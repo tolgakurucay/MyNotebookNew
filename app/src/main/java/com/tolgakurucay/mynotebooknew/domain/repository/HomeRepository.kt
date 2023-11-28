@@ -7,16 +7,16 @@ import kotlinx.coroutines.flow.Flow
 interface HomeRepository {
 
     //Get all notes
-    suspend fun getAllNotesFromRemote() : Result<List<NoteModel>>
-    suspend fun getAllNotesFromLocale() : Result<List<NoteModel>>
+    suspend fun getAllNotesFromRemote() : Flow<List<NoteModel>>
+    suspend fun getAllNotesFromLocale() : Flow<List<NoteModel>>
 
-    //Get all notes ASC
-    suspend fun getAllNotesFromLocaleAsc() : Result<List<NoteModel>>
-    suspend fun getAllNotesFromRemoteAsc() : Result<List<NoteModel>>
-
+  /*  //Get all notes ASC
+    suspend fun getAllNotesFromLocaleAsc() : Flow<Result<List<NoteModel>>>
+    suspend fun getAllNotesFromRemoteAsc() : Flow<Result<List<NoteModel>>
+>
     //Get all notes DESC
-    suspend fun getAllNotesFromLocaleDesc() : Result<List<NoteModel>>
-    suspend fun getAllNotesFromRemoteDesc() : Result<List<NoteModel>>
+    suspend fun getAllNotesFromLocaleDesc() : Flow<Result<List<NoteModel>>>
+    suspend fun getAllNotesFromRemoteDesc() : Flow<Result<List<NoteModel>>>
 
     //Search note by title
     suspend fun searchNoteByTitleFromLocale(title: String) : Flow<Result<NoteModel>>
@@ -35,20 +35,20 @@ interface HomeRepository {
     suspend fun searchNotesByDescFromRemote(description: String) : Flow<Result<List<NoteModel>>>
 
     //Delete note
-    suspend fun deleteNoteFromLocale(model: NoteModel) : Result<Boolean>
-    suspend fun deleteNoteFromRemote(model: NoteModel) : Result<Boolean>
+    suspend fun deleteNoteFromLocale(model: NoteModel) : Flow<Result<Boolean>>
+    suspend fun deleteNoteFromRemote(model: NoteModel) : Flow<Result<Boolean>>
 
     //Delete all notes
-    suspend fun deleteAllNotesFromLocale() : Result<Boolean>
-    suspend fun deleteAllNotesFromRemote() : Result<Boolean>
+    suspend fun deleteAllNotesFromLocale() : Flow<Result<Boolean>>
+    suspend fun deleteAllNotesFromRemote() : Flow<Result<Boolean>>
 
     //Update note
-    suspend fun updateNoteFromLocale(model: NoteModel) : Result<Boolean>
-    suspend fun updateNoteFromRemote(model: NoteModel) : Result<Boolean>
+    suspend fun updateNoteFromLocale(model: NoteModel) : Flow<Result<Boolean>>
+    suspend fun updateNoteFromRemote(model: NoteModel) : Flow<Result<Boolean>>*/
 
     //Add note
-    suspend fun addNoteToLocale(model: NoteModel) : Result<Boolean>
-    suspend fun addNoteToRemote(model: NoteModel) : Result<Boolean>
+    suspend fun addNoteToLocale(model: NoteModel)
+    suspend fun addNoteToRemote(model: NoteModel)
 
 
 }

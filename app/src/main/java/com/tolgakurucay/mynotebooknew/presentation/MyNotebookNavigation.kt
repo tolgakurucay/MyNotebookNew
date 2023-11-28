@@ -1,9 +1,7 @@
 package com.tolgakurucay.mynotebooknew.presentation
 
-import androidx.navigation.NavDirections
 import androidx.navigation.NavHostController
 import com.tolgakurucay.mynotebooknew.domain.model.main.NoteModel
-import com.tolgakurucay.mynotebooknew.presentation.MyNotebookNewDestinations.EDIT_OR_VIEW_ROUTE
 import com.tolgakurucay.mynotebooknew.presentation.MyNotebookNewDestinationsArgs.NOTE_ID_ARG
 import com.tolgakurucay.mynotebooknew.presentation.MyNotebookNewScreens.FORGOT_PASSWORD_SCREEN
 import com.tolgakurucay.mynotebooknew.presentation.MyNotebookNewScreens.HOME_SCREEN
@@ -16,7 +14,6 @@ import com.tolgakurucay.mynotebooknew.presentation.MyNotebookNewScreens.CLOUD_SC
 import com.tolgakurucay.mynotebooknew.presentation.MyNotebookNewScreens.EDIT_OR_VIEW_NOTE_SCREEN
 import com.tolgakurucay.mynotebooknew.presentation.MyNotebookNewScreens.FAVORITES_SCREEN
 import com.tolgakurucay.mynotebooknew.presentation.MyNotebookNewScreens.PROFILE_SCREEN
-import com.tolgakurucay.mynotebooknew.presentation.main.home.HomeNavigations
 
 
 /**
@@ -69,6 +66,7 @@ object MyNotebookNewDestinations {
 
 class MyNotebookNavigationActions(private val navController: NavHostController) {
 
+
     fun navigateToForgotPassword() {
         navController.navigate(MyNotebookNewDestinations.FORGOT_PASSWORD_ROUTE) {
 
@@ -83,24 +81,39 @@ class MyNotebookNavigationActions(private val navController: NavHostController) 
 
     fun navigateToLogin(){
         navController.navigate(MyNotebookNewDestinations.LOGIN_ROUTE){
-
         }
     }
 
     fun navigateToHome(){
-        navController.navigate(MyNotebookNewDestinations.HOME_ROUTE)
+        navController.navigate(MyNotebookNewDestinations.HOME_ROUTE){
+
+        }
+
+
     }
 
     fun navigateToAddNote(){
-        navController.navigate(MyNotebookNewDestinations.ADD_NOTE_ROUTE)
+        navController.navigate(MyNotebookNewDestinations.ADD_NOTE_ROUTE){
+            this.popUpTo(MyNotebookNewDestinations.FAVORITES_ROUTE){
+                inclusive = true
+                saveState = true
+            }
+
+        }
     }
 
     fun navigateToFavorites(){
-        navController.navigate(MyNotebookNewDestinations.FAVORITES_ROUTE)
+        navController.navigate(MyNotebookNewDestinations.FAVORITES_ROUTE){
+            this.popUpTo(MyNotebookNewDestinations.HOME_ROUTE)
+
+        }
     }
 
     fun navigateToCloud(){
-        navController.navigate(MyNotebookNewDestinations.CLOUD_ROUTE)
+        navController.navigate(MyNotebookNewDestinations.CLOUD_ROUTE){
+            this.popUpTo(MyNotebookNewDestinations.REGISTER_ROUTE)
+
+        }
 
     }
     fun navigateToProfile(){
@@ -118,7 +131,7 @@ class MyNotebookNavigationActions(private val navController: NavHostController) 
     }
 
     fun onBackPressed(){
-        navController.popBackStack()
+        navController.navigateUp()
     }
 
 }

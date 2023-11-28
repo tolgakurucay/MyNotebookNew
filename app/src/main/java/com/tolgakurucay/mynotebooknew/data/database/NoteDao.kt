@@ -28,16 +28,16 @@ interface NoteDao {
     fun searchNotesByDescription(description: String) : Flow<List<NoteModel>>
 
     @Query("SELECT * FROM NoteTable ORDER BY date ASC")
-    suspend fun getAllNotesByAsc() : List<NoteModel>
+    fun getAllNotesByAsc() : Flow<List<NoteModel>>
 
     @Query("SELECT * FROM NoteTable ORDER BY date DESC")
-    suspend fun getAllNotesByDesc() : List<NoteModel>
+    fun getAllNotesByDesc() : Flow<List<NoteModel>>
 
     @Update
     suspend fun updateNote(noteModel: NoteModel)
 
     @Query("Select * from NoteTable")
-    suspend fun getAllNotes(): List<NoteModel>
+    fun getAllNotes(): Flow<List<NoteModel>>
 
     @Delete
     suspend fun deleteNote(noteModel: NoteModel)
