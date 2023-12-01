@@ -2,13 +2,14 @@ package com.tolgakurucay.mynotebooknew.presentation.auth.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.tolgakurucay.mynotebooknew.domain.base.ExceptionType
 import com.tolgakurucay.mynotebooknew.domain.model.auth.SignInEmailPasswordRequest
 import com.tolgakurucay.mynotebooknew.domain.use_case.auth.SignInWithEmailAndPassword
 import com.tolgakurucay.mynotebooknew.util.callService
+import com.tolgakurucay.mynotebooknew.util.isNotNull
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
@@ -18,38 +19,28 @@ class LoginViewModel @Inject constructor(
 
 
     private val _state = MutableStateFlow(LoginState())
-    val state: StateFlow<LoginState> = _state
+    val state: StateFlow<LoginState> = _state.asStateFlow()
 
-
-   /* fun signInWithEmailAndPassword(email: String, password: String) {
+    fun signInWithEmailAndPassword(email: String, password: String) {
         viewModelScope.callService(
-            _state.value,
-            success = {
-                _state.value = LoginState(isUserAuthenticated = true)
-            },
-            service = {
-                signInEmailPassword.invoke(
-                    SignInEmailPasswordRequest(email = email, password = password)
-                )
-            },
-            fail = {
-                it?.let { safeBaseException ->
-                    if (safeBaseException.exceptionType == ExceptionType.EMAIL_NOT_VERIFIED) {
-                        viewModelScope.callService(
-                            _state.value,
-                            success = {
-
-                            },
-                            service = { sendEmailValidation.invoke(email) },
-                        )
-
-                    }
-                    _state.value.myNotebookException = it
-
+            baseState = _state.value,
+            success = { response ->
+                if (response.authResult?.user.isNotNull()) {
+                    _state.value = _state.value.copy(isUserAuthenticated = true)
                 }
             },
+            service = {
+                signInEmailPassword.invoke(SignInEmailPasswordRequest(email, password))
+            },
+            fail = {
+
+                _state.value = _state.value.copy(isUserAuthenticated = false).apply {
+                    this.myNotebookException = it
+                }
+
+            }
         )
-    }*/
+    }
 
     // TODO:
     fun signInWithFacebook() {

@@ -19,6 +19,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -52,6 +53,7 @@ import com.tolgakurucay.mynotebooknew.presentation.theme.spacing40
 import com.tolgakurucay.mynotebooknew.presentation.theme.spacing5
 import com.tolgakurucay.mynotebooknew.presentation.theme.spacing70
 import com.tolgakurucay.mynotebooknew.util.safeLet
+import com.tolgakurucay.mynotebooknew.util.showLog
 
 
 @Composable
@@ -63,7 +65,19 @@ fun Login(
 ) {
 
 
-    val state = viewModel.state.collectAsStateWithLifecycle().value
+    val state = viewModel.state.collectAsStateWithLifecycle()
+
+    if (state.value.isUserAuthenticated == true) {
+        LaunchedEffect(
+            key1 = "navigate",
+            block = {
+                onNavigateToHome.invoke()
+            },
+        )
+    }
+    else{
+        showLog("girildimiiiiii")
+    }
 
 
     Surface(
@@ -77,12 +91,9 @@ fun Login(
             onNavigateToForgotPasswordContent = {
                 onNavigateToForgotPasswordMain.invoke()
             },
-            onNavigateToHome = {
-                onNavigateToHome.invoke()
-            },
-            state = state,
+            state = state.value,
             signInWithEmailAndPassword = {
-                //viewModel.signInWithEmailAndPassword(it.email, it.password)
+                viewModel.signInWithEmailAndPassword(it.email, it.password)
             }
         )
     }
@@ -95,7 +106,6 @@ fun LoginContent(
     modifier: Modifier = Modifier,
     onNavigateToRegisterContent: () -> Unit = {},
     onNavigateToForgotPasswordContent: () -> Unit = {},
-    onNavigateToHome: () -> Unit = {},
     state: LoginState = LoginState(),
     signInWithEmailAndPassword: (SignInEmailPasswordRequest) -> Unit = {}
 

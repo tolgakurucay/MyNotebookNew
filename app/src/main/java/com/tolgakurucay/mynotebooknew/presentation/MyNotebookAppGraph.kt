@@ -21,8 +21,6 @@ import com.tolgakurucay.mynotebooknew.presentation.auth.login.Login
 import com.tolgakurucay.mynotebooknew.presentation.main.profile.ProfilePage
 import com.tolgakurucay.mynotebooknew.presentation.auth.register.Register
 import com.tolgakurucay.mynotebooknew.presentation.main.edit_or_view_note.EditOrViewNotePage
-import com.tolgakurucay.mynotebooknew.util.parcelable
-import com.tolgakurucay.mynotebooknew.util.showLog
 
 
 @Composable
@@ -124,9 +122,6 @@ fun MyNotebookAppGraph(
                 }
             ),
         ) {
-
-            val noteModel = it.arguments?.parcelable<NoteModel>(DestinationsArgs.NOTE_ARG)
-
 
             it.arguments?.getString(DestinationsArgs.NOTE_ARG)?.let { noteModelJson ->
                 val model = Gson().fromJson(noteModelJson, NoteModel::class.java)

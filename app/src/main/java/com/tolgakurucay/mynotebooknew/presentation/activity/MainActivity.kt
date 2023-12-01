@@ -9,6 +9,7 @@ import androidx.activity.viewModels
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.core.view.WindowCompat
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberPermissionState
 import com.tolgakurucay.mynotebooknew.presentation.MyNotebookAppGraph
@@ -27,9 +28,7 @@ class MainActivity @Inject constructor() : ComponentActivity() {
         setContent {
             MyNotebookNewTheme {
                 setup()
-                MyNotebookAppGraph(startDestination = Destinations.HOME_ROUTE)
-
-               // observeState()
+                observeState()
             }
         }
     }
@@ -51,13 +50,13 @@ class MainActivity @Inject constructor() : ComponentActivity() {
 
     @Composable
     private fun observeState() {
-        val state = mainViewModel.state.value
+        val loggedIn = mainViewModel.state.collectAsStateWithLifecycle().value
+        when (loggedIn.isUserLoggedIn) {
+            true -> MyNotebookAppGraph(startDestination = Destinations.HOME_ROUTE)
 
-       /* if (state.isUserLoggedIn) {
-            MyNotebookAppGraph(startDestination = Destinations.HOME_ROUTE)
-        } else {
-            MyNotebookAppGraph(startDestination = Destinations.LOGIN_ROUTE)
-        }*/
+            false -> MyNotebookAppGraph(startDestination = Destinations.LOGIN_ROUTE)
+
+        }
     }
 
 }

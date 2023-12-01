@@ -15,7 +15,6 @@ import com.tolgakurucay.mynotebooknew.presentation.ScreenNames.CLOUD_SCREEN
 import com.tolgakurucay.mynotebooknew.presentation.ScreenNames.EDIT_OR_VIEW_NOTE_SCREEN
 import com.tolgakurucay.mynotebooknew.presentation.ScreenNames.FAVORITES_SCREEN
 import com.tolgakurucay.mynotebooknew.presentation.ScreenNames.PROFILE_SCREEN
-import com.tolgakurucay.mynotebooknew.util.showLog
 
 
 /**
@@ -56,7 +55,7 @@ object Destinations {
     const val REGISTER_ROUTE = REGISTER_SCREEN
     const val HOME_ROUTE = HOME_SCREEN
     const val PROFILE_ROUTE = "$PROFILE_SCREEN/{$USER_ID_ARG}"
-    const val TEST_ROUTE ="$HOME_SCREEN/{$USER_ID_ARG}/{$USER_NAME_ARG}"
+    const val TEST_ROUTE = "$HOME_SCREEN/{$USER_ID_ARG}/{$USER_NAME_ARG}"
     const val ADD_NOTE_ROUTE = ADD_NOTE_SCREEN
     const val FAVORITES_ROUTE = FAVORITES_SCREEN
     const val CLOUD_ROUTE = CLOUD_SCREEN
@@ -76,27 +75,29 @@ class Actions(private val navController: NavHostController) {
     }
 
     fun navigateToRegister() {
-        navController.navigate(Destinations.REGISTER_ROUTE){
+        navController.navigate(Destinations.REGISTER_ROUTE) {
 
         }
     }
 
-    fun navigateToLogin(){
-        navController.navigate(Destinations.LOGIN_ROUTE){
+    fun navigateToLogin() {
+        navController.navigate(Destinations.LOGIN_ROUTE) {
         }
     }
 
-    fun navigateToHome(){
-        navController.navigate(Destinations.HOME_ROUTE){
-
+    fun navigateToHome() {
+        navController.navigate(Destinations.HOME_ROUTE) {
+            this.popUpTo(Destinations.LOGIN_ROUTE){
+                inclusive = true
+            }
         }
 
 
     }
 
-    fun navigateToAddNote(){
-        navController.navigate(Destinations.ADD_NOTE_ROUTE){
-            this.popUpTo(Destinations.FAVORITES_ROUTE){
+    fun navigateToAddNote() {
+        navController.navigate(Destinations.ADD_NOTE_ROUTE) {
+            this.popUpTo(Destinations.FAVORITES_ROUTE) {
                 inclusive = true
                 saveState = true
             }
@@ -104,38 +105,38 @@ class Actions(private val navController: NavHostController) {
         }
     }
 
-    fun navigateToFavorites(){
-        navController.navigate(Destinations.FAVORITES_ROUTE){
+    fun navigateToFavorites() {
+        navController.navigate(Destinations.FAVORITES_ROUTE) {
             this.popUpTo(Destinations.HOME_ROUTE)
 
         }
     }
 
-    fun navigateToCloud(){
-        navController.navigate(Destinations.CLOUD_ROUTE){
+    fun navigateToCloud() {
+        navController.navigate(Destinations.CLOUD_ROUTE) {
             this.popUpTo(Destinations.REGISTER_ROUTE)
 
         }
 
     }
-    fun navigateToProfile(){
+    fun navigateToProfile() {
         navController.navigate(Destinations.PROFILE_ROUTE)
     }
 
-    fun navigateToTest(userId : Int, userName : String){
+    fun navigateToTest(userId: Int, userName: String) {
         navController.navigate("$HOME_SCREEN/$userId/$userName")
 //        navController.navigate(Destinations.TEST_ROUTE)
 
     }
 
-    fun navigateToEditOrView(noteModel: NoteModel){
+    fun navigateToEditOrView(noteModel: NoteModel) {
         val modelToJson = Gson().toJson(noteModel)
         navController.navigate("$EDIT_OR_VIEW_NOTE_SCREEN/$modelToJson")
 
 
     }
 
-    fun onBackPressed(){
+    fun onBackPressed() {
         navController.navigateUp()
     }
 

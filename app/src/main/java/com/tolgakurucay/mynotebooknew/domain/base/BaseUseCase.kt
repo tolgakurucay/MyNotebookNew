@@ -1,6 +1,5 @@
 package com.tolgakurucay.mynotebooknew.domain.base
 
-import com.tolgakurucay.mynotebooknew.util.showLog
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect

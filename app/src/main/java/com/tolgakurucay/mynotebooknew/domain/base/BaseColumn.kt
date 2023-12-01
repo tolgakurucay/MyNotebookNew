@@ -11,13 +11,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tolgakurucay.mynotebooknew.R
 import com.tolgakurucay.mynotebooknew.presentation.custom.AlertDialogType
 import com.tolgakurucay.mynotebooknew.presentation.custom.CustomAlertDialog
 import com.tolgakurucay.mynotebooknew.presentation.custom.CustomLoading
-import com.tolgakurucay.mynotebooknew.util.isNotNull
+import com.tolgakurucay.mynotebooknew.util.showLog
 
 
 @Composable
@@ -36,6 +34,7 @@ fun BaseColumn(
             CustomLoading()
         }
 
+        showLog("isShownError : $isShownError")
         isShownError?.let { baseExc ->
             var message: String
 
