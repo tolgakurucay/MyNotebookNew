@@ -22,7 +22,7 @@ fun <T> CoroutineScope.callService(
         service.invoke()
             .onEach {
                 when(it.status){
-                    Result.Status.LOADING -> baseState.isShowLoading = false
+                    Result.Status.LOADING -> baseState.isShowLoading = true
 
                     Result.Status.ERROR -> {
                         baseState.isShowLoading = false

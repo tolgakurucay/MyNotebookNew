@@ -34,7 +34,7 @@ interface NoteDao {
     fun getAllNotesByDesc() : Flow<List<NoteModel>>
 
     @Update
-    suspend fun updateNote(noteModel: NoteModel)
+    suspend fun updateNote(noteModel: NoteModel) : Int?
 
     @Query("Select * from NoteTable")
     fun getAllNotes(): Flow<List<NoteModel>>

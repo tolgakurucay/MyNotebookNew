@@ -24,30 +24,13 @@ class HomeViewModel @Inject constructor(
     private val _state = MutableStateFlow(HomeState())
     val state: StateFlow<HomeState> = _state
 
-    init {
-        getNotes()
-    }
-
-
-  /*  fun logout() {
-        viewModelScope.callService(
-            baseState = _state.value,
-            success = {
-                _state.value = HomeState(isUserLoggedOut = true)
-            },
-            service = {
-                logOut.invoke()
-            },
-        )
-    }*/
 
     fun getNotes() {
-        Log.d("bilgitolga", "getNotes: vvv")
         viewModelScope.callService(
             baseState = _state.value,
             success = {
                 Log.d("bilgitolga", "getNotes: $it")
-                _state.value = HomeState(notes = it)
+                _state.value = _state.value.copy(notes = it)
             },
             service = {
                 getNote.invoke()

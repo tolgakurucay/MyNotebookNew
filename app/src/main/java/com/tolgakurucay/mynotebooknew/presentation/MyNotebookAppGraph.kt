@@ -1,18 +1,15 @@
 package com.tolgakurucay.mynotebooknew.presentation
 
-import android.os.Build
-import android.util.Log
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavDestination
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import com.google.gson.Gson
 import com.tolgakurucay.mynotebooknew.domain.model.main.NoteModel
 import com.tolgakurucay.mynotebooknew.presentation.main.add_note.AddNotePage
 import com.tolgakurucay.mynotebooknew.presentation.main.cloud.CloudPage
@@ -23,6 +20,8 @@ import com.tolgakurucay.mynotebooknew.presentation.main.home.HomeNavigations
 import com.tolgakurucay.mynotebooknew.presentation.auth.login.Login
 import com.tolgakurucay.mynotebooknew.presentation.main.profile.ProfilePage
 import com.tolgakurucay.mynotebooknew.presentation.auth.register.Register
+import com.tolgakurucay.mynotebooknew.presentation.main.edit_or_view_note.EditOrViewNotePage
+import com.tolgakurucay.mynotebooknew.util.parcelable
 import com.tolgakurucay.mynotebooknew.util.showLog
 
 
@@ -30,9 +29,9 @@ import com.tolgakurucay.mynotebooknew.util.showLog
 fun MyNotebookAppGraph(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
-    startDestination: String = MyNotebookNewDestinations.HOME_ROUTE,
-    navActions: MyNotebookNavigationActions = remember(navController) {
-        MyNotebookNavigationActions(navController)
+    startDestination: String = Destinations.HOME_ROUTE,
+    navActions: Actions = remember(navController) {
+        Actions(navController)
     }
 
 ) {
@@ -45,25 +44,8 @@ fun MyNotebookAppGraph(
 
 
         composable(
-            MyNotebookNewDestinations.HOME_ROUTE,
+            Destinations.HOME_ROUTE,
         ) {
-         /*   SideEffect {
-                showLog("sideEffect girildi")
-            }
-
-            LaunchedEffect(key1 = null){
-                showLog("launchedEffect girildi")
-            }
-
-            DisposableEffect(key1 = Unit,effect = {
-                onDispose {
-                    showLog("DisposableEffect")
-                }
-            })*/
-
-
-            showLog("home girildi")
-
             Home(
                 homeNavigations = { homeNavigation ->
                     when (homeNavigation) {
@@ -74,21 +56,21 @@ fun MyNotebookAppGraph(
                         else -> {}
                     }
                 },
-                loggedOut = {
+                onLogOutClicked = {
                     navActions.navigateToLogin()
                 },
-                gotToEditOrView = {
+                onNoteItemClicked = {
                     navActions.navigateToEditOrView(it)
                 }
             )
 
         }
 
-        composable(MyNotebookNewDestinations.PROFILE_ROUTE) {
+        composable(Destinations.PROFILE_ROUTE) {
             ProfilePage()
         }
 
-        composable(MyNotebookNewDestinations.LOGIN_ROUTE) {
+        composable(Destinations.LOGIN_ROUTE) {
             Login(
                 onNavigateToForgotPasswordMain = {
                     navActions.navigateToForgotPassword()
@@ -102,7 +84,7 @@ fun MyNotebookAppGraph(
             )
         }
 
-        composable(MyNotebookNewDestinations.FORGOT_PASSWORD_ROUTE) {
+        composable(Destinations.FORGOT_PASSWORD_ROUTE) {
             ForgotPasswordPage(
                 onNavigateToLogin = {
                     navActions.navigateToLogin()
@@ -110,7 +92,7 @@ fun MyNotebookAppGraph(
             )
         }
 
-        composable(MyNotebookNewDestinations.REGISTER_ROUTE) {
+        composable(Destinations.REGISTER_ROUTE) {
             Register(
                 onNavigateToLogin = {
                     navActions.navigateToLogin()
@@ -118,11 +100,11 @@ fun MyNotebookAppGraph(
             )
         }
 
-        composable(MyNotebookNewDestinations.FAVORITES_ROUTE) {
+        composable(Destinations.FAVORITES_ROUTE) {
             FavoritesPage()
         }
 
-        composable(MyNotebookNewDestinations.ADD_NOTE_ROUTE) {
+        composable(Destinations.ADD_NOTE_ROUTE) {
             AddNotePage(
                 onBackPressed = { navActions.onBackPressed() },
                 goToHome = {
@@ -130,30 +112,33 @@ fun MyNotebookAppGraph(
                 },
             )
         }
-        composable(MyNotebookNewDestinations.CLOUD_ROUTE) {
+        composable(Destinations.CLOUD_ROUTE) {
             CloudPage()
         }
 
-        composable(MyNotebookNewDestinations.EDIT_OR_VIEW_ROUTE) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                it.arguments?.getParcelable(
-                    MyNotebookNewDestinationsArgs.NOTE_MODEL_ARG,
-                    NoteModel::class.java
-                )
+        composable(
+            Destinations.EDIT_OR_VIEW_ROUTE,
+            arguments = listOf(
+                navArgument(DestinationsArgs.NOTE_ARG) {
+                    this.type = NavType.StringType
+                }
+            ),
+        ) {
 
-            } else {
-                // TODO: convert this parceable to noteId and insert to the repository and create usecase
-            }
-            /*it.arguments?.getParcelable(MyNotebookNewDestinationsArgs.NOTE_ID_ARG)?.let {
+            val noteModel = it.arguments?.parcelable<NoteModel>(DestinationsArgs.NOTE_ARG)
+
+
+            it.arguments?.getString(DestinationsArgs.NOTE_ARG)?.let { noteModelJson ->
+                val model = Gson().fromJson(noteModelJson, NoteModel::class.java)
                 EditOrViewNotePage(
-                    noteModel = ,
+                    noteModel = model,
                     onBackPressed = {
-                        navController.navigateUp()
+                        navActions.onBackPressed()
                     },
-                    goToHome = { navActions.navigateToHome() },
                 )
 
-            }*/
+            }
+
 
         }
 

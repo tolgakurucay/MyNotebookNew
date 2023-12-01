@@ -1,6 +1,10 @@
 package com.tolgakurucay.mynotebooknew.util
 
 import android.content.Context
+import android.content.Intent
+import android.os.Build
+import android.os.Bundle
+import android.os.Parcelable
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.io.IOException
@@ -75,5 +79,15 @@ inline fun <reified T : Any> Context.fromJsonToList(
 
 fun Any?.isNull(): Boolean {
     return this == null
+}
+
+inline fun <reified T : Parcelable> Intent.parcelable(key: String): T? = when {
+    Build.VERSION.SDK_INT >= 33 -> getParcelableExtra(key, T::class.java)
+    else -> @Suppress("DEPRECATION") getParcelableExtra(key) as? T
+}
+
+inline fun <reified T : Parcelable> Bundle.parcelable(key: String): T? = when {
+    Build.VERSION.SDK_INT >= 33 -> getParcelable(key, T::class.java)
+    else -> @Suppress("DEPRECATION") getParcelable(key) as? T
 }
 

@@ -1,25 +1,27 @@
 package com.tolgakurucay.mynotebooknew.presentation
 
 import androidx.navigation.NavHostController
+import com.google.gson.Gson
 import com.tolgakurucay.mynotebooknew.domain.model.main.NoteModel
-import com.tolgakurucay.mynotebooknew.presentation.MyNotebookNewDestinationsArgs.NOTE_ID_ARG
-import com.tolgakurucay.mynotebooknew.presentation.MyNotebookNewScreens.FORGOT_PASSWORD_SCREEN
-import com.tolgakurucay.mynotebooknew.presentation.MyNotebookNewScreens.HOME_SCREEN
-import com.tolgakurucay.mynotebooknew.presentation.MyNotebookNewScreens.LOGIN_SCREEN
-import com.tolgakurucay.mynotebooknew.presentation.MyNotebookNewScreens.REGISTER_SCREEN
-import com.tolgakurucay.mynotebooknew.presentation.MyNotebookNewDestinationsArgs.USER_ID_ARG
-import com.tolgakurucay.mynotebooknew.presentation.MyNotebookNewDestinationsArgs.USER_NAME_ARG
-import com.tolgakurucay.mynotebooknew.presentation.MyNotebookNewScreens.ADD_NOTE_SCREEN
-import com.tolgakurucay.mynotebooknew.presentation.MyNotebookNewScreens.CLOUD_SCREEN
-import com.tolgakurucay.mynotebooknew.presentation.MyNotebookNewScreens.EDIT_OR_VIEW_NOTE_SCREEN
-import com.tolgakurucay.mynotebooknew.presentation.MyNotebookNewScreens.FAVORITES_SCREEN
-import com.tolgakurucay.mynotebooknew.presentation.MyNotebookNewScreens.PROFILE_SCREEN
+import com.tolgakurucay.mynotebooknew.presentation.DestinationsArgs.NOTE_ARG
+import com.tolgakurucay.mynotebooknew.presentation.ScreenNames.FORGOT_PASSWORD_SCREEN
+import com.tolgakurucay.mynotebooknew.presentation.ScreenNames.HOME_SCREEN
+import com.tolgakurucay.mynotebooknew.presentation.ScreenNames.LOGIN_SCREEN
+import com.tolgakurucay.mynotebooknew.presentation.ScreenNames.REGISTER_SCREEN
+import com.tolgakurucay.mynotebooknew.presentation.DestinationsArgs.USER_ID_ARG
+import com.tolgakurucay.mynotebooknew.presentation.DestinationsArgs.USER_NAME_ARG
+import com.tolgakurucay.mynotebooknew.presentation.ScreenNames.ADD_NOTE_SCREEN
+import com.tolgakurucay.mynotebooknew.presentation.ScreenNames.CLOUD_SCREEN
+import com.tolgakurucay.mynotebooknew.presentation.ScreenNames.EDIT_OR_VIEW_NOTE_SCREEN
+import com.tolgakurucay.mynotebooknew.presentation.ScreenNames.FAVORITES_SCREEN
+import com.tolgakurucay.mynotebooknew.presentation.ScreenNames.PROFILE_SCREEN
+import com.tolgakurucay.mynotebooknew.util.showLog
 
 
 /**
- * Screens used in [MyNotebookNewDestinations]
+ * Screens used in [Destinations]
  */
-private object MyNotebookNewScreens {
+private object ScreenNames {
     const val HOME_SCREEN = "home"
     const val LOGIN_SCREEN = "login"
     const val FORGOT_PASSWORD_SCREEN = "forgotPassword"
@@ -33,12 +35,12 @@ private object MyNotebookNewScreens {
 
 
 /**
- * Arguments used in [MyNotebookNewDestinations] routes
+ * Arguments used in [Destinations] routes
  */
-object MyNotebookNewDestinationsArgs {
+object DestinationsArgs {
     const val USER_ID_ARG = "userId"
     const val USER_NAME_ARG = "userName"
-    const val NOTE_ID_ARG = "noteId"
+    const val NOTE_ARG = "noteArg"
     const val NOTE_MODEL_ARG = "noteModel"
 }
 
@@ -47,7 +49,7 @@ object MyNotebookNewDestinationsArgs {
  * Destinations used in the [MainActivity]
  */
 
-object MyNotebookNewDestinations {
+object Destinations {
 
     const val LOGIN_ROUTE = LOGIN_SCREEN
     const val FORGOT_PASSWORD_ROUTE = FORGOT_PASSWORD_SCREEN
@@ -58,34 +60,34 @@ object MyNotebookNewDestinations {
     const val ADD_NOTE_ROUTE = ADD_NOTE_SCREEN
     const val FAVORITES_ROUTE = FAVORITES_SCREEN
     const val CLOUD_ROUTE = CLOUD_SCREEN
-    const val EDIT_OR_VIEW_ROUTE = "$EDIT_OR_VIEW_NOTE_SCREEN/$NOTE_ID_ARG"
+    const val EDIT_OR_VIEW_ROUTE = "$EDIT_OR_VIEW_NOTE_SCREEN/{$NOTE_ARG}"
 
 
 }
 
 
-class MyNotebookNavigationActions(private val navController: NavHostController) {
+class Actions(private val navController: NavHostController) {
 
 
     fun navigateToForgotPassword() {
-        navController.navigate(MyNotebookNewDestinations.FORGOT_PASSWORD_ROUTE) {
+        navController.navigate(Destinations.FORGOT_PASSWORD_ROUTE) {
 
         }
     }
 
     fun navigateToRegister() {
-        navController.navigate(MyNotebookNewDestinations.REGISTER_ROUTE){
+        navController.navigate(Destinations.REGISTER_ROUTE){
 
         }
     }
 
     fun navigateToLogin(){
-        navController.navigate(MyNotebookNewDestinations.LOGIN_ROUTE){
+        navController.navigate(Destinations.LOGIN_ROUTE){
         }
     }
 
     fun navigateToHome(){
-        navController.navigate(MyNotebookNewDestinations.HOME_ROUTE){
+        navController.navigate(Destinations.HOME_ROUTE){
 
         }
 
@@ -93,8 +95,8 @@ class MyNotebookNavigationActions(private val navController: NavHostController) 
     }
 
     fun navigateToAddNote(){
-        navController.navigate(MyNotebookNewDestinations.ADD_NOTE_ROUTE){
-            this.popUpTo(MyNotebookNewDestinations.FAVORITES_ROUTE){
+        navController.navigate(Destinations.ADD_NOTE_ROUTE){
+            this.popUpTo(Destinations.FAVORITES_ROUTE){
                 inclusive = true
                 saveState = true
             }
@@ -103,31 +105,34 @@ class MyNotebookNavigationActions(private val navController: NavHostController) 
     }
 
     fun navigateToFavorites(){
-        navController.navigate(MyNotebookNewDestinations.FAVORITES_ROUTE){
-            this.popUpTo(MyNotebookNewDestinations.HOME_ROUTE)
+        navController.navigate(Destinations.FAVORITES_ROUTE){
+            this.popUpTo(Destinations.HOME_ROUTE)
 
         }
     }
 
     fun navigateToCloud(){
-        navController.navigate(MyNotebookNewDestinations.CLOUD_ROUTE){
-            this.popUpTo(MyNotebookNewDestinations.REGISTER_ROUTE)
+        navController.navigate(Destinations.CLOUD_ROUTE){
+            this.popUpTo(Destinations.REGISTER_ROUTE)
 
         }
 
     }
     fun navigateToProfile(){
-        navController.navigate(MyNotebookNewDestinations.PROFILE_ROUTE)
+        navController.navigate(Destinations.PROFILE_ROUTE)
     }
 
     fun navigateToTest(userId : Int, userName : String){
         navController.navigate("$HOME_SCREEN/$userId/$userName")
-//        navController.navigate(MyNotebookNewDestinations.TEST_ROUTE)
+//        navController.navigate(Destinations.TEST_ROUTE)
 
     }
 
     fun navigateToEditOrView(noteModel: NoteModel){
-        navController.navigate("$EDIT_OR_VIEW_NOTE_SCREEN/$noteModel")
+        val modelToJson = Gson().toJson(noteModel)
+        navController.navigate("$EDIT_OR_VIEW_NOTE_SCREEN/$modelToJson")
+
+
     }
 
     fun onBackPressed(){

@@ -12,7 +12,7 @@ import androidx.core.view.WindowCompat
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberPermissionState
 import com.tolgakurucay.mynotebooknew.presentation.MyNotebookAppGraph
-import com.tolgakurucay.mynotebooknew.presentation.MyNotebookNewDestinations
+import com.tolgakurucay.mynotebooknew.presentation.Destinations
 import com.tolgakurucay.mynotebooknew.presentation.theme.MyNotebookNewTheme
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -27,7 +27,7 @@ class MainActivity @Inject constructor() : ComponentActivity() {
         setContent {
             MyNotebookNewTheme {
                 setup()
-                MyNotebookAppGraph(startDestination = MyNotebookNewDestinations.HOME_ROUTE)
+                MyNotebookAppGraph(startDestination = Destinations.HOME_ROUTE)
 
                // observeState()
             }
@@ -54,9 +54,9 @@ class MainActivity @Inject constructor() : ComponentActivity() {
         val state = mainViewModel.state.value
 
        /* if (state.isUserLoggedIn) {
-            MyNotebookAppGraph(startDestination = MyNotebookNewDestinations.HOME_ROUTE)
+            MyNotebookAppGraph(startDestination = Destinations.HOME_ROUTE)
         } else {
-            MyNotebookAppGraph(startDestination = MyNotebookNewDestinations.LOGIN_ROUTE)
+            MyNotebookAppGraph(startDestination = Destinations.LOGIN_ROUTE)
         }*/
     }
 

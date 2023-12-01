@@ -34,21 +34,24 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import com.tolgakurucay.mynotebooknew.R
 import com.tolgakurucay.mynotebooknew.presentation.theme.spacing0
 
 
+@Preview
 @Composable
 fun CustomTextField(
-    textFieldType: TextFieldType,
+    textFieldType: TextFieldType = TextFieldType.EMAIL,
     horizontalMargin: Dp = spacing0,
-    onValueChange: (newValue: String?) -> Unit
+    defaultValue: String = "",
+    onValueChange: (newValue: String?) -> Unit = {}
 ) {
 
     var supportingText by remember { mutableStateOf("") }
     var showPassword by remember { mutableStateOf(false) }
-    var value by remember { mutableStateOf("") }
+    var value by remember { mutableStateOf(defaultValue) }
 
     val focusManager = LocalFocusManager.current
 
@@ -81,6 +84,7 @@ fun CustomTextField(
                 TextFieldType.DESCRIPTION -> KeyboardType.Text
             },
         ),
+        minLines = if (textFieldType == TextFieldType.DESCRIPTION) 20 else 1,
         singleLine = when (textFieldType) {
             TextFieldType.TITLE -> false
             TextFieldType.DESCRIPTION -> false
