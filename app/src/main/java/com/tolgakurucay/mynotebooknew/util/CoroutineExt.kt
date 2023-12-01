@@ -14,22 +14,25 @@ fun <T> CoroutineScope.callService(
     baseState: BaseState,
     success: (data: T) -> Unit,
     service: suspend () -> Flow<Result<T>>,
-    fail: (exception: BaseException?) -> Unit = {
-        baseState.myNotebookException = it
+    fail: (exception: BaseException?) -> Unit = { baseException ->
+        baseException?.let { safeBaseException ->
+            baseState.myNotebookException.value = safeBaseException
+        }
     }
 ) {
     launch {
         service.invoke()
             .onEach {
-                when(it.status){
-                    Result.Status.LOADING -> baseState.isShowLoading = true
+                when (it.status) {
+                    Result.Status.LOADING -> baseState.isShowLoading.value = true
 
                     Result.Status.ERROR -> {
-                        baseState.isShowLoading = false
+                        baseState.isShowLoading.value = false
                         fail.invoke(it.exception)
                     }
+
                     Result.Status.SUCCESS -> {
-                        baseState.isShowLoading = false
+                        baseState.isShowLoading.value = false
                         it.data?.apply { success(this) }
                     }
                 }

@@ -11,11 +11,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tolgakurucay.mynotebooknew.R
 import com.tolgakurucay.mynotebooknew.presentation.custom.AlertDialogType
 import com.tolgakurucay.mynotebooknew.presentation.custom.CustomAlertDialog
 import com.tolgakurucay.mynotebooknew.presentation.custom.CustomLoading
-import com.tolgakurucay.mynotebooknew.util.showLog
 
 
 @Composable
@@ -24,18 +24,18 @@ fun BaseColumn(
     state: BaseState,
     content: @Composable ColumnScope.() -> Unit
 ) {
-    val isShownLoading = state.isShowLoading
-    val isShownError = state.myNotebookException
+
+    val isShownLoading = state.isShowLoading.collectAsStateWithLifecycle()
+    val isShownError = state.myNotebookException.collectAsStateWithLifecycle()
 
 
     Box(contentAlignment = Alignment.Center) {
         Column(modifier = modifier, content = content)
-        if (isShownLoading == true) {
+        if (isShownLoading.value) {
             CustomLoading()
         }
 
-        showLog("isShownError : $isShownError")
-        isShownError?.let { baseExc ->
+        isShownError.value?.let { baseExc ->
             var message: String
 
             baseExc.exceptionType?.let {
@@ -55,18 +55,16 @@ fun BaseColumn(
                 CustomAlertDialog(
                     type = AlertDialogType.OKAY, descriptionRes = message,
                     onConfirm = {
-                        state.myNotebookException = null
+                        state.myNotebookException.value = null
                     },
                 )
 
-            } ?: kotlin.run {
+            }
+            baseExc.cause?.let {
                 CustomAlertDialog(
-                    type = AlertDialogType.OKAY,
-                    descriptionRes = baseExc.cause?.localizedMessage ?: stringResource(
-                        id = R.string.common_error
-                    ),
+                    type = AlertDialogType.OKAY, descriptionRes = it.localizedMessage,
                     onConfirm = {
-                        state.myNotebookException = null
+                        state.myNotebookException.value = null
                     },
                 )
             }

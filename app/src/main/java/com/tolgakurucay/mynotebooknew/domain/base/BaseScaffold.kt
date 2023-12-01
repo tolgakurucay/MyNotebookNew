@@ -30,21 +30,21 @@ fun BaseScaffold(
     state: BaseState,
     topBar: @Composable () -> Unit = {},
     bottomBar: @Composable () -> Unit = {},
-    content: @Composable (PaddingValues) -> Unit = {  }
+    content: @Composable (PaddingValues) -> Unit = { }
 ) {
-    val isShownLoading = state.isShowLoading
-    val isShownError = state.myNotebookException
+    val isShownLoading = state.isShowLoading.collectAsStateWithLifecycle()
+    val isShownError = state.myNotebookException.collectAsStateWithLifecycle()
 
 
     Scaffold(modifier = modifier, content = content, topBar = topBar, bottomBar = bottomBar)
-    if (isShownLoading == true) {
+    if (isShownLoading.value) {
         CustomLoading()
     }
 
-    isShownError?.let { baseExc ->
+    isShownError.let { baseExc ->
         var message: String
 
-        baseExc.exceptionType?.let {
+        baseExc.value?.exceptionType?.let {
             message = when (it) {
                 ExceptionType.SIGNIN -> {
                     stringResource(id = R.string.error_signin)
@@ -62,18 +62,18 @@ fun BaseScaffold(
             CustomAlertDialog(
                 type = AlertDialogType.OKAY, descriptionRes = message,
                 onConfirm = {
-                    state.myNotebookException = null
+                    state.myNotebookException.value = null
                 },
             )
 
         } ?: run {
             CustomAlertDialog(
                 type = AlertDialogType.OKAY,
-                descriptionRes = baseExc.cause?.localizedMessage ?: stringResource(
+                descriptionRes = baseExc.value?.cause?.localizedMessage ?: stringResource(
                     id = R.string.common_error
                 ),
                 onConfirm = {
-                    state.myNotebookException = null
+                    state.myNotebookException.value = null
                 },
             )
         }

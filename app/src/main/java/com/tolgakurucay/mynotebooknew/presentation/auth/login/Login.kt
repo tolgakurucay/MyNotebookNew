@@ -65,9 +65,9 @@ fun Login(
 ) {
 
 
-    val state = viewModel.state.collectAsStateWithLifecycle()
+    val state by viewModel.state.collectAsStateWithLifecycle()
 
-    if (state.value.isUserAuthenticated == true) {
+    if (state.isUserAuthenticated == true) {
         LaunchedEffect(
             key1 = "navigate",
             block = {
@@ -75,9 +75,7 @@ fun Login(
             },
         )
     }
-    else{
-        showLog("girildimiiiiii")
-    }
+
 
 
     Surface(
@@ -91,7 +89,7 @@ fun Login(
             onNavigateToForgotPasswordContent = {
                 onNavigateToForgotPasswordMain.invoke()
             },
-            state = state.value,
+            state = state,
             signInWithEmailAndPassword = {
                 viewModel.signInWithEmailAndPassword(it.email, it.password)
             }
@@ -234,8 +232,6 @@ fun LoginContent(
 
             }
         }
-
-        //  listenEvents()
 
     }
 

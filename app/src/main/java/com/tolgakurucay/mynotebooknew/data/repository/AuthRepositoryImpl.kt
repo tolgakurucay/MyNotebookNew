@@ -1,6 +1,6 @@
 package com.tolgakurucay.mynotebooknew.data.repository
 
-import android.util.Log
+import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.tolgakurucay.mynotebooknew.domain.base.BaseException
@@ -10,7 +10,6 @@ import com.tolgakurucay.mynotebooknew.domain.model.auth.SignInEmailPasswordReque
 import com.tolgakurucay.mynotebooknew.domain.model.auth.SignInWEmailPassResponse
 import com.tolgakurucay.mynotebooknew.domain.repository.AuthRepository
 import com.tolgakurucay.mynotebooknew.util.isNotNull
-import com.tolgakurucay.mynotebooknew.util.isNull
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
@@ -24,21 +23,11 @@ class AuthRepositoryImpl @Inject constructor(
 
     override fun logOut() = auth.signOut()
 
-    override suspend fun createUserWithEmailAndPassword(request: CreateUserEmailPasswordRequest): Flow<Boolean> =
+    override suspend fun createUserWithEmailAndPassword(request: CreateUserEmailPasswordRequest): Flow<AuthResult> =
         flow {
-            try {
                 val response =
                     auth.createUserWithEmailAndPassword(request.mail, request.password).await()
-                if (response.user.isNull()) {
-                    emit(false)
-                } else {
-                    emit(true)
-                }
-            } catch (ex: Exception) {
-                Log.d("bilgitolga", "ERROR createUserWithEmailAndPassword: $ex")
-            }
-
-
+                emit(response)
         }
 
     override suspend fun signInWithEmailAndPassword(requestModel: SignInEmailPasswordRequest): Flow<SignInWEmailPassResponse> =

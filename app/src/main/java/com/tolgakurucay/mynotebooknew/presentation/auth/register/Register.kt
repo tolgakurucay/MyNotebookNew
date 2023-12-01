@@ -49,10 +49,13 @@ fun Register(
     onNavigateToLogin: () -> Unit = {},
     registerViewModel: RegisterViewModel = hiltViewModel()
 ) {
+
+    val state by registerViewModel.state.collectAsStateWithLifecycle()
+
     Surface(modifier = Modifier.fillMaxSize()) {
         RegisterContent(
             onNavigateToLoginChild = onNavigateToLogin,
-            uiState = registerViewModel.state.value,
+            uiState = state,
             register = { request ->
                 registerViewModel.registerUser(request)
             }
@@ -134,7 +137,7 @@ fun RegisterContent(
             )
         }
 
-        if (uiState.isUserRegistered) {
+        if (uiState.isUserRegistered == true) {
             uiState.isUserRegistered = false
             CustomAlertDialog(
                 type = AlertDialogType.OKAY,
