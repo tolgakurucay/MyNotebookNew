@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -18,12 +17,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tolgakurucay.mynotebooknew.R
 import com.tolgakurucay.mynotebooknew.domain.base.BaseColumn
 import com.tolgakurucay.mynotebooknew.domain.base.validateCustomTextFields
@@ -43,12 +42,27 @@ fun ForgotPasswordPage(
     viewModel: ForgotPasswordViewModel = hiltViewModel(),
     onNavigateToLogin: () -> Unit = {}
 ) {
+
+    val state by viewModel.state.collectAsStateWithLifecycle()
+
+    if(state.sendResetMail){
+        CustomAlertDialog(
+            type = AlertDialogType.OKAY, titleRes = R.string.common_information,
+            descriptionRes = stringResource(
+                id = R.string.screen_forgotpassword_successful
+            ),
+            onConfirm = { onNavigateToLogin.invoke() }
+        )
+    }
+
+
+
     Surface(Modifier.fillMaxSize()) {
         ForgotPasswordContent(
             onNavigateToLogin,
-            state = viewModel.state.value,
+            state = state,
             forgotPassword = {
-               // viewModel.forgotPassword(it)
+                viewModel.forgotPassword(it)
             },
         )
     }
@@ -63,25 +77,11 @@ fun ForgotPasswordContent(
 ) {
     var email by remember { mutableStateOf<String?>(null) }
 
-    @Composable
-    fun listenEvents() {
-        if (state.sendResetMail) {
-            state.sendResetMail = false
-            CustomAlertDialog(
-                type = AlertDialogType.OKAY, titleRes = R.string.common_information,
-                descriptionRes = stringResource(
-                    id = R.string.screen_forgotpassword_successful
-                ),
-                onConfirm = { onNavigateToLogin.invoke() }
-            )
-        }
-    }
-
-
     BaseColumn(
         modifier = Modifier
             .windowInsetsPadding(WindowInsets.systemBars)
-            .verticalScroll(rememberScrollState()),
+            .verticalScroll(rememberScrollState())
+            .fillMaxSize(),
         state = state
     ) {
 
@@ -115,7 +115,6 @@ fun ForgotPasswordContent(
         )
         Spacer(modifier = Modifier.padding(top = spacing40))
 
-        listenEvents()
     }
 
 

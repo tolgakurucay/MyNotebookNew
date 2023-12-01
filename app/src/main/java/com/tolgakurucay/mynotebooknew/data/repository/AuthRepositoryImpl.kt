@@ -25,9 +25,9 @@ class AuthRepositoryImpl @Inject constructor(
 
     override suspend fun createUserWithEmailAndPassword(request: CreateUserEmailPasswordRequest): Flow<AuthResult> =
         flow {
-                val response =
-                    auth.createUserWithEmailAndPassword(request.mail, request.password).await()
-                emit(response)
+            val response =
+                auth.createUserWithEmailAndPassword(request.mail, request.password).await()
+            emit(response)
         }
 
     override suspend fun signInWithEmailAndPassword(requestModel: SignInEmailPasswordRequest): Flow<SignInWEmailPassResponse> =
@@ -42,6 +42,12 @@ class AuthRepositoryImpl @Inject constructor(
 
 
         }
+
+    override suspend fun forgotPassword(email: String): Flow<Unit> = flow {
+        auth.sendPasswordResetEmail(email).await()
+        emit(Unit)
+
+    }
 
     override suspend fun isUserLoggedIn(): Flow<Boolean> = flow {
         if (auth.currentUser.isNotNull()) {

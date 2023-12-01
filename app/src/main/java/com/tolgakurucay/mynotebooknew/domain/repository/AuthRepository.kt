@@ -11,6 +11,7 @@ interface AuthRepository {
     fun logOut()
     suspend fun createUserWithEmailAndPassword(request: CreateUserEmailPasswordRequest): Flow<AuthResult>
     suspend fun signInWithEmailAndPassword(requestModel: SignInEmailPasswordRequest): Flow<SignInWEmailPassResponse>
+    suspend fun forgotPassword(email: String): Flow<Unit>
     suspend fun isUserLoggedIn(): Flow<Boolean>
 
 }
