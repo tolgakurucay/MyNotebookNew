@@ -53,11 +53,10 @@ import com.tolgakurucay.mynotebooknew.presentation.theme.spacing40
 import com.tolgakurucay.mynotebooknew.presentation.theme.spacing5
 import com.tolgakurucay.mynotebooknew.presentation.theme.spacing70
 import com.tolgakurucay.mynotebooknew.util.safeLet
-import com.tolgakurucay.mynotebooknew.util.showLog
 
 
 @Composable
-fun Login(
+fun LoginPage(
     viewModel: LoginViewModel = hiltViewModel(),
     onNavigateToRegisterMain: () -> Unit = {},
     onNavigateToForgotPasswordMain: () -> Unit = {},

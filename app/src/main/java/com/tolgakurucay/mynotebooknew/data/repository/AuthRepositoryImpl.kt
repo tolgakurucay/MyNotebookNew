@@ -21,7 +21,10 @@ class AuthRepositoryImpl @Inject constructor(
     private val firestore: FirebaseFirestore
 ) : AuthRepository {
 
-    override fun logOut() = auth.signOut()
+    override fun logOut(): Flow<Unit> = flow {
+        auth.signOut()
+        emit(Unit)
+    }
 
     override suspend fun createUserWithEmailAndPassword(request: CreateUserEmailPasswordRequest): Flow<AuthResult> =
         flow {

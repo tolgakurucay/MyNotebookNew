@@ -40,6 +40,7 @@ fun AddNotePage(
     onBackPressed: () -> Unit = {},
     goToHome: () -> Unit = {}
 ) {
+    
     AddNoteContent(
         onBackPressed = onBackPressed,
         goToHome = goToHome,

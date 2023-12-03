@@ -95,3 +95,4 @@ val OnSurfaceVariantDark = Color(0xff43483f)
 
 //Others
 val OutlineDark = Color(0xff73796e)
+

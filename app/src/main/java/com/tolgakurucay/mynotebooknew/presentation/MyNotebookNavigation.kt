@@ -15,6 +15,7 @@ import com.tolgakurucay.mynotebooknew.presentation.ScreenNames.CLOUD_SCREEN
 import com.tolgakurucay.mynotebooknew.presentation.ScreenNames.EDIT_OR_VIEW_NOTE_SCREEN
 import com.tolgakurucay.mynotebooknew.presentation.ScreenNames.FAVORITES_SCREEN
 import com.tolgakurucay.mynotebooknew.presentation.ScreenNames.PROFILE_SCREEN
+import com.tolgakurucay.mynotebooknew.util.showLog
 
 
 /**
@@ -80,14 +81,21 @@ class Actions(private val navController: NavHostController) {
         }
     }
 
-    fun navigateToLogin() {
+    fun navigateToLogin(popUpRoute: String? = null) {
         navController.navigate(Destinations.LOGIN_ROUTE) {
+            showLog(popUpRoute.toString())
+            popUpRoute?.let {safeRoute->
+                this.popUpTo(safeRoute) {
+                    inclusive = true
+                }
+            }
+
         }
     }
 
     fun navigateToHome() {
         navController.navigate(Destinations.HOME_ROUTE) {
-            this.popUpTo(Destinations.LOGIN_ROUTE){
+            this.popUpTo(Destinations.LOGIN_ROUTE) {
                 inclusive = true
             }
         }
@@ -119,6 +127,7 @@ class Actions(private val navController: NavHostController) {
         }
 
     }
+
     fun navigateToProfile() {
         navController.navigate(Destinations.PROFILE_ROUTE)
     }

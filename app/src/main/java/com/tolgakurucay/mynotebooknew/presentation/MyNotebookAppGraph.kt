@@ -15,9 +15,9 @@ import com.tolgakurucay.mynotebooknew.presentation.main.add_note.AddNotePage
 import com.tolgakurucay.mynotebooknew.presentation.main.cloud.CloudPage
 import com.tolgakurucay.mynotebooknew.presentation.main.favorites.FavoritesPage
 import com.tolgakurucay.mynotebooknew.presentation.auth.forgot_password.ForgotPasswordPage
-import com.tolgakurucay.mynotebooknew.presentation.main.home.Home
+import com.tolgakurucay.mynotebooknew.presentation.main.home.HomePage
 import com.tolgakurucay.mynotebooknew.presentation.main.home.HomeNavigations
-import com.tolgakurucay.mynotebooknew.presentation.auth.login.Login
+import com.tolgakurucay.mynotebooknew.presentation.auth.login.LoginPage
 import com.tolgakurucay.mynotebooknew.presentation.main.profile.ProfilePage
 import com.tolgakurucay.mynotebooknew.presentation.auth.register.Register
 import com.tolgakurucay.mynotebooknew.presentation.main.edit_or_view_note.EditOrViewNotePage
@@ -44,7 +44,7 @@ fun MyNotebookAppGraph(
         composable(
             Destinations.HOME_ROUTE,
         ) {
-            Home(
+            HomePage(
                 homeNavigations = { homeNavigation ->
                     when (homeNavigation) {
                         HomeNavigations.FAVORITES -> navActions.navigateToFavorites()
@@ -55,7 +55,7 @@ fun MyNotebookAppGraph(
                     }
                 },
                 onLogOutClicked = {
-                    navActions.navigateToLogin()
+                    navActions.navigateToLogin(popUpRoute = Destinations.HOME_ROUTE)
                 },
                 onNoteItemClicked = {
                     navActions.navigateToEditOrView(it)
@@ -69,7 +69,7 @@ fun MyNotebookAppGraph(
         }
 
         composable(Destinations.LOGIN_ROUTE) {
-            Login(
+            LoginPage(
                 onNavigateToForgotPasswordMain = {
                     navActions.navigateToForgotPassword()
                 },

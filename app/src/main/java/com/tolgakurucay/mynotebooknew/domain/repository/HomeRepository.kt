@@ -13,8 +13,7 @@ interface HomeRepository {
     suspend fun updateNoteFromLocale(model: NoteModel): Int?
 
     //Add note
-    suspend fun addNoteToLocale(model: NoteModel)
-    suspend fun addNoteToRemote(model: NoteModel)
+    suspend fun addNoteToLocale(model: NoteModel): Long
 
 
 }

@@ -22,18 +22,26 @@ import com.tolgakurucay.mynotebooknew.domain.base.BaseScaffold
 import com.tolgakurucay.mynotebooknew.domain.model.main.NoteModel
 
 @Composable
-fun Home(
+fun HomePage(
     viewModel: HomeViewModel = hiltViewModel(),
     homeNavigations: (HomeNavigations) -> Unit,
     onLogOutClicked: () -> Unit,
     onNoteItemClicked: (NoteModel) -> Unit
 ) {
 
+    val observableState = viewModel.state.collectAsStateWithLifecycle().value
+
     LaunchedEffect(key1 = Unit) {
         viewModel.getNotes()
     }
 
-    val observableState = viewModel.state.collectAsStateWithLifecycle().value
+
+    if (observableState.isUserLoggedOut == true) {
+        LaunchedEffect(key1 = "LogOut") {
+            onLogOutClicked.invoke()
+        }
+    }
+
 
     Surface(
         Modifier
@@ -44,7 +52,9 @@ fun Home(
         HomeContent(
             observableState,
             homeNavigations = homeNavigations,
-            loggedOut = onLogOutClicked,
+            onLogOutClicked = {
+                viewModel.logOut()
+            },
             onNoteItemClicked = onNoteItemClicked
         )
     }
@@ -56,7 +66,7 @@ fun Home(
 fun HomeContent(
     state: HomeState = HomeState(),
     homeNavigations: (HomeNavigations) -> Unit = {},
-    loggedOut: () -> Unit = {},
+    onLogOutClicked: () -> Unit = {},
     onNoteItemClicked: (NoteModel) -> Unit = {}
 
 ) {
@@ -69,7 +79,7 @@ fun HomeContent(
         bottomBar = {
             HomeBottomBar {
                 if (it == HomeNavigations.LOGOUT) {
-                    loggedOut.invoke()
+                    onLogOutClicked.invoke()
                 } else {
                     homeNavigations.invoke(it)
                 }

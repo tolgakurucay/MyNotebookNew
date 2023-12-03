@@ -8,12 +8,11 @@ import androidx.room.Query
 import androidx.room.Update
 import com.tolgakurucay.mynotebooknew.domain.model.main.NoteModel
 import kotlinx.coroutines.flow.Flow
-
 @Dao
 interface NoteDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun addNote(noteModel: NoteModel)
+    suspend fun addNote(noteModel: NoteModel): Long
 
     @Query("SELECT * FROM NoteTable WHERE title LIKE :title LIMIT 1")
     fun searchNoteByTitle(title: String) : Flow<NoteModel>

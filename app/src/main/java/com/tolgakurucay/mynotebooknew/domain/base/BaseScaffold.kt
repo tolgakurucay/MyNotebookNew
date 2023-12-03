@@ -41,10 +41,10 @@ fun BaseScaffold(
         CustomLoading()
     }
 
-    isShownError.let { baseExc ->
+    isShownError.value?.let { baseExc ->
         var message: String
 
-        baseExc.value?.exceptionType?.let {
+        baseExc.exceptionType?.let {
             message = when (it) {
                 ExceptionType.SIGNIN -> {
                     stringResource(id = R.string.error_signin)
@@ -53,7 +53,6 @@ fun BaseScaffold(
                 ExceptionType.CREATE_EMAIL_PASSWORD -> {
                     stringResource(id = R.string.error_register_email_password)
                 }
-
                 ExceptionType.EMAIL_NOT_VERIFIED -> {
                     stringResource(id = R.string.error_email_not_verified)
                 }
@@ -66,12 +65,10 @@ fun BaseScaffold(
                 },
             )
 
-        } ?: run {
+        }
+        baseExc.cause?.let {
             CustomAlertDialog(
-                type = AlertDialogType.OKAY,
-                descriptionRes = baseExc.value?.cause?.localizedMessage ?: stringResource(
-                    id = R.string.common_error
-                ),
+                type = AlertDialogType.OKAY, descriptionRes = it.localizedMessage,
                 onConfirm = {
                     state.myNotebookException.value = null
                 },

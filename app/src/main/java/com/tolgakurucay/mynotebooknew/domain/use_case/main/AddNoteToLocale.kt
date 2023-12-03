@@ -7,6 +7,6 @@ import javax.inject.Inject
 
 class AddNoteToLocale @Inject constructor(private val homeRepository: HomeRepository): BaseUseCase() {
 
-    suspend operator fun invoke(model: NoteModel) = homeRepository.addNoteToLocale(model)
+    suspend operator fun invoke(model: NoteModel) = execute(homeRepository.addNoteToLocale(model))
 
 }

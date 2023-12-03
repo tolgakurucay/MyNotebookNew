@@ -16,6 +16,5 @@ class HomeRepositoryImp @Inject constructor(
     override suspend fun getAllNotesFromRemote(): Flow<List<NoteModel>> = noteDao.getAllNotes()
     override suspend fun getAllNotesFromLocale(): Flow<List<NoteModel>> = noteDao.getAllNotes()
     override suspend fun updateNoteFromLocale(model: NoteModel): Int? = noteDao.updateNote(model)
-    override suspend fun addNoteToLocale(model: NoteModel) = noteDao.addNote(model)
-    override suspend fun addNoteToRemote(model: NoteModel) = noteDao.addNote(model)
+    override suspend fun addNoteToLocale(model: NoteModel): Long = noteDao.addNote(model)
 }
