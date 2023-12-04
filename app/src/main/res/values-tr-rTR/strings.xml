@@ -91,4 +91,6 @@
     <string name="cd_menu">Menu ikonu</string>
     <string name="action_delete">Delete</string>
     <string name="screen_favorites">Favorites</string>
+    <string name="favorites_no_content">There is no favorite content</string>
+    <string name="note_no_content">There is no note content</string>
 </resources>

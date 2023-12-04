@@ -103,6 +103,9 @@ fun MyNotebookAppGraph(
                 onBackPressed = {
                     navActions.onBackPressed()
                 },
+                onNoteItemClicked = {
+                    navActions.navigateToEditOrView(it)
+                }
             )
         }
 
