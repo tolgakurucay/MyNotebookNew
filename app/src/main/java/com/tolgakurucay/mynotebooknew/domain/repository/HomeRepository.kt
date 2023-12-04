@@ -15,5 +15,9 @@ interface HomeRepository {
     //Add note
     suspend fun addNoteToLocale(model: NoteModel): Long
 
+    //Delete note
+    suspend fun deleteNoteFromLocale(model: NoteModel): Int
+
+
 
 }

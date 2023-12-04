@@ -86,4 +86,6 @@
     <string name="action_add_to_cloud">Buluta ekle</string>
     <string name="common_update_note_uppercase">NOTU GÜNCELLE</string>
     <string name="screen_edit_or_view">Notu görüntüle / güncelle</string>
+    <string name="question_you_want_exit">Çıkış yapmak istediğinden emin misin?</string>
+    <string name="common_an_error_occured">Bir hata oluştu</string>
 </resources>

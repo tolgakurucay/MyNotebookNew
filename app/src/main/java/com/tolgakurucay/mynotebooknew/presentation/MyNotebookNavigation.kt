@@ -84,7 +84,7 @@ class Actions(private val navController: NavHostController) {
     fun navigateToLogin(popUpRoute: String? = null) {
         navController.navigate(Destinations.LOGIN_ROUTE) {
             showLog(popUpRoute.toString())
-            popUpRoute?.let {safeRoute->
+            popUpRoute?.let { safeRoute ->
                 this.popUpTo(safeRoute) {
                     inclusive = true
                 }
@@ -105,9 +105,8 @@ class Actions(private val navController: NavHostController) {
 
     fun navigateToAddNote() {
         navController.navigate(Destinations.ADD_NOTE_ROUTE) {
-            this.popUpTo(Destinations.FAVORITES_ROUTE) {
+            this.popUpTo(Destinations.ADD_NOTE_ROUTE) {
                 inclusive = true
-                saveState = true
             }
 
         }
@@ -115,7 +114,9 @@ class Actions(private val navController: NavHostController) {
 
     fun navigateToFavorites() {
         navController.navigate(Destinations.FAVORITES_ROUTE) {
-            this.popUpTo(Destinations.HOME_ROUTE)
+            this.popUpTo(Destinations.HOME_ROUTE) {
+                inclusive = true
+            }
 
         }
     }
@@ -132,15 +133,16 @@ class Actions(private val navController: NavHostController) {
         navController.navigate(Destinations.PROFILE_ROUTE)
     }
 
-    fun navigateToTest(userId: Int, userName: String) {
-        navController.navigate("$HOME_SCREEN/$userId/$userName")
-//        navController.navigate(Destinations.TEST_ROUTE)
 
-    }
-
-    fun navigateToEditOrView(noteModel: NoteModel) {
+    fun navigateToEditOrView(noteModel: NoteModel, popUpRoute: String? = null) {
         val modelToJson = Gson().toJson(noteModel)
-        navController.navigate("$EDIT_OR_VIEW_NOTE_SCREEN/$modelToJson")
+        navController.navigate("$EDIT_OR_VIEW_NOTE_SCREEN/$modelToJson") {
+            popUpRoute?.let { safeRoute ->
+                popUpTo(safeRoute) {
+                    inclusive = true
+                }
+            }
+        }
 
 
     }

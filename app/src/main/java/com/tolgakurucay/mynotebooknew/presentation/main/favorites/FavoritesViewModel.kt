@@ -1,14 +1,21 @@
 package com.tolgakurucay.mynotebooknew.presentation.main.favorites
 
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 class FavoritesViewModel @Inject constructor() : ViewModel() {
 
-    private val _state = mutableStateOf(FavoritesState())
-    val state : State<FavoritesState> = _state
+    private val _state = MutableStateFlow(FavoritesState())
+    val state: StateFlow<FavoritesState> = _state.asStateFlow()
+
+
+    fun getFavorites() {
+
+
+    }
 
 
 }

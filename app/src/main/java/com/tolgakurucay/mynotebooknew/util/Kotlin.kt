@@ -82,7 +82,7 @@ fun Any?.isNull(): Boolean {
 }
 
 fun Any?.isNotNull(): Boolean {
-    return this!=null
+    return this != null
 }
 
 inline fun <reified T : Parcelable> Intent.parcelable(key: String): T? = when {
@@ -93,5 +93,13 @@ inline fun <reified T : Parcelable> Intent.parcelable(key: String): T? = when {
 inline fun <reified T : Parcelable> Bundle.parcelable(key: String): T? = when {
     Build.VERSION.SDK_INT >= 33 -> getParcelable(key, T::class.java)
     else -> @Suppress("DEPRECATION") getParcelable(key) as? T
+}
+
+fun <T> List<T>.mapButReplace(targetItem: T, newItem: T) = map {
+    if (it == targetItem) {
+        newItem
+    } else {
+        it
+    }
 }
 

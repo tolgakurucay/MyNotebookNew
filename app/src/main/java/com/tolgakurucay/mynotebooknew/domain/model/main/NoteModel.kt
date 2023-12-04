@@ -16,5 +16,6 @@ data class NoteModel(
     var noteType: String = NoteType.NOTE.name,
     var alarmDate: Long? = null,
     @PrimaryKey(autoGenerate = true)
-    var id: Int? = null
+    var id: Int? = null,
+    var isSelected: Boolean = false
 ) : Parcelable

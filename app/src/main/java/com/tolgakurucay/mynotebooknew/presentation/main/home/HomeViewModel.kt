@@ -2,8 +2,11 @@ package com.tolgakurucay.mynotebooknew.presentation.main.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.tolgakurucay.mynotebooknew.domain.model.main.NoteModel
 import com.tolgakurucay.mynotebooknew.domain.use_case.auth.LogOut
 import com.tolgakurucay.mynotebooknew.domain.use_case.main.AddNoteToLocale
+import com.tolgakurucay.mynotebooknew.domain.use_case.main.DeleteNote
+import com.tolgakurucay.mynotebooknew.domain.use_case.main.EditNote
 import com.tolgakurucay.mynotebooknew.domain.use_case.main.GetNotesFromLocale
 import com.tolgakurucay.mynotebooknew.util.callService
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,19 +21,22 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val logOut: LogOut,
     private val addNoteToLocale: AddNoteToLocale,
-    private val getNote: GetNotesFromLocale
+    private val getNote: GetNotesFromLocale,
+    private val updateNote: EditNote,
+    private val deleteNote: DeleteNote
 ) : ViewModel() {
 
 
     private val _state = MutableStateFlow(HomeState())
     val state: StateFlow<HomeState> = _state.asStateFlow()
 
-
     fun getNotes() {
         viewModelScope.callService(
             baseState = _state.value,
             success = { list ->
-                _state.update { it.copy(notes = list) }
+                _state.update {
+                    it.copy(notes = list)
+                }
             },
             service = {
                 getNote.invoke()
@@ -42,9 +48,30 @@ class HomeViewModel @Inject constructor(
         viewModelScope.callService(
             baseState = _state.value,
             success = {
-                _state.update { it.copy(isUserLoggedOut = true) }
+                _state.update {
+                    it.copy(isUserLoggedOut = true)
+                }
             },
             service = { logOut.invoke() })
+    }
+
+
+    fun doSelectableOrNot(model: NoteModel) {
+        viewModelScope.callService(
+            baseState = _state.value,
+            success = {
+            },
+            service = { updateNote.invoke(model) })
+    }
+
+    fun deleteNote(note: NoteModel) {
+        viewModelScope.callService(
+            baseState = _state.value,
+            success = {
+
+            },
+            service = { deleteNote.invoke(note) },
+        )
     }
 
 

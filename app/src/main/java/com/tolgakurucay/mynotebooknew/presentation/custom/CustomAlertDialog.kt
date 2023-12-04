@@ -44,10 +44,10 @@ fun CustomAlertDialog(
             },
             text = {
                 Text(
-                    descriptionRes ?: stringResource(id = R.string.common_error),
+                    text = descriptionRes ?: run {
+                        stringResource(id = R.string.common_an_error_occured)
+                    },
                     style = MaterialTheme.typography.bodyMedium,
-
-
                 )
             },
             confirmButton = {
@@ -115,8 +115,6 @@ fun CustomAlertDialog(
 
 
 }
-
-
 
 
 /**

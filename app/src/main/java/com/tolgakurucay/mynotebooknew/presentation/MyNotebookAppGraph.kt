@@ -58,7 +58,7 @@ fun MyNotebookAppGraph(
                     navActions.navigateToLogin(popUpRoute = Destinations.HOME_ROUTE)
                 },
                 onNoteItemClicked = {
-                    navActions.navigateToEditOrView(it)
+                    navActions.navigateToEditOrView(it, Destinations.EDIT_OR_VIEW_ROUTE)
                 }
             )
 
