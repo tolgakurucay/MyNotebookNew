@@ -3,12 +3,14 @@ package com.tolgakurucay.mynotebooknew.presentation.main.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tolgakurucay.mynotebooknew.domain.model.main.NoteModel
+import com.tolgakurucay.mynotebooknew.domain.model.main.NoteType
 import com.tolgakurucay.mynotebooknew.domain.use_case.auth.LogOut
-import com.tolgakurucay.mynotebooknew.domain.use_case.main.AddNoteToLocale
 import com.tolgakurucay.mynotebooknew.domain.use_case.main.DeleteNote
 import com.tolgakurucay.mynotebooknew.domain.use_case.main.EditNote
+import com.tolgakurucay.mynotebooknew.domain.use_case.main.EditNotes
 import com.tolgakurucay.mynotebooknew.domain.use_case.main.GetNotesFromLocale
 import com.tolgakurucay.mynotebooknew.util.callService
+import com.tolgakurucay.mynotebooknew.util.isNotNull
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -20,10 +22,10 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val logOut: LogOut,
-    private val addNoteToLocale: AddNoteToLocale,
     private val getNote: GetNotesFromLocale,
     private val updateNote: EditNote,
-    private val deleteNote: DeleteNote
+    private val deleteNote: DeleteNote,
+    private val editNotes: EditNotes
 ) : ViewModel() {
 
 
@@ -34,8 +36,9 @@ class HomeViewModel @Inject constructor(
         viewModelScope.callService(
             baseState = _state.value,
             success = { list ->
+                val isAnySelected = list.find { it.isSelected }
                 _state.update {
-                    it.copy(notes = list)
+                    it.copy(notes = list, isShowingTheMenu = isAnySelected.isNotNull())
                 }
             },
             service = {
@@ -72,6 +75,20 @@ class HomeViewModel @Inject constructor(
             },
             service = { deleteNote.invoke(note) },
         )
+    }
+
+    fun addNotesToFavorite(list: List<NoteModel>) {
+        val mappedList = list.map { it.copy(noteType = NoteType.FAVORITE.name, isSelected = false) }
+        viewModelScope.callService(
+            baseState = _state.value,
+            success = {
+
+            },
+            service = {
+                editNotes.invoke(mappedList)
+            },
+        )
+
     }
 
 

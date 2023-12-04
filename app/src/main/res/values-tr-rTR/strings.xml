@@ -88,4 +88,7 @@
     <string name="screen_edit_or_view">Notu görüntüle / güncelle</string>
     <string name="question_you_want_exit">Çıkış yapmak istediğinden emin misin?</string>
     <string name="common_an_error_occured">Bir hata oluştu</string>
+    <string name="cd_menu">Menu ikonu</string>
+    <string name="action_delete">Delete</string>
+    <string name="screen_favorites">Favorites</string>
 </resources>

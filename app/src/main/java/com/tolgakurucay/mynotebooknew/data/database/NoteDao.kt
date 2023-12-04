@@ -36,6 +36,9 @@ interface NoteDao {
     @Update
     suspend fun updateNote(noteModel: NoteModel): Int?
 
+    @Update(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun update(items: List<NoteModel>) : Int?
+
     @Query("Select * from NoteTable")
     fun getAllNotes(): Flow<List<NoteModel>>
 

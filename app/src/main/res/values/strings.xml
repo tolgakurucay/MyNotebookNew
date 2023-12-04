@@ -87,4 +87,7 @@
     <string name="screen_edit_or_view">View / Edit Note</string>
     <string name="question_you_want_exit">"Are you sure you want to exit? "</string>
     <string name="common_an_error_occured">An error occured?</string>
+    <string name="cd_menu">Menu icon</string>
+    <string name="action_delete">Delete</string>
+    <string name="screen_favorites">Favorites</string>
 </resources>

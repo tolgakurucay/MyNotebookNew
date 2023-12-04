@@ -21,6 +21,7 @@ import com.tolgakurucay.mynotebooknew.R
 import com.tolgakurucay.mynotebooknew.domain.base.BaseColumn
 import com.tolgakurucay.mynotebooknew.domain.base.BaseScaffold
 import com.tolgakurucay.mynotebooknew.domain.model.main.NoteModel
+import com.tolgakurucay.mynotebooknew.domain.model.main.NoteType
 import com.tolgakurucay.mynotebooknew.presentation.custom.AlertDialogType
 import com.tolgakurucay.mynotebooknew.presentation.custom.CustomAlertDialog
 
@@ -66,7 +67,8 @@ fun HomePage(
         onNoteItemClicked = onNoteItemClicked,
         onNoteItemLongClicked = {
             viewModel.doSelectableOrNot(it)
-
+        }, onFavoritesClicked = {
+            viewModel.addNotesToFavorite(observableState.value.notes.filter { it.isSelected })
         }
     )
 }
@@ -79,14 +81,29 @@ fun HomeContent(
     homeNavigations: (HomeNavigations) -> Unit = {},
     onLogOutClicked: () -> Unit = {},
     onNoteItemClicked: (NoteModel) -> Unit = {},
-    onNoteItemLongClicked: (NoteModel) -> Unit = {}
+    onNoteItemLongClicked: (NoteModel) -> Unit = {},
+    onFavoritesClicked: () -> Unit = {}
 
 ) {
 
     BaseScaffold(
         state = state,
         topBar = {
-            HomeTopBar()
+            HomeTopBar(state.isShowingTheMenu) {
+                when (it) {
+                    HomeTopBarActions.FAVORITE -> {
+                        onFavoritesClicked.invoke()
+                    }
+
+                    HomeTopBarActions.UPDATE -> {
+
+                    }
+
+                    HomeTopBarActions.DELETE -> {
+
+                    }
+                }
+            }
         },
         bottomBar = {
             HomeBottomBar {
@@ -109,7 +126,7 @@ fun HomeContent(
                         horizontal = 15.dp, vertical = 5.dp
                     ),
                 ) {
-                    items(state.notes) { model ->
+                    items(state.notes.filter { it.noteType == NoteType.NOTE.name }) { model ->
                         NoteItem(
                             model,
                             onClicked = { noteModel ->

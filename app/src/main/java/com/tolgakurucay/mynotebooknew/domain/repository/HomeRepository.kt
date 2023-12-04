@@ -11,6 +11,7 @@ interface HomeRepository {
 
     //Update notes
     suspend fun updateNoteFromLocale(model: NoteModel): Int?
+    suspend fun updateNotesFromLocale(list: List<NoteModel>): Int?
 
     //Add note
     suspend fun addNoteToLocale(model: NoteModel): Long

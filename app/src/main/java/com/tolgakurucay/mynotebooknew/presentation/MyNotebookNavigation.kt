@@ -95,7 +95,7 @@ class Actions(private val navController: NavHostController) {
 
     fun navigateToHome() {
         navController.navigate(Destinations.HOME_ROUTE) {
-            this.popUpTo(Destinations.LOGIN_ROUTE) {
+            this.popUpTo(Destinations.ADD_NOTE_ROUTE) {
                 inclusive = true
             }
         }
@@ -113,12 +113,7 @@ class Actions(private val navController: NavHostController) {
     }
 
     fun navigateToFavorites() {
-        navController.navigate(Destinations.FAVORITES_ROUTE) {
-            this.popUpTo(Destinations.HOME_ROUTE) {
-                inclusive = true
-            }
-
-        }
+        navController.navigate(Destinations.FAVORITES_ROUTE)
     }
 
     fun navigateToCloud() {

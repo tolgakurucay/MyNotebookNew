@@ -99,7 +99,11 @@ fun MyNotebookAppGraph(
         }
 
         composable(Destinations.FAVORITES_ROUTE) {
-            FavoritesPage()
+            FavoritesPage(
+                onBackPressed = {
+                    navActions.onBackPressed()
+                },
+            )
         }
 
         composable(Destinations.ADD_NOTE_ROUTE) {

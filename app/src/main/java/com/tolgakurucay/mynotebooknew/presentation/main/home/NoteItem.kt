@@ -48,6 +48,7 @@ fun NoteItem(
                 onLongClick = { onLongClicked.invoke(model) },
             )
 
+
     ) {
 
         Column(
