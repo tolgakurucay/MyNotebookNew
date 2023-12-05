@@ -76,7 +76,6 @@ fun HomeTopBar(showingTheToolbar: Boolean = false, actions: (HomeTopBarActions) 
 
 enum class HomeTopBarActions {
     DELETE,
-    UPDATE,
     FAVORITE
 
 }

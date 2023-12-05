@@ -53,7 +53,7 @@ fun BaseColumn(
                 }
 
                 CustomAlertDialog(
-                    type = AlertDialogType.OKAY, descriptionRes = message,
+                    type = AlertDialogType.OKAY, descriptionText = message,
                     onConfirm = {
                         state.myNotebookException.value = null
                     },
@@ -62,7 +62,7 @@ fun BaseColumn(
             }
             baseExc.cause?.let {
                 CustomAlertDialog(
-                    type = AlertDialogType.OKAY, descriptionRes = it.localizedMessage,
+                    type = AlertDialogType.OKAY, descriptionText = it.localizedMessage,
                     onConfirm = {
                         state.myNotebookException.value = null
                     },

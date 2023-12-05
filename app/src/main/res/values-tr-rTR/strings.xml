@@ -93,4 +93,6 @@
     <string name="screen_favorites">Favorites</string>
     <string name="favorites_no_content">There is no favorite content</string>
     <string name="note_no_content">There is no note content</string>
+    <string name="action_remove_from_favorites">Remove from favorites</string>
+    <string name="question_you_want_delete">Are you sure you want to delete all selected items</string>
 </resources>

@@ -45,6 +45,9 @@ interface NoteDao {
     @Delete
     suspend fun deleteNote(noteModel: NoteModel): Int
 
+    @Delete
+    suspend fun deleteNotes(list: List<NoteModel>): Int
+
     @Query("DELETE FROM NoteTable")
     suspend fun deleteAllNotes()
 

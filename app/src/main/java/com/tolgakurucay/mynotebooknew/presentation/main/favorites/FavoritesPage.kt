@@ -16,6 +16,7 @@ import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -27,7 +28,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tolgakurucay.mynotebooknew.R
-import com.tolgakurucay.mynotebooknew.domain.base.BaseColumn
 import com.tolgakurucay.mynotebooknew.domain.base.BaseScaffold
 import com.tolgakurucay.mynotebooknew.domain.model.main.NoteModel
 import com.tolgakurucay.mynotebooknew.domain.model.main.NoteType
@@ -47,21 +47,28 @@ fun FavoritesPage(
         viewModel.getFavorites()
     }
 
+    DisposableEffect(Unit){
+        onDispose {
+            viewModel.removeAllSelectedItems()
+        }
+
+    }
+
 
     FavoritesContent(
         state = state,
         onNoteItemClicked = onNoteItemClicked,
         onNoteItemLongClicked = {
-            // TODO: viewModel function 
+            viewModel.doSelectableOrNot(it)
         },
         actions = { actions ->
             when (actions) {
                 FavoritesTopBarActions.DELETE -> {
-                    // TODO: viewModel function
+                    viewModel.deleteSelectedNotes()
                 }
 
-                FavoritesTopBarActions.FAVORITE -> {
-                    // TODO: viewModel function
+                FavoritesTopBarActions.REMOVE_FROM_FAVORITES -> {
+                    viewModel.removeFromFavorites()
                 }
 
                 FavoritesTopBarActions.BACK -> {
@@ -89,7 +96,7 @@ private fun FavoritesContent(
         modifier = Modifier
             .fillMaxSize()
             .windowInsetsPadding(WindowInsets.systemBars),
-        topBar = { FavoritesTopBar(actions = actions) }
+        topBar = { FavoritesTopBar(actions = actions, showingTheToolbar = state.list.any { it.isSelected }) }
     ) {
 
         Column(
@@ -103,7 +110,7 @@ private fun FavoritesContent(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
             ) {
-                if (state.list.any { it.noteType == NoteType.FAVORITE.name }) {
+                if (state.list.isNotEmpty()) {
                     LazyVerticalStaggeredGrid(
                         modifier = Modifier.fillMaxSize(),
                         columns = StaggeredGridCells.Fixed(2),
@@ -111,12 +118,12 @@ private fun FavoritesContent(
                             horizontal = 15.dp, vertical = 5.dp
                         ),
                     ) {
-                        items(state.list.filter { it.noteType == NoteType.FAVORITE.name }) { model ->
+                        items(state.list) { model ->
                             NoteItem(
                                 model,
                                 onClicked = { noteModel ->
                                     noteModel?.let { safeNoteModel ->
-
+                                        onNoteItemClicked.invoke(safeNoteModel)
                                     }
                                 },
                                 onLongClicked = { noteModel ->

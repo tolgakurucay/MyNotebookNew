@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.tolgakurucay.mynotebooknew.domain.model.main.NoteModel
 import com.tolgakurucay.mynotebooknew.domain.model.main.NoteType
 import com.tolgakurucay.mynotebooknew.domain.use_case.auth.LogOut
-import com.tolgakurucay.mynotebooknew.domain.use_case.main.DeleteNote
+import com.tolgakurucay.mynotebooknew.domain.use_case.main.DeleteNotes
 import com.tolgakurucay.mynotebooknew.domain.use_case.main.EditNote
 import com.tolgakurucay.mynotebooknew.domain.use_case.main.EditNotes
 import com.tolgakurucay.mynotebooknew.domain.use_case.main.GetNotesFromLocale
@@ -24,7 +24,7 @@ class HomeViewModel @Inject constructor(
     private val logOut: LogOut,
     private val getNote: GetNotesFromLocale,
     private val updateNote: EditNote,
-    private val deleteNote: DeleteNote,
+    private val deleteNotes: DeleteNotes,
     private val editNotes: EditNotes
 ) : ViewModel() {
 
@@ -67,15 +67,7 @@ class HomeViewModel @Inject constructor(
             service = { updateNote.invoke(model) })
     }
 
-    fun deleteNote(note: NoteModel) {
-        viewModelScope.callService(
-            baseState = _state.value,
-            success = {
 
-            },
-            service = { deleteNote.invoke(note) },
-        )
-    }
 
     fun addNotesToFavorite(list: List<NoteModel>) {
         val mappedList = list.map { it.copy(noteType = NoteType.FAVORITE.name, isSelected = false) }
@@ -88,7 +80,30 @@ class HomeViewModel @Inject constructor(
                 editNotes.invoke(mappedList)
             },
         )
+    }
 
+    fun deleteSelectedNotes() {
+        viewModelScope.callService(
+            baseState = _state.value,
+            success = {
+
+            },
+            service = {
+                deleteNotes.invoke(_state.value.notes.filter { it.isSelected })
+            },
+        )
+    }
+
+    fun removeAllSelectedItems() {
+        viewModelScope.callService(
+            baseState = _state.value,
+            success = {},
+            service = {
+                val mappedList = _state.value.notes.filter { it.isSelected }
+                    .map { it.copy(isSelected = it.isSelected.not()) }
+                editNotes.invoke(mappedList)
+            },
+        )
     }
 
 

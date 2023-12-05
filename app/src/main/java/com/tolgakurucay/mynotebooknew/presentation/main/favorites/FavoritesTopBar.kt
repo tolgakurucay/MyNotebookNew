@@ -4,7 +4,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -21,7 +20,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.tolgakurucay.mynotebooknew.R
-import com.tolgakurucay.mynotebooknew.presentation.main.home.HomeTopBarActions
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -76,8 +74,8 @@ fun FavoritesTopBar(
                             text = { Text(text = stringResource(id = R.string.action_delete)) },
                             onClick = { actions.invoke(FavoritesTopBarActions.DELETE) })
                         DropdownMenuItem(
-                            text = { Text(text = stringResource(id = R.string.action_add_favorite)) },
-                            onClick = { actions.invoke(FavoritesTopBarActions.FAVORITE) })
+                            text = { Text(text = stringResource(id = R.string.action_remove_from_favorites)) },
+                            onClick = { actions.invoke(FavoritesTopBarActions.REMOVE_FROM_FAVORITES) })
 
                     }
                 }
@@ -90,6 +88,6 @@ fun FavoritesTopBar(
 enum class FavoritesTopBarActions {
     BACK,
     DELETE,
-    FAVORITE
+    REMOVE_FROM_FAVORITES
 }
 

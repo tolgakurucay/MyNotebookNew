@@ -1,10 +1,8 @@
 package com.tolgakurucay.mynotebooknew.presentation.main.home
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
@@ -13,12 +11,12 @@ import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -46,8 +44,18 @@ fun HomePage(
         mutableStateOf(false)
     }
 
+    val isShowingDeleteDialog = remember {
+        mutableStateOf(false)
+    }
+
     LaunchedEffect(key1 = Unit) {
         viewModel.getNotes()
+    }
+
+    DisposableEffect(key1 = Unit) {
+        onDispose {
+            viewModel.removeAllSelectedItems()
+        }
     }
 
 
@@ -60,9 +68,21 @@ fun HomePage(
     if (isShowingExitDialog.value) {
         CustomAlertDialog(
             type = AlertDialogType.YES_OR_NO,
-            descriptionRes = stringResource(id = R.string.question_you_want_exit),
+            descriptionText = stringResource(id = R.string.question_you_want_exit),
             onConfirm = { viewModel.logOut() },
             onDismiss = { isShowingExitDialog.value = false })
+    }
+
+    if (isShowingDeleteDialog.value) {
+        CustomAlertDialog(
+            type = AlertDialogType.YES_OR_NO,
+            titleRes = R.string.action_delete,
+            descriptionText = stringResource(
+                id = R.string.question_you_want_delete
+            ),
+            onConfirm = { viewModel.deleteSelectedNotes() },
+            onDismiss = { isShowingDeleteDialog.value = false },
+        )
     }
 
 
@@ -73,10 +93,16 @@ fun HomePage(
             isShowingExitDialog.value = true
         },
         onNoteItemClicked = onNoteItemClicked,
-        onNoteItemLongClicked = {
-            viewModel.doSelectableOrNot(it)
-        }, onFavoritesClicked = {
-            viewModel.addNotesToFavorite(observableState.value.notes.filter { it.isSelected })
+        onNoteItemLongClicked = { viewModel.doSelectableOrNot(it) },
+        onTopbarActionsClicked = {
+            when (it) {
+                HomeTopBarActions.DELETE -> {
+
+                    isShowingDeleteDialog.value = true
+                }
+
+                HomeTopBarActions.FAVORITE -> viewModel.addNotesToFavorite(observableState.value.notes.filter { it.isSelected })
+            }
         }
     )
 }
@@ -90,7 +116,7 @@ fun HomeContent(
     onLogOutClicked: () -> Unit = {},
     onNoteItemClicked: (NoteModel) -> Unit = {},
     onNoteItemLongClicked: (NoteModel) -> Unit = {},
-    onFavoritesClicked: () -> Unit = {}
+    onTopbarActionsClicked: (HomeTopBarActions) -> Unit = {}
 
 ) {
 
@@ -98,21 +124,7 @@ fun HomeContent(
     BaseScaffold(
         state = state,
         topBar = {
-            HomeTopBar(state.isShowingTheMenu) {
-                when (it) {
-                    HomeTopBarActions.FAVORITE -> {
-                        onFavoritesClicked.invoke()
-                    }
-
-                    HomeTopBarActions.UPDATE -> {
-
-                    }
-
-                    HomeTopBarActions.DELETE -> {
-
-                    }
-                }
-            }
+            HomeTopBar(state.isShowingTheMenu, onTopbarActionsClicked)
         },
         bottomBar = {
             HomeBottomBar {
@@ -133,7 +145,7 @@ fun HomeContent(
             ) {
                 if (state.notes.any { it.noteType == NoteType.NOTE.name }) {
                     BaseColumn(
-                       state = state
+                        state = state
                     ) {
                         LazyVerticalStaggeredGrid(
                             columns = StaggeredGridCells.Fixed(2),
