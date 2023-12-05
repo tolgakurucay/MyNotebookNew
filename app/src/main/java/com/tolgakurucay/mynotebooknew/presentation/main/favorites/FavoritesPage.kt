@@ -51,7 +51,6 @@ fun FavoritesPage(
         onDispose {
             viewModel.removeAllSelectedItems()
         }
-
     }
 
 

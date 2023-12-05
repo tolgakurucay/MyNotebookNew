@@ -40,13 +40,11 @@ fun HomePage(
 ) {
 
     val observableState = viewModel.state.collectAsStateWithLifecycle()
-    val isShowingExitDialog = remember {
-        mutableStateOf(false)
-    }
 
-    val isShowingDeleteDialog = remember {
-        mutableStateOf(false)
-    }
+    val isShowingExitDialog = remember { mutableStateOf(false) }
+    val isShowingDeleteDialog = remember { mutableStateOf(false) }
+
+
 
     LaunchedEffect(key1 = Unit) {
         viewModel.getNotes()
@@ -92,15 +90,19 @@ fun HomePage(
         onLogOutClicked = {
             isShowingExitDialog.value = true
         },
-        onNoteItemClicked = onNoteItemClicked,
+        onNoteItemClicked = {noteModel->
+            if(observableState.value.isShowingTheMenu.not()){
+                onNoteItemClicked.invoke(noteModel)
+            }
+            else {
+                viewModel.doSelectableOrNot(noteModel.copy(isSelected = noteModel.isSelected.not()))
+            }
+
+            },
         onNoteItemLongClicked = { viewModel.doSelectableOrNot(it) },
         onTopbarActionsClicked = {
             when (it) {
-                HomeTopBarActions.DELETE -> {
-
-                    isShowingDeleteDialog.value = true
-                }
-
+                HomeTopBarActions.DELETE -> isShowingDeleteDialog.value = true
                 HomeTopBarActions.FAVORITE -> viewModel.addNotesToFavorite(observableState.value.notes.filter { it.isSelected })
             }
         }

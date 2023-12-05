@@ -1,5 +1,7 @@
 package com.tolgakurucay.mynotebooknew.presentation
 
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -82,7 +84,21 @@ fun MyNotebookAppGraph(
             )
         }
 
-        composable(Destinations.FORGOT_PASSWORD_ROUTE) {
+        composable(
+            Destinations.FORGOT_PASSWORD_ROUTE,
+            enterTransition = {
+                slideIntoContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Left,
+                    animationSpec = tween(700)
+                )
+            },
+            exitTransition = {
+                slideOutOfContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Right,
+                    animationSpec = tween(700)
+                )
+            },
+        ) {
             ForgotPasswordPage(
                 onNavigateToLogin = {
                     navActions.navigateToLogin()
@@ -110,6 +126,7 @@ fun MyNotebookAppGraph(
         }
 
         composable(Destinations.ADD_NOTE_ROUTE) {
+
             AddNotePage(
                 onBackPressed = { navActions.onBackPressed() },
                 goToHome = {
