@@ -89,9 +89,10 @@
     <string name="common_an_error_occured">An error occured?</string>
     <string name="cd_menu">Menu icon</string>
     <string name="action_delete">Delete</string>
-    <string name="screen_favorites">Favorites</string>
     <string name="favorites_no_content">There is no favorite content</string>
     <string name="note_no_content">There is no note content</string>
     <string name="action_remove_from_favorites">Remove from favorites</string>
     <string name="question_you_want_delete">Are you sure you want to delete all selected items</string>
+    <string name="cd_search_icon" translatable="false">search icon</string>
+    <string name="screen_favorites">Welcome to Your Favorite Note Page</string>
 </resources>

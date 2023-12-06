@@ -47,7 +47,7 @@ fun FavoritesPage(
         viewModel.getFavorites()
     }
 
-    DisposableEffect(Unit){
+    DisposableEffect(Unit) {
         onDispose {
             viewModel.removeAllSelectedItems()
         }
@@ -62,15 +62,19 @@ fun FavoritesPage(
         },
         actions = { actions ->
             when (actions) {
-                FavoritesTopBarActions.DELETE -> {
+                is FavoritesTopBarActions.Delete -> {
                     viewModel.deleteSelectedNotes()
                 }
 
-                FavoritesTopBarActions.REMOVE_FROM_FAVORITES -> {
+                is FavoritesTopBarActions.RemoveFromFavorites -> {
                     viewModel.removeFromFavorites()
                 }
 
-                FavoritesTopBarActions.BACK -> {
+                is FavoritesTopBarActions.Search -> {
+                    val searchString = actions.searchString
+                }
+
+                is FavoritesTopBarActions.Back -> {
                     onBackPressed.invoke()
                 }
             }
@@ -95,7 +99,11 @@ private fun FavoritesContent(
         modifier = Modifier
             .fillMaxSize()
             .windowInsetsPadding(WindowInsets.systemBars),
-        topBar = { FavoritesTopBar(actions = actions, showingTheToolbar = state.list.any { it.isSelected }) }
+        topBar = {
+            FavoritesTopBar(
+                actions = actions,
+                showingTheToolbar = state.list.any { it.isSelected })
+        }
     ) {
 
         Column(

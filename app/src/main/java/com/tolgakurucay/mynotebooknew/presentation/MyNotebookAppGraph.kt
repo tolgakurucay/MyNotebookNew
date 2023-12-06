@@ -1,7 +1,5 @@
 package com.tolgakurucay.mynotebooknew.presentation
 
-import androidx.compose.animation.AnimatedContentTransitionScope
-import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -23,6 +21,8 @@ import com.tolgakurucay.mynotebooknew.presentation.auth.login.LoginPage
 import com.tolgakurucay.mynotebooknew.presentation.main.profile.ProfilePage
 import com.tolgakurucay.mynotebooknew.presentation.auth.register.Register
 import com.tolgakurucay.mynotebooknew.presentation.main.edit_or_view_note.EditOrViewNotePage
+import com.tolgakurucay.mynotebooknew.util.slideLeftEnter
+import com.tolgakurucay.mynotebooknew.util.slideRightExit
 
 
 @Composable
@@ -66,11 +66,15 @@ fun MyNotebookAppGraph(
 
         }
 
-        composable(Destinations.PROFILE_ROUTE) {
+        composable(Destinations.PROFILE_ROUTE,
+            enterTransition = { slideLeftEnter() },
+            exitTransition = { slideRightExit() }) {
             ProfilePage()
         }
 
-        composable(Destinations.LOGIN_ROUTE) {
+        composable(Destinations.LOGIN_ROUTE,
+            enterTransition = { slideLeftEnter() },
+            exitTransition = { slideRightExit() }) {
             LoginPage(
                 onNavigateToForgotPasswordMain = {
                     navActions.navigateToForgotPassword()
@@ -86,18 +90,9 @@ fun MyNotebookAppGraph(
 
         composable(
             Destinations.FORGOT_PASSWORD_ROUTE,
-            enterTransition = {
-                slideIntoContainer(
-                    AnimatedContentTransitionScope.SlideDirection.Left,
-                    animationSpec = tween(700)
-                )
-            },
-            exitTransition = {
-                slideOutOfContainer(
-                    AnimatedContentTransitionScope.SlideDirection.Right,
-                    animationSpec = tween(700)
-                )
-            },
+            enterTransition = { slideLeftEnter() },
+            exitTransition = { slideRightExit() }
+
         ) {
             ForgotPasswordPage(
                 onNavigateToLogin = {
@@ -106,7 +101,10 @@ fun MyNotebookAppGraph(
             )
         }
 
-        composable(Destinations.REGISTER_ROUTE) {
+        composable(
+            Destinations.REGISTER_ROUTE,
+            enterTransition = { slideLeftEnter() },
+            exitTransition = { slideRightExit() }) {
             Register(
                 onNavigateToLogin = {
                     navActions.navigateToLogin()
@@ -114,7 +112,9 @@ fun MyNotebookAppGraph(
             )
         }
 
-        composable(Destinations.FAVORITES_ROUTE) {
+        composable(Destinations.FAVORITES_ROUTE,
+            enterTransition = { slideLeftEnter() },
+            exitTransition = { slideRightExit() }) {
             FavoritesPage(
                 onBackPressed = {
                     navActions.onBackPressed()
@@ -125,7 +125,9 @@ fun MyNotebookAppGraph(
             )
         }
 
-        composable(Destinations.ADD_NOTE_ROUTE) {
+        composable(Destinations.ADD_NOTE_ROUTE,
+            enterTransition = { slideLeftEnter() },
+            exitTransition = { slideRightExit() }) {
 
             AddNotePage(
                 onBackPressed = { navActions.onBackPressed() },
@@ -134,12 +136,16 @@ fun MyNotebookAppGraph(
                 },
             )
         }
-        composable(Destinations.CLOUD_ROUTE) {
+        composable(Destinations.CLOUD_ROUTE,
+            enterTransition = { slideLeftEnter() },
+            exitTransition = { slideRightExit() }) {
             CloudPage()
         }
 
         composable(
             Destinations.EDIT_OR_VIEW_ROUTE,
+            enterTransition = { slideLeftEnter() },
+            exitTransition = { slideRightExit() },
             arguments = listOf(
                 navArgument(DestinationsArgs.NOTE_ARG) {
                     this.type = NavType.StringType

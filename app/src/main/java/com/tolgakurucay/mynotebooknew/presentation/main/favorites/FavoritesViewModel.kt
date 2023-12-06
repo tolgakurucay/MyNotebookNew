@@ -9,11 +9,13 @@ import com.tolgakurucay.mynotebooknew.domain.use_case.main.DeleteNotes
 import com.tolgakurucay.mynotebooknew.domain.use_case.main.EditNote
 import com.tolgakurucay.mynotebooknew.domain.use_case.main.EditNotes
 import com.tolgakurucay.mynotebooknew.domain.use_case.main.GetNotesFromLocale
+import com.tolgakurucay.mynotebooknew.domain.use_case.main.SearchNotesByText
 import com.tolgakurucay.mynotebooknew.util.callService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
@@ -23,8 +25,9 @@ class FavoritesViewModel @Inject constructor(
     private val updateNote: EditNote,
     private val deleteNotes: DeleteNotes,
     private val editNotes: EditNotes,
+    private val searchNotesByText: SearchNotesByText
 
-    ) : ViewModel() {
+) : ViewModel() {
 
     private val _state = MutableStateFlow(FavoritesState())
     val state: StateFlow<FavoritesState> = _state.asStateFlow()
@@ -89,6 +92,13 @@ class FavoritesViewModel @Inject constructor(
             },
         )
     }
+
+    fun searchNotesByText(text: String) = viewModelScope.callService(
+        _state.value,
+        success = {
+
+        },
+        service = { searchNotesByText.invoke(text) })
 
 
 }

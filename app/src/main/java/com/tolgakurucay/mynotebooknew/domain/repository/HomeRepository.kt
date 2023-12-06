@@ -22,6 +22,9 @@ interface HomeRepository {
     //Delete notes
     suspend fun deleteNotesFromLocale(list: List<NoteModel>): Int
 
+    //Get notes from DB by searchText
+    suspend fun searchNoteByAll(searchText: String): Flow<List<NoteModel>>
+
 
 
 }

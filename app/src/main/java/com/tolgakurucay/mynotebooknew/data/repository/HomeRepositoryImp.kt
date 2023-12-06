@@ -20,4 +20,5 @@ class HomeRepositoryImp @Inject constructor(
     override suspend fun addNoteToLocale(model: NoteModel): Long = noteDao.addNote(model)
     override suspend fun deleteNoteFromLocale(model: NoteModel): Int = noteDao.deleteNote(model)
     override suspend fun deleteNotesFromLocale(list: List<NoteModel>): Int = noteDao.deleteNotes(list)
+    override suspend fun searchNoteByAll(searchText: String): Flow<List<NoteModel>> = noteDao.searchNoteByAll(searchText)
 }
