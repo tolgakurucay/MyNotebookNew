@@ -16,7 +16,7 @@ interface NoteDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addNote(noteModel: NoteModel): Long
 
-    @Query("SELECT * FROM NoteTable WHERE title or description LIKE :searchText")
+    @Query("SELECT * FROM NoteTable WHERE title LIKE '%' || :searchText || '%' OR description LIKE '%' || :searchText || '%'")
     fun searchNoteByAll(searchText: String): Flow<List<NoteModel>>
 
     @Query("SELECT * FROM NoteTable WHERE title LIKE :title LIMIT 1")

@@ -93,6 +93,11 @@
     <string name="note_no_content">There is no note content</string>
     <string name="action_remove_from_favorites">Remove from favorites</string>
     <string name="question_you_want_delete">Are you sure you want to delete all selected items</string>
-    <string name="cd_search_icon" translatable="false">search icon</string>
+    <string name="cd_search_icon">Search icon</string>
     <string name="screen_favorites">Welcome to Your Favorite Note Page</string>
+    <string name="question_you_want_remove_from_favorites">Are you sure you want to remove the note from favorites?</string>
+    <string name="cd_set_an_alarm">Alarm icon</string>
+    <string name="action_share">Share</string>
+    <string name="cd_share">Share icon</string>
+    <string name="action_select_the_share_app">Select the share app</string>
 </resources>

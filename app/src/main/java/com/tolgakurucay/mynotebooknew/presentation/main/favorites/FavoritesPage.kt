@@ -19,8 +19,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -31,7 +34,11 @@ import com.tolgakurucay.mynotebooknew.R
 import com.tolgakurucay.mynotebooknew.domain.base.BaseScaffold
 import com.tolgakurucay.mynotebooknew.domain.model.main.NoteModel
 import com.tolgakurucay.mynotebooknew.domain.model.main.NoteType
+import com.tolgakurucay.mynotebooknew.presentation.custom.AlertDialogType
+import com.tolgakurucay.mynotebooknew.presentation.custom.CustomAlertDialog
 import com.tolgakurucay.mynotebooknew.presentation.main.home.NoteItem
+import com.tolgakurucay.mynotebooknew.util.share
+import com.tolgakurucay.mynotebooknew.util.showLog
 
 
 @Composable
@@ -43,39 +50,100 @@ fun FavoritesPage(
 
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    LaunchedEffect(key1 = Unit) {
-        viewModel.getFavorites()
-    }
-
     DisposableEffect(Unit) {
         onDispose {
             viewModel.removeAllSelectedItems()
         }
     }
 
+    LaunchedEffect(key1 = Unit) {
+        viewModel.getFavorites()
+    }
+
+
+    val isShowDeleteDialog = remember {
+        mutableStateOf(false)
+    }
+
+    val isShowRemoveFromFavoritesDialog = remember {
+        mutableStateOf(false)
+    }
+
+    val isSharingTheNote = remember {
+        mutableStateOf(false)
+    }
+
+    if (isShowDeleteDialog.value) {
+        CustomAlertDialog(type = AlertDialogType.YES_OR_NO,
+            titleRes = R.string.common_information,
+            descriptionText = stringResource(
+                id = R.string.question_you_want_delete
+            ),
+            onConfirm = {
+                viewModel.deleteSelectedNotes()
+            },
+            onDismiss = {
+                isShowDeleteDialog.value = false
+            }
+        )
+    }
+
+    if (isShowRemoveFromFavoritesDialog.value) {
+        CustomAlertDialog(type = AlertDialogType.YES_OR_NO,
+            titleRes = R.string.common_information,
+            descriptionText = stringResource(
+                id = R.string.question_you_want_remove_from_favorites
+            ),
+            onConfirm = {
+                viewModel.removeFromFavorites()
+            },
+            onDismiss = {
+                isShowRemoveFromFavoritesDialog.value = false
+            }
+        )
+    }
+
+    if (isSharingTheNote.value) {
+        val model = state.list.find { it.isSelected }
+        LocalContext.current.share(model?.title.toString(), model?.description.toString()) {
+            isSharingTheNote.value = false
+        }
+    }
+
+
 
     FavoritesContent(
         state = state,
-        onNoteItemClicked = onNoteItemClicked,
+        onNoteItemClicked = {
+            if (state.list.any { it.isSelected }) {
+                viewModel.doSelectableOrNot(it.copy(isSelected = it.isSelected.not()))
+            } else {
+                onNoteItemClicked.invoke(it)
+            }
+        },
         onNoteItemLongClicked = {
             viewModel.doSelectableOrNot(it)
         },
         actions = { actions ->
             when (actions) {
                 is FavoritesTopBarActions.Delete -> {
-                    viewModel.deleteSelectedNotes()
+                    isShowDeleteDialog.value = true
                 }
 
                 is FavoritesTopBarActions.RemoveFromFavorites -> {
-                    viewModel.removeFromFavorites()
+                    isShowRemoveFromFavoritesDialog.value = true
                 }
 
                 is FavoritesTopBarActions.Search -> {
-                    val searchString = actions.searchString
+                    viewModel.searchNotesByText(actions.searchString)
                 }
 
                 is FavoritesTopBarActions.Back -> {
                     onBackPressed.invoke()
+                }
+
+                is FavoritesTopBarActions.Share -> {
+                    isSharingTheNote.value = true
                 }
             }
 
@@ -84,7 +152,6 @@ fun FavoritesPage(
 
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Preview
 @Composable
 private fun FavoritesContent(
@@ -102,7 +169,9 @@ private fun FavoritesContent(
         topBar = {
             FavoritesTopBar(
                 actions = actions,
-                showingTheToolbar = state.list.any { it.isSelected })
+                showingTheToolbar = state.list.any { it.isSelected },
+                showingTheShareIcon = state.list.filter { it.isSelected }.size == 1
+            )
         }
     ) {
 

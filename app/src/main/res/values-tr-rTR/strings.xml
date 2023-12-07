@@ -89,10 +89,16 @@
     <string name="question_you_want_exit">Çıkış yapmak istediğinden emin misin?</string>
     <string name="common_an_error_occured">Bir hata oluştu</string>
     <string name="cd_menu">Menu ikonu</string>
-    <string name="action_delete">Delete</string>
-    <string name="screen_favorites">Welcome to Your Favorite Note Page</string>
-    <string name="favorites_no_content">There is no favorite content</string>
-    <string name="note_no_content">There is no note content</string>
-    <string name="action_remove_from_favorites">Remove from favorites</string>
-    <string name="question_you_want_delete">Are you sure you want to delete all selected items</string>
+    <string name="action_delete">Sİl</string>
+    <string name="cd_search_icon">Arama ikonu</string>
+    <string name="screen_favorites">Favoriler Sayfanıza Hoşgeldiniz</string>
+    <string name="favorites_no_content">Herhangi bir favori yok</string>
+    <string name="note_no_content">Herhangi bir not yok</string>
+    <string name="action_remove_from_favorites">Favorilerden çıkar</string>
+    <string name="question_you_want_delete">Seçili tüm notlarınızı silmeye emin misiniz?</string>
+    <string name="question_you_want_remove_from_favorites">Notunuzu favorilerden çıkarmak istediğinize emin misiniz?</string>
+    <string name="cd_set_an_alarm">Alarm ikonu</string>
+    <string name="action_share">Paylaş</string>
+    <string name="cd_share">Paylaş ikonu</string>
+    <string name="action_select_the_share_app">Paylaşılacak uygulamayı seçiniz</string>
 </resources>

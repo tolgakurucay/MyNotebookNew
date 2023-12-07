@@ -95,8 +95,10 @@ class FavoritesViewModel @Inject constructor(
 
     fun searchNotesByText(text: String) = viewModelScope.callService(
         _state.value,
-        success = {
-
+        success = {list->
+            _state.update {
+                it.copy(list.filter { it.noteType == NoteType.FAVORITE.name })
+            }
         },
         service = { searchNotesByText.invoke(text) })
 

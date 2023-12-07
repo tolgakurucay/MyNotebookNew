@@ -27,6 +27,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.tolgakurucay.mynotebooknew.R
+import com.tolgakurucay.mynotebooknew.domain.model.main.NoteModel
 
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
@@ -34,6 +35,7 @@ import com.tolgakurucay.mynotebooknew.R
 @Composable
 fun FavoritesTopBar(
     showingTheToolbar: Boolean = false,
+    showingTheShareIcon: Boolean = false,
     actions: (FavoritesTopBarActions) -> Unit = {}
 ) {
 
@@ -76,8 +78,8 @@ fun FavoritesTopBar(
                         style = MaterialTheme.typography.titleLarge,
                         maxLines = 2,
                         modifier = Modifier
-                            .fillMaxWidth(0.7f).
-                            basicMarquee()
+                            .fillMaxWidth(0.7f)
+                            .basicMarquee()
 
                     )
                 }
@@ -140,6 +142,11 @@ fun FavoritesTopBar(
                         DropdownMenuItem(
                             text = { Text(text = stringResource(id = R.string.action_remove_from_favorites)) },
                             onClick = { actions.invoke(FavoritesTopBarActions.RemoveFromFavorites) })
+                        if (showingTheShareIcon) {
+                            DropdownMenuItem(
+                                text = { Text(text = stringResource(id = R.string.action_share)) },
+                                onClick = { actions.invoke(FavoritesTopBarActions.Share) })
+                        }
 
                     }
                 }
@@ -150,13 +157,13 @@ fun FavoritesTopBar(
 }
 
 
-
-
-sealed class FavoritesTopBarActions{
+sealed class FavoritesTopBarActions {
     object Back : FavoritesTopBarActions()
-    object Delete: FavoritesTopBarActions()
-    object RemoveFromFavorites: FavoritesTopBarActions()
-    class Search(val searchString: String): FavoritesTopBarActions()
+    object Delete : FavoritesTopBarActions()
+    object RemoveFromFavorites : FavoritesTopBarActions()
+    class Search(val searchString: String) : FavoritesTopBarActions()
+    object Share : FavoritesTopBarActions()
+
 
 }
 
