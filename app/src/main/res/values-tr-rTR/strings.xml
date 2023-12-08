@@ -101,4 +101,5 @@
     <string name="action_share">Paylaş</string>
     <string name="cd_share">Paylaş ikonu</string>
     <string name="action_select_the_share_app">Paylaşılacak uygulamayı seçiniz</string>
+    <string name="action_cancel">Cancel</string>
 </resources>

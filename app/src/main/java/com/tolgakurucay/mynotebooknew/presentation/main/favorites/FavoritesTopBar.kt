@@ -27,7 +27,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.tolgakurucay.mynotebooknew.R
-import com.tolgakurucay.mynotebooknew.domain.model.main.NoteModel
 
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
@@ -35,7 +34,7 @@ import com.tolgakurucay.mynotebooknew.domain.model.main.NoteModel
 @Composable
 fun FavoritesTopBar(
     showingTheToolbar: Boolean = false,
-    showingTheShareIcon: Boolean = false,
+    showItemsForOneAction: Boolean = false,
     actions: (FavoritesTopBarActions) -> Unit = {}
 ) {
 
@@ -142,10 +141,13 @@ fun FavoritesTopBar(
                         DropdownMenuItem(
                             text = { Text(text = stringResource(id = R.string.action_remove_from_favorites)) },
                             onClick = { actions.invoke(FavoritesTopBarActions.RemoveFromFavorites) })
-                        if (showingTheShareIcon) {
+                        if (showItemsForOneAction) {
                             DropdownMenuItem(
                                 text = { Text(text = stringResource(id = R.string.action_share)) },
                                 onClick = { actions.invoke(FavoritesTopBarActions.Share) })
+                            DropdownMenuItem(
+                                text = { Text(text = stringResource(id = R.string.action_set_an_alarm)) },
+                                onClick = { actions.invoke(FavoritesTopBarActions.SetAnAlarm) })
                         }
 
                     }
@@ -163,6 +165,7 @@ sealed class FavoritesTopBarActions {
     object RemoveFromFavorites : FavoritesTopBarActions()
     class Search(val searchString: String) : FavoritesTopBarActions()
     object Share : FavoritesTopBarActions()
+    object SetAnAlarm : FavoritesTopBarActions()
 
 
 }

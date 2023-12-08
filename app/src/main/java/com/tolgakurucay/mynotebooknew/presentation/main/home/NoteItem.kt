@@ -29,6 +29,7 @@ import com.tolgakurucay.mynotebooknew.presentation.theme.radius10
 import com.tolgakurucay.mynotebooknew.presentation.theme.size50
 import com.tolgakurucay.mynotebooknew.presentation.theme.spacing15
 import com.tolgakurucay.mynotebooknew.presentation.theme.spacing5
+import com.tolgakurucay.mynotebooknew.util.toDate
 import com.tolgakurucay.mynotebooknew.util.toSimpleString
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -87,7 +88,7 @@ fun NoteItem(
             }
 
             Text(
-                text = model?.date?.toSimpleString() ?: "12.09.2000",
+                text = model?.date?.toDate()?.toSimpleString() ?: "12.09.2000",
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
                     .padding(top = spacing15),

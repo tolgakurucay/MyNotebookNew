@@ -100,4 +100,5 @@
     <string name="action_share">Share</string>
     <string name="cd_share">Share icon</string>
     <string name="action_select_the_share_app">Select the share app</string>
+    <string name="action_cancel">Cancel</string>
 </resources>

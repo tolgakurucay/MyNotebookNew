@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.os.Parcelable
+import androidx.compose.runtime.MutableState
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.io.IOException
@@ -102,5 +103,29 @@ fun <T> List<T>.mapButReplace(targetItem: T, newItem: T) = map {
     } else {
         it
     }
+}
+
+fun Int?.orZero() : Int{
+    this?.let {
+        return it
+    } ?: run {
+        return 0
+    }
+}
+
+fun Long?.orZero() : Long{
+    this?.let {
+        return it
+    } ?: run {
+        return 0L
+    }
+}
+
+fun MutableState<Boolean>.setStateFalse(){
+    value = false
+}
+
+fun MutableState<Boolean>.setStateTrue(){
+    value = true
 }
 

@@ -1,5 +1,6 @@
 package com.tolgakurucay.mynotebooknew.presentation
 
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -25,6 +26,7 @@ import com.tolgakurucay.mynotebooknew.util.slideLeftEnter
 import com.tolgakurucay.mynotebooknew.util.slideRightExit
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MyNotebookAppGraph(
     modifier: Modifier = Modifier,

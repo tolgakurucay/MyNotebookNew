@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tolgakurucay.mynotebooknew.domain.model.main.NoteModel
 import com.tolgakurucay.mynotebooknew.domain.model.main.NoteType
+import com.tolgakurucay.mynotebooknew.domain.repository.AlarmScheduler
 import com.tolgakurucay.mynotebooknew.domain.use_case.main.DeleteNote
 import com.tolgakurucay.mynotebooknew.domain.use_case.main.DeleteNotes
 import com.tolgakurucay.mynotebooknew.domain.use_case.main.EditNote
@@ -25,7 +26,8 @@ class FavoritesViewModel @Inject constructor(
     private val updateNote: EditNote,
     private val deleteNotes: DeleteNotes,
     private val editNotes: EditNotes,
-    private val searchNotesByText: SearchNotesByText
+    private val searchNotesByText: SearchNotesByText,
+    private val alarmScheduler: AlarmScheduler,
 
 ) : ViewModel() {
 
@@ -95,12 +97,21 @@ class FavoritesViewModel @Inject constructor(
 
     fun searchNotesByText(text: String) = viewModelScope.callService(
         _state.value,
-        success = {list->
+        success = { list ->
             _state.update {
                 it.copy(list.filter { it.noteType == NoteType.FAVORITE.name })
             }
         },
-        service = { searchNotesByText.invoke(text) })
+        service = { searchNotesByText.invoke(text) },
+    )
+
+    fun setAnAlarm(model: NoteModel){
+        alarmScheduler.schedule(model)
+    }
+
+    fun cancelAlarm(model: NoteModel){
+        alarmScheduler.cancel(model)
+    }
 
 
 }
