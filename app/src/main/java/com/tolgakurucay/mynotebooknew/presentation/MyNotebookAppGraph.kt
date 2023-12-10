@@ -1,5 +1,6 @@
 package com.tolgakurucay.mynotebooknew.presentation
 
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -21,8 +22,11 @@ import com.tolgakurucay.mynotebooknew.presentation.auth.login.LoginPage
 import com.tolgakurucay.mynotebooknew.presentation.main.profile.ProfilePage
 import com.tolgakurucay.mynotebooknew.presentation.auth.register.Register
 import com.tolgakurucay.mynotebooknew.presentation.main.edit_or_view_note.EditOrViewNotePage
+import com.tolgakurucay.mynotebooknew.util.slideLeftEnter
+import com.tolgakurucay.mynotebooknew.util.slideRightExit
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MyNotebookAppGraph(
     modifier: Modifier = Modifier,
@@ -58,17 +62,21 @@ fun MyNotebookAppGraph(
                     navActions.navigateToLogin(popUpRoute = Destinations.HOME_ROUTE)
                 },
                 onNoteItemClicked = {
-                    navActions.navigateToEditOrView(it)
+                    navActions.navigateToEditOrView(it, Destinations.EDIT_OR_VIEW_ROUTE)
                 }
             )
 
         }
 
-        composable(Destinations.PROFILE_ROUTE) {
+        composable(Destinations.PROFILE_ROUTE,
+            enterTransition = { slideLeftEnter() },
+            exitTransition = { slideRightExit() }) {
             ProfilePage()
         }
 
-        composable(Destinations.LOGIN_ROUTE) {
+        composable(Destinations.LOGIN_ROUTE,
+            enterTransition = { slideLeftEnter() },
+            exitTransition = { slideRightExit() }) {
             LoginPage(
                 onNavigateToForgotPasswordMain = {
                     navActions.navigateToForgotPassword()
@@ -82,7 +90,12 @@ fun MyNotebookAppGraph(
             )
         }
 
-        composable(Destinations.FORGOT_PASSWORD_ROUTE) {
+        composable(
+            Destinations.FORGOT_PASSWORD_ROUTE,
+            enterTransition = { slideLeftEnter() },
+            exitTransition = { slideRightExit() }
+
+        ) {
             ForgotPasswordPage(
                 onNavigateToLogin = {
                     navActions.navigateToLogin()
@@ -90,7 +103,10 @@ fun MyNotebookAppGraph(
             )
         }
 
-        composable(Destinations.REGISTER_ROUTE) {
+        composable(
+            Destinations.REGISTER_ROUTE,
+            enterTransition = { slideLeftEnter() },
+            exitTransition = { slideRightExit() }) {
             Register(
                 onNavigateToLogin = {
                     navActions.navigateToLogin()
@@ -98,11 +114,23 @@ fun MyNotebookAppGraph(
             )
         }
 
-        composable(Destinations.FAVORITES_ROUTE) {
-            FavoritesPage()
+        composable(Destinations.FAVORITES_ROUTE,
+            enterTransition = { slideLeftEnter() },
+            exitTransition = { slideRightExit() }) {
+            FavoritesPage(
+                onBackPressed = {
+                    navActions.onBackPressed()
+                },
+                onNoteItemClicked = {
+                    navActions.navigateToEditOrView(it)
+                }
+            )
         }
 
-        composable(Destinations.ADD_NOTE_ROUTE) {
+        composable(Destinations.ADD_NOTE_ROUTE,
+            enterTransition = { slideLeftEnter() },
+            exitTransition = { slideRightExit() }) {
+
             AddNotePage(
                 onBackPressed = { navActions.onBackPressed() },
                 goToHome = {
@@ -110,12 +138,16 @@ fun MyNotebookAppGraph(
                 },
             )
         }
-        composable(Destinations.CLOUD_ROUTE) {
+        composable(Destinations.CLOUD_ROUTE,
+            enterTransition = { slideLeftEnter() },
+            exitTransition = { slideRightExit() }) {
             CloudPage()
         }
 
         composable(
             Destinations.EDIT_OR_VIEW_ROUTE,
+            enterTransition = { slideLeftEnter() },
+            exitTransition = { slideRightExit() },
             arguments = listOf(
                 navArgument(DestinationsArgs.NOTE_ARG) {
                     this.type = NavType.StringType

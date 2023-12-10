@@ -2,6 +2,7 @@
 
 buildscript {
     dependencies {
+        val nav_version = "2.7.5"
         classpath("com.google.gms:google-services:4.3.15")
     }
 }

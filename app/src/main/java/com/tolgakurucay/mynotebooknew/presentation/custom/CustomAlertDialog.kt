@@ -10,19 +10,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.window.DialogProperties
 import com.tolgakurucay.mynotebooknew.R
-import com.tolgakurucay.mynotebooknew.presentation.theme.OnPrimaryLight
-import com.tolgakurucay.mynotebooknew.presentation.theme.PrimaryLight
 import com.tolgakurucay.mynotebooknew.presentation.theme.spacing10
 
 @Composable
 fun CustomAlertDialog(
     type: AlertDialogType,
     @StringRes titleRes: Int = R.string.common_error,
-    descriptionRes: String? = null,
+    descriptionText: String? = null,
     onConfirm: (() -> Unit)? = null,
     onDismiss: (() -> Unit)? = null
 ) {
@@ -44,10 +41,10 @@ fun CustomAlertDialog(
             },
             text = {
                 Text(
-                    descriptionRes ?: stringResource(id = R.string.common_error),
+                    text = descriptionText ?: run {
+                        stringResource(id = R.string.common_an_error_occured)
+                    },
                     style = MaterialTheme.typography.bodyMedium,
-
-
                 )
             },
             confirmButton = {
@@ -115,8 +112,6 @@ fun CustomAlertDialog(
 
 
 }
-
-
 
 
 /**

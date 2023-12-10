@@ -130,7 +130,7 @@ android {
         androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.4.3")
 
         //Jetpack Navigation
-        val navVersion = "2.5.3"
+        val navVersion = "2.7.0"
         implementation("androidx.navigation:navigation-compose:$navVersion")
 
         //Material Icons
@@ -180,6 +180,8 @@ android {
         implementation("androidx.room:room-ktx:$roomVersion")
         annotationProcessor("androidx.room:room-compiler:$roomVersion")
         kapt ("androidx.room:room-compiler:$roomVersion")
+
+       // implementation("androidx.compose.ui:ui:1.5.0-beta01")
 
         //Glide
         //implementation("com.github.bumptech.glide:compose:1.0.0-beta01")

@@ -9,12 +9,10 @@ import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -25,7 +23,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.tolgakurucay.mynotebooknew.R
 import com.tolgakurucay.mynotebooknew.domain.base.arePasswordsSame
 import com.tolgakurucay.mynotebooknew.domain.base.validateCustomTextFields
@@ -121,7 +118,7 @@ fun RegisterContent(
             CustomAlertDialog(
                 type = AlertDialogType.OKAY,
                 titleRes = R.string.common_information,
-                descriptionRes = stringResource(id = R.string.action_fill_empty_fields_correctly),
+                descriptionText = stringResource(id = R.string.action_fill_empty_fields_correctly),
                 onConfirm = {
                     isShowEmptyFieldsAlert = false
                 },
@@ -130,7 +127,7 @@ fun RegisterContent(
             CustomAlertDialog(
                 type = AlertDialogType.OKAY,
                 titleRes = R.string.common_information,
-                descriptionRes = stringResource(id = R.string.common_passwords_not_same),
+                descriptionText = stringResource(id = R.string.common_passwords_not_same),
                 onConfirm = {
                     isShowPasswordAlert = false
                 },
@@ -142,7 +139,7 @@ fun RegisterContent(
             CustomAlertDialog(
                 type = AlertDialogType.OKAY,
                 titleRes = R.string.common_information,
-                descriptionRes = stringResource(
+                descriptionText = stringResource(
                     id = R.string.screen_register_successful
                 ), onConfirm = {
                     onNavigateToLoginChild.invoke()
