@@ -1,5 +1,7 @@
 package com.tolgakurucay.mynotebooknew.presentation.auth.login
 
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -27,18 +29,26 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
+import com.google.firebase.auth.GoogleAuthProvider
 import com.tolgakurucay.mynotebooknew.presentation.custom.CustomTextField
 import com.tolgakurucay.mynotebooknew.R
+import com.tolgakurucay.mynotebooknew.data.database.Constant
 import com.tolgakurucay.mynotebooknew.domain.base.BaseColumn
 import com.tolgakurucay.mynotebooknew.domain.base.validateCustomTextFields
 import com.tolgakurucay.mynotebooknew.domain.model.auth.SignInEmailPasswordRequest
+import com.tolgakurucay.mynotebooknew.presentation.custom.AlertDialogType
 import com.tolgakurucay.mynotebooknew.presentation.custom.ButtonType
+import com.tolgakurucay.mynotebooknew.presentation.custom.CustomAlertDialog
 import com.tolgakurucay.mynotebooknew.presentation.custom.CustomButton
 import com.tolgakurucay.mynotebooknew.presentation.custom.TextFieldType
 import com.tolgakurucay.mynotebooknew.presentation.theme.Black
@@ -52,7 +62,11 @@ import com.tolgakurucay.mynotebooknew.presentation.theme.spacing32
 import com.tolgakurucay.mynotebooknew.presentation.theme.spacing40
 import com.tolgakurucay.mynotebooknew.presentation.theme.spacing5
 import com.tolgakurucay.mynotebooknew.presentation.theme.spacing70
+import com.tolgakurucay.mynotebooknew.util.isNotNull
 import com.tolgakurucay.mynotebooknew.util.safeLet
+import com.tolgakurucay.mynotebooknew.util.setStateFalse
+import com.tolgakurucay.mynotebooknew.util.setStateTrue
+import com.tolgakurucay.mynotebooknew.util.showLog
 
 
 @Composable
@@ -65,6 +79,8 @@ fun LoginPage(
 
 
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val context = LocalContext.current
+
 
     if (state.isUserAuthenticated == true) {
         LaunchedEffect(
@@ -75,6 +91,37 @@ fun LoginPage(
         )
     }
 
+    if (state.googleAuthResult?.user.isNotNull()) {
+        LaunchedEffect(key1 = "navigate2", block = { onNavigateToHome.invoke() })
+
+    }
+
+    val isShowError = remember { mutableStateOf(false) }
+
+    if (isShowError.value) {
+        CustomAlertDialog(
+            type = AlertDialogType.OKAY,
+            descriptionText = stringResource(id = R.string.error_not_logged_in_with_google),
+            onConfirm = {
+                isShowError.setStateFalse()
+            },
+        )
+    }
+
+    val launcher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult(),
+        onResult = {
+            val account = GoogleSignIn.getSignedInAccountFromIntent(it.data)
+            try {
+                val result = account.getResult(ApiException::class.java)
+                val credential = GoogleAuthProvider.getCredential(result.idToken, null)
+                viewModel.signInWithGoogle(credential)
+            } catch (it: ApiException) {
+                showLog(it.localizedMessage)
+                isShowError.setStateTrue()
+            }
+        },
+    )
 
 
     Surface(
@@ -91,6 +138,15 @@ fun LoginPage(
             state = state,
             signInWithEmailAndPassword = {
                 viewModel.signInWithEmailAndPassword(it.email, it.password)
+            }, onGoogleSignInClicked = {
+                val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                    .requestEmail()
+                    .requestIdToken(Constant.ServerClientId)
+                    .requestProfile()
+                    .build()
+
+                val googleSignInClient = GoogleSignIn.getClient(context, gso)
+                launcher.launch(googleSignInClient.signInIntent)
             }
         )
     }
@@ -104,8 +160,8 @@ fun LoginContent(
     onNavigateToRegisterContent: () -> Unit = {},
     onNavigateToForgotPasswordContent: () -> Unit = {},
     state: LoginState = LoginState(),
-    signInWithEmailAndPassword: (SignInEmailPasswordRequest) -> Unit = {}
-
+    signInWithEmailAndPassword: (SignInEmailPasswordRequest) -> Unit = {},
+    onGoogleSignInClicked: () -> Unit = {}
 ) {
 
 
@@ -219,7 +275,9 @@ fun LoginContent(
 
             }
             IconButton(
-                onClick = {},
+                onClick = {
+                    onGoogleSignInClicked()
+                },
                 modifier = Modifier.paint(painterResource(id = R.drawable.google_sign))
             ) {
 

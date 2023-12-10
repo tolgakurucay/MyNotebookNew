@@ -1,5 +1,6 @@
 package com.tolgakurucay.mynotebooknew.data.repository
 
+import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -58,6 +59,11 @@ class AuthRepositoryImpl @Inject constructor(
         } else {
             emit(false)
         }
+    }
+
+    override suspend fun googleSignIn(credential: AuthCredential): Flow<AuthResult> = flow{
+        val result = auth.signInWithCredential(credential).await()
+        emit(result)
     }
 
 

@@ -55,6 +55,9 @@ android {
 
     buildTypes {
 
+        getByName("release") {
+            signingConfig = signingConfigs.getByName("debug")
+        }
         named("debug") {
             isMinifyEnabled = false
             buildConfigField("String", "BASE_URL", bUrlDev)
@@ -170,7 +173,6 @@ android {
 
         //Firestore
         implementation("com.google.firebase:firebase-firestore-ktx")
-
         implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.0-beta01")
 
         //Room
@@ -181,10 +183,8 @@ android {
         annotationProcessor("androidx.room:room-compiler:$roomVersion")
         kapt ("androidx.room:room-compiler:$roomVersion")
 
-       // implementation("androidx.compose.ui:ui:1.5.0-beta01")
-
-        //Glide
-        //implementation("com.github.bumptech.glide:compose:1.0.0-beta01")
+        //Play Services
+        implementation("com.google.android.gms:play-services-auth:20.7.0")
 
 
     }
