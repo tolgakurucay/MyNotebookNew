@@ -2,7 +2,9 @@ package com.tolgakurucay.mynotebooknew.presentation.auth.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.auth.AuthCredential
 import com.tolgakurucay.mynotebooknew.domain.model.auth.SignInEmailPasswordRequest
+import com.tolgakurucay.mynotebooknew.domain.use_case.auth.SignInWithGoogle
 import com.tolgakurucay.mynotebooknew.domain.use_case.auth.SignInWithEmailAndPassword
 import com.tolgakurucay.mynotebooknew.util.callService
 import com.tolgakurucay.mynotebooknew.util.isNotNull
@@ -16,6 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val signInEmailPassword: SignInWithEmailAndPassword,
+    private val signInWithGoogle: SignInWithGoogle,
 ) : ViewModel() {
 
 
@@ -42,8 +45,16 @@ class LoginViewModel @Inject constructor(
     fun signInWithFacebook() {
     }
 
-    // TODO:
-    fun signInWithGoogle() {
+
+    fun signInWithGoogle(credential: AuthCredential) {
+        viewModelScope.callService(
+            baseState = _state.value,
+            success = {result->
+                _state.update {
+                    it.copy(googleAuthResult = result)
+                }
+            },
+            service = { signInWithGoogle.invoke(credential) })
 
     }
 

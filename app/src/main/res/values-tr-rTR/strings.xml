@@ -104,4 +104,5 @@
     <string name="action_cancel">Cancel</string>
     <string name="question_you_want_undo">Geri almak ister misin?</string>
     <string name="common_undo">Geri Al</string>
+    <string name="error_not_logged_in_with_google">Google ile giriş yapılamadı, lütfen daha sonra tekrar deneyiniz</string>
 </resources>
