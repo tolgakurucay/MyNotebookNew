@@ -48,7 +48,7 @@ fun ForgotPasswordPage(
     if(state.sendResetMail){
         CustomAlertDialog(
             type = AlertDialogType.OKAY, titleRes = R.string.common_information,
-            descriptionRes = stringResource(
+            descriptionText = stringResource(
                 id = R.string.screen_forgotpassword_successful
             ),
             onConfirm = { onNavigateToLogin.invoke() }

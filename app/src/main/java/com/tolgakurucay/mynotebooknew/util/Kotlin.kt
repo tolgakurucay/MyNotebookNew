@@ -5,10 +5,12 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.os.Parcelable
+import androidx.compose.runtime.MutableState
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.io.IOException
 import kotlin.reflect.KClass
+
 
 inline fun <T1 : Any, T2 : Any, R : Any> safeLet(p1: T1?, p2: T2?, block: (T1, T2) -> R?): R? {
     return if (p1 != null && p2 != null) block(p1, p2) else null
@@ -82,7 +84,7 @@ fun Any?.isNull(): Boolean {
 }
 
 fun Any?.isNotNull(): Boolean {
-    return this!=null
+    return this != null
 }
 
 inline fun <reified T : Parcelable> Intent.parcelable(key: String): T? = when {
@@ -93,5 +95,37 @@ inline fun <reified T : Parcelable> Intent.parcelable(key: String): T? = when {
 inline fun <reified T : Parcelable> Bundle.parcelable(key: String): T? = when {
     Build.VERSION.SDK_INT >= 33 -> getParcelable(key, T::class.java)
     else -> @Suppress("DEPRECATION") getParcelable(key) as? T
+}
+
+fun <T> List<T>.mapButReplace(targetItem: T, newItem: T) = map {
+    if (it == targetItem) {
+        newItem
+    } else {
+        it
+    }
+}
+
+fun Int?.orZero() : Int{
+    this?.let {
+        return it
+    } ?: run {
+        return 0
+    }
+}
+
+fun Long?.orZero() : Long{
+    this?.let {
+        return it
+    } ?: run {
+        return 0L
+    }
+}
+
+fun MutableState<Boolean>.setStateFalse(){
+    value = false
+}
+
+fun MutableState<Boolean>.setStateTrue(){
+    value = true
 }
 

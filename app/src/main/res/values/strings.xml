@@ -85,4 +85,22 @@
     <string name="action_add_to_cloud">Add to cloud</string>
     <string name="common_update_note_uppercase">UPDATE NOTE</string>
     <string name="screen_edit_or_view">View / Edit Note</string>
+    <string name="question_you_want_exit">"Are you sure you want to exit? "</string>
+    <string name="common_an_error_occured">An error occured?</string>
+    <string name="cd_menu">Menu icon</string>
+    <string name="action_delete">Delete</string>
+    <string name="favorites_no_content">There is no favorite content</string>
+    <string name="note_no_content">There is no note content</string>
+    <string name="action_remove_from_favorites">Remove from favorites</string>
+    <string name="question_you_want_delete">Are you sure you want to delete all selected items</string>
+    <string name="cd_search_icon">Search icon</string>
+    <string name="screen_favorites">Welcome to Your Favorite Note Page</string>
+    <string name="question_you_want_remove_from_favorites">Are you sure you want to remove the note from favorites?</string>
+    <string name="cd_set_an_alarm">Alarm icon</string>
+    <string name="action_share">Share</string>
+    <string name="cd_share">Share icon</string>
+    <string name="action_select_the_share_app">Select the share app</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="question_you_want_undo">You want undo?</string>
+    <string name="common_undo">Undo</string>
 </resources>

@@ -2,6 +2,7 @@ package com.tolgakurucay.mynotebooknew.presentation.custom
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -18,15 +19,28 @@ import com.tolgakurucay.mynotebooknew.presentation.theme.spacing0
 @Composable
 fun CustomButton(
     buttonType: ButtonType = ButtonType.DEFAULT,
+    buttonSize: ButtonSize = ButtonSize.MATCH_PARENT,
     horizontalMargin: Dp = spacing0,
     onClick: () -> Unit = {}
 ) {
 
+    val modifier = when (buttonSize) {
+        ButtonSize.MATCH_PARENT -> {
+            Modifier
+                .padding(horizontal = horizontalMargin)
+                .fillMaxWidth()
+        }
+
+        ButtonSize.WRAP_CONTENT -> {
+            Modifier
+                .padding(horizontal = horizontalMargin)
+                .wrapContentWidth()
+        }
+    }
+
     Button(
         onClick = onClick,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = horizontalMargin)
+        modifier = modifier
     ) {
         Text(
             text = stringResource(
@@ -36,6 +50,8 @@ fun CustomButton(
                     ButtonType.REGISTER -> R.string.common_register_uppercase
                     ButtonType.FORGOT_PASSWORD -> R.string.common_forgot_password_uppercase
                     ButtonType.UPDATE_NOTE -> R.string.common_update_note_uppercase
+                    ButtonType.OK -> R.string.common_okay
+                    ButtonType.CANCEL -> R.string.action_cancel
                     else -> R.string.common_space
                 },
             ), style = MaterialTheme.typography.labelMedium
@@ -52,7 +68,14 @@ enum class ButtonType {
     LOGIN,
     FORGOT_PASSWORD,
     ADD_NOTE,
-    UPDATE_NOTE
+    UPDATE_NOTE,
+    OK,
+    CANCEL
+}
+
+enum class ButtonSize {
+    MATCH_PARENT,
+    WRAP_CONTENT
 }
 
 

@@ -40,7 +40,7 @@ fun AddNotePage(
     onBackPressed: () -> Unit = {},
     goToHome: () -> Unit = {}
 ) {
-    
+
     AddNoteContent(
         onBackPressed = onBackPressed,
         goToHome = goToHome,
@@ -107,7 +107,11 @@ private fun AddNoteContent(
                 onClick = {
                     if (arrayOf(title, description).validateCustomTextFields()) {
                         saveNoteToLocale.invoke(
-                            NoteModel(title = title, description = description)
+                            NoteModel(
+                                title = title,
+                                description = description,
+                                date = System.currentTimeMillis()
+                            )
                         )
                     }
                 },
