@@ -86,42 +86,20 @@ fun FavoritesPage(
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     DisposableEffect(Unit) {
-        showLog("----DisposableEffect---- ")
         onDispose {
-            showLog("----OnDispose---- ")
             viewModel.removeAllSelectedItems()
         }
     }
 
-    LaunchedEffect(key1 = Unit) {
-        viewModel.getFavorites()
-    }
+    LaunchedEffect(key1 = Unit) { viewModel.getFavorites() }
 
-    SideEffect {
-        showLog("----SideEffect---- ")
-    }
+    val isShowDeleteDialog = remember { mutableStateOf(false) }
+    val isShowRemoveFromFavoritesDialog = remember { mutableStateOf(false) }
+    val isShared = remember { mutableStateOf(false) }
+    val isShowTheDatePickerDialog = remember { mutableStateOf(false) }
+    val isShowTheTimePickerDialog = remember { mutableStateOf(false) }
 
 
-
-    val isShowDeleteDialog = remember {
-        mutableStateOf(false)
-    }
-
-    val isShowRemoveFromFavoritesDialog = remember {
-        mutableStateOf(false)
-    }
-
-    val isShared = remember {
-        mutableStateOf(false)
-    }
-
-    val isShowTheDatePickerDialog = remember {
-        mutableStateOf(false)
-    }
-
-    val isShowTheTimePickerDialog = remember {
-        mutableStateOf(false)
-    }
 
 
     FavoritesContent(

@@ -4,11 +4,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tolgakurucay.mynotebooknew.domain.model.main.NoteModel
 import com.tolgakurucay.mynotebooknew.domain.model.main.NoteType
+import com.tolgakurucay.mynotebooknew.domain.repository.AlarmScheduler
 import com.tolgakurucay.mynotebooknew.domain.use_case.auth.LogOut
 import com.tolgakurucay.mynotebooknew.domain.use_case.main.DeleteNotes
 import com.tolgakurucay.mynotebooknew.domain.use_case.main.EditNote
 import com.tolgakurucay.mynotebooknew.domain.use_case.main.EditNotes
 import com.tolgakurucay.mynotebooknew.domain.use_case.main.GetNotesFromLocale
+import com.tolgakurucay.mynotebooknew.domain.use_case.main.SearchNotesByText
 import com.tolgakurucay.mynotebooknew.util.callService
 import com.tolgakurucay.mynotebooknew.util.isNotNull
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -25,8 +27,10 @@ class HomeViewModel @Inject constructor(
     private val getNote: GetNotesFromLocale,
     private val updateNote: EditNote,
     private val deleteNotes: DeleteNotes,
-    private val editNotes: EditNotes
-) : ViewModel() {
+    private val editNotes: EditNotes,
+    private val searchNotesByText: SearchNotesByText,
+    private val alarmScheduler: AlarmScheduler,
+    ) : ViewModel() {
 
 
     private val _state = MutableStateFlow(HomeState())
@@ -68,7 +72,6 @@ class HomeViewModel @Inject constructor(
     }
 
 
-
     fun addNotesToFavorite(list: List<NoteModel>) {
         val mappedList = list.map { it.copy(noteType = NoteType.FAVORITE.name, isSelected = false) }
         viewModelScope.callService(
@@ -104,6 +107,41 @@ class HomeViewModel @Inject constructor(
                 editNotes.invoke(mappedList)
             },
         )
+    }
+
+    fun searchNotesByText(text: String) = viewModelScope.callService(
+        _state.value,
+        success = { list ->
+            _state.update {
+                it.copy(notes = list.filter { it.noteType == NoteType.NOTE.name })
+            }
+        },
+        service = { searchNotesByText.invoke(text) },
+    )
+
+    fun setAnAlarm(model: NoteModel) {
+        alarmScheduler.schedule(model)
+        viewModelScope.callService(baseState = _state.value, success = {
+            _state.update {
+                it.copy(isSnackBarShow = true)
+            }
+        }, service = { updateNote.invoke(model) })
+
+    }
+
+    fun cancelTheAlarm(model: NoteModel) {
+        alarmScheduler.cancel(model)
+        viewModelScope.callService(baseState = _state.value, success = {
+            _state.update {
+                it.copy(isSnackBarShow = false)
+            }
+        }, service = { updateNote.invoke(model) })
+
+    }
+
+
+    fun dismissSnackBar() {
+        _state.update { it.copy(isSnackBarShow = false) }
     }
 
 

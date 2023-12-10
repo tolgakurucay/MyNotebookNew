@@ -83,7 +83,6 @@ fun FavoritesTopBar(
                     )
                 }
 
-
             }
 
 
@@ -166,7 +165,5 @@ sealed class FavoritesTopBarActions {
     class Search(val searchString: String) : FavoritesTopBarActions()
     object Share : FavoritesTopBarActions()
     object SetAnAlarm : FavoritesTopBarActions()
-
-
 }
 

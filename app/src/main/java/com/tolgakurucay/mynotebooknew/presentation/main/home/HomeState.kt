@@ -6,5 +6,6 @@ import com.tolgakurucay.mynotebooknew.domain.model.main.NoteModel
 data class HomeState(
     var isUserLoggedOut: Boolean? = null,
     val notes: List<NoteModel> = listOf(),
-    val isShowingTheMenu: Boolean = false
+    val isShowingTheMenu: Boolean = false,
+    var isSnackBarShow: Boolean = false
 ) : BaseState()
