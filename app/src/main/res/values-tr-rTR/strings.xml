@@ -102,4 +102,6 @@
     <string name="cd_share">Paylaş ikonu</string>
     <string name="action_select_the_share_app">Paylaşılacak uygulamayı seçiniz</string>
     <string name="action_cancel">Cancel</string>
+    <string name="question_you_want_undo">Geri almak ister misin?</string>
+    <string name="common_undo">Geri Al</string>
 </resources>

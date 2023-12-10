@@ -29,7 +29,7 @@ class FavoritesViewModel @Inject constructor(
     private val searchNotesByText: SearchNotesByText,
     private val alarmScheduler: AlarmScheduler,
 
-) : ViewModel() {
+    ) : ViewModel() {
 
     private val _state = MutableStateFlow(FavoritesState())
     val state: StateFlow<FavoritesState> = _state.asStateFlow()
@@ -74,7 +74,9 @@ class FavoritesViewModel @Inject constructor(
     fun removeAllSelectedItems() {
         viewModelScope.callService(
             baseState = _state.value,
-            success = {},
+            success = {
+                getFavorites()
+            },
             service = {
                 val mappedList = _state.value.list.filter { it.isSelected }
                     .map { it.copy(isSelected = it.isSelected.not()) }
@@ -105,12 +107,29 @@ class FavoritesViewModel @Inject constructor(
         service = { searchNotesByText.invoke(text) },
     )
 
-    fun setAnAlarm(model: NoteModel){
+    fun setAnAlarm(model: NoteModel) {
         alarmScheduler.schedule(model)
+        viewModelScope.callService(baseState = _state.value, success = {
+            _state.update {
+                it.copy(isSnackbarShow = true)
+            }
+        }, service = { updateNote.invoke(model) })
+
     }
 
-    fun cancelAlarm(model: NoteModel){
+
+    fun cancelTheAlarm(model: NoteModel) {
         alarmScheduler.cancel(model)
+        viewModelScope.callService(baseState = _state.value, success = {
+            _state.update {
+                it.copy(isSnackbarShow = false)
+            }
+        }, service = { updateNote.invoke(model) })
+
+    }
+
+    fun dismissSnackBar() {
+        _state.update { it.copy(isSnackbarShow = false) }
     }
 
 

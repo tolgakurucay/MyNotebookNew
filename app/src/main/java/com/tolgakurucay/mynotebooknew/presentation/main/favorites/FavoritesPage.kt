@@ -23,6 +23,9 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetState
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TimePicker
 import androidx.compose.material3.TimePickerState
@@ -32,6 +35,7 @@ import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -66,7 +70,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import java.time.ZoneId
 
-
+//https://developer.android.com/jetpack/compose/architecture
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FavoritesPage(
@@ -82,7 +86,9 @@ fun FavoritesPage(
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     DisposableEffect(Unit) {
+        showLog("----DisposableEffect---- ")
         onDispose {
+            showLog("----OnDispose---- ")
             viewModel.removeAllSelectedItems()
         }
     }
@@ -90,6 +96,11 @@ fun FavoritesPage(
     LaunchedEffect(key1 = Unit) {
         viewModel.getFavorites()
     }
+
+    SideEffect {
+        showLog("----SideEffect---- ")
+    }
+
 
 
     val isShowDeleteDialog = remember {
@@ -111,6 +122,44 @@ fun FavoritesPage(
     val isShowTheTimePickerDialog = remember {
         mutableStateOf(false)
     }
+
+
+    FavoritesContent(
+        state = state,
+        onNoteItemClicked = {
+            if (state.list.any { it.isSelected }) {
+                viewModel.doSelectableOrNot(it.copy(isSelected = it.isSelected.not()))
+            } else {
+                onNoteItemClicked.invoke(it)
+            }
+        },
+        onNoteItemLongClicked = {
+            viewModel.doSelectableOrNot(it)
+        },
+        topBarActions = { actions ->
+            when (actions) {
+                is FavoritesTopBarActions.Delete -> isShowDeleteDialog.setStateTrue()
+                is FavoritesTopBarActions.RemoveFromFavorites -> isShowRemoveFromFavoritesDialog.setStateTrue()
+                is FavoritesTopBarActions.Search -> viewModel.searchNotesByText(actions.searchString)
+                is FavoritesTopBarActions.Back -> onBackPressed.invoke()
+                is FavoritesTopBarActions.Share -> isShared.setStateTrue()
+                is FavoritesTopBarActions.SetAnAlarm -> isShowTheDatePickerDialog.setStateTrue()
+            }
+
+        },
+        onSnackBarUndoClicked = {
+            state.list.find { it.isSelected }?.let { safeModel ->
+                safeModel.alarmDate = null
+                viewModel.cancelTheAlarm(safeModel)
+            }
+        },
+        onSnackBarDismissed = {
+            viewModel.dismissSnackBar()
+        }
+    )
+
+
+
 
 
     if (isShowDeleteDialog.value) {
@@ -233,9 +282,9 @@ fun FavoritesPage(
                             val selectedDate =
                                 datePickerState.selectedDateMillis.orZero() + (timePickerState.minute * 1000).toLong() + (timePickerState.hour * 60 * 1000).toLong()
 
-                            val currentDate = System.currentTimeMillis() + 1000*10
-                            state.list.find { it.isSelected }?.let{
-                                it.alarmDate = selectedDate
+                            val tenSecond = System.currentTimeMillis() + 10000
+                            state.list.find { it.isSelected }?.let {
+                                it.alarmDate = tenSecond
                                 viewModel.setAnAlarm(it)
                             }
                             val parsedDate =
@@ -252,60 +301,53 @@ fun FavoritesPage(
     }
 
 
-
-
-    FavoritesContent(
-        state = state,
-        onNoteItemClicked = {
-            if (state.list.any { it.isSelected }) {
-                viewModel.doSelectableOrNot(it.copy(isSelected = it.isSelected.not()))
-            } else {
-                onNoteItemClicked.invoke(it)
-            }
-        },
-        onNoteItemLongClicked = {
-            viewModel.doSelectableOrNot(it)
-        },
-        actions = { actions ->
-            when (actions) {
-                is FavoritesTopBarActions.Delete -> {
-                    isShowDeleteDialog.setStateTrue()
-                }
-
-                is FavoritesTopBarActions.RemoveFromFavorites -> {
-                    isShowRemoveFromFavoritesDialog.setStateTrue()
-                }
-
-                is FavoritesTopBarActions.Search -> {
-                    viewModel.searchNotesByText(actions.searchString)
-                }
-
-                is FavoritesTopBarActions.Back -> {
-                    onBackPressed.invoke()
-                }
-
-                is FavoritesTopBarActions.Share -> {
-                    isShared.setStateTrue()
-                }
-
-                is FavoritesTopBarActions.SetAnAlarm -> {
-                    isShowTheDatePickerDialog.setStateTrue()
-                }
-            }
-
-        }
-    )
-
 }
 
 @Preview
 @Composable
 private fun FavoritesContent(
     state: FavoritesState = FavoritesState(),
-    actions: (FavoritesTopBarActions) -> Unit = {},
+    topBarActions: (FavoritesTopBarActions) -> Unit = {},
     onNoteItemLongClicked: (NoteModel) -> Unit = {},
-    onNoteItemClicked: (NoteModel) -> Unit = {}
+    onNoteItemClicked: (NoteModel) -> Unit = {},
+    onSnackBarUndoClicked: () -> Unit = {},
+    onSnackBarDismissed: () -> Unit = {}
 ) {
+
+    val snackbarState = remember {
+        SnackbarHostState()
+    }
+
+    val coroutineScope = rememberCoroutineScope()
+
+    val snackBarMessage = stringResource(id = R.string.question_you_want_undo)
+    val snackBarButtonMessage = stringResource(id = R.string.common_undo)
+
+
+    if (state.isSnackbarShow) {
+        LaunchedEffect(Unit) {
+            coroutineScope.launch {
+                snackbarState.showSnackbar(
+                    message = snackBarMessage,
+                    actionLabel = snackBarButtonMessage,
+                    duration = SnackbarDuration.Long,
+                    withDismissAction = true
+                ).also {
+                    when (it.ordinal) {
+                        0 -> {
+                            onSnackBarDismissed.invoke()
+                        }
+
+                        1 -> {
+                            onSnackBarUndoClicked.invoke()
+                        }
+                    }
+
+                }
+
+            }
+        }
+    }
 
     BaseScaffold(
         state = state,
@@ -314,10 +356,12 @@ private fun FavoritesContent(
             .windowInsetsPadding(WindowInsets.systemBars),
         topBar = {
             FavoritesTopBar(
-                actions = actions,
+                actions = topBarActions,
                 showingTheToolbar = state.list.any { it.isSelected },
                 showItemsForOneAction = state.list.filter { it.isSelected }.size == 1
             )
+        }, snackBarHost = {
+            SnackbarHost(hostState = snackbarState)
         }
     ) {
 
