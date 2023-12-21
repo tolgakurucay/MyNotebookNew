@@ -6,9 +6,11 @@ import com.tolgakurucay.mynotebooknew.data.database.NoteDao
 import com.tolgakurucay.mynotebooknew.data.repository.AddNoteRepositoryImp
 import com.tolgakurucay.mynotebooknew.data.repository.AuthRepositoryImpl
 import com.tolgakurucay.mynotebooknew.data.repository.HomeRepositoryImp
+import com.tolgakurucay.mynotebooknew.data.repository.ProfileRepositoryImp
 import com.tolgakurucay.mynotebooknew.domain.repository.AddNoteRepository
 import com.tolgakurucay.mynotebooknew.domain.repository.AuthRepository
 import com.tolgakurucay.mynotebooknew.domain.repository.HomeRepository
+import com.tolgakurucay.mynotebooknew.domain.repository.ProfileRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -33,6 +35,11 @@ object AppModule {
     @Provides
     fun provideHomeRepository(auth: FirebaseAuth, firestore: FirebaseFirestore,noteDao: NoteDao): HomeRepository =
         HomeRepositoryImp(auth, firestore,noteDao)
+
+    @Singleton
+    @Provides
+    fun provideProfileRepository(auth: FirebaseAuth, firestore: FirebaseFirestore): ProfileRepository =
+        ProfileRepositoryImp(auth, firestore)
 
 
 

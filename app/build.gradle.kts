@@ -186,6 +186,9 @@ android {
         //Play Services
         implementation("com.google.android.gms:play-services-auth:20.7.0")
 
+        //Lottie animations
+        implementation("com.airbnb.android:lottie-compose:4.0.0")
+
 
     }
     kapt {

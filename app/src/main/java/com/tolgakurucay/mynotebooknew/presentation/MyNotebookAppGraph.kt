@@ -71,7 +71,11 @@ fun MyNotebookAppGraph(
         composable(Destinations.PROFILE_ROUTE,
             enterTransition = { slideLeftEnter() },
             exitTransition = { slideRightExit() }) {
-            ProfilePage()
+            ProfilePage(
+                onBackPressed = {
+
+                },
+            )
         }
 
         composable(Destinations.LOGIN_ROUTE,

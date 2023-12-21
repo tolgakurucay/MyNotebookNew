@@ -104,4 +104,19 @@
     <string name="question_you_want_undo">You want undo?</string>
     <string name="common_undo">Undo</string>
     <string name="error_not_logged_in_with_google">Not logged in with google, please try again</string>
+    <string name="profile_page">Profile Page</string>
+    <string name="cd_profile_picture">Your profile picture</string>
+    <string name="action_update">Update</string>
+    <string name="cd_right">Your right icon</string>
+    <string name="common_english">English</string>
+    <string name="common_turkish">Turkish</string>
+    <string name="common_tolga_kurucay">Tolga Kuruçay</string>
+    <string name="cd_tolga_kurucay">My photograph</string>
+    <string name="who_am_i_description">Hi!, I\'m Tolga Kuruçay, here to easy life for all people. You can find my contact address below;</string>
+    <string name="common_linkedin">LinkedIn</string>
+    <string name="common_github">Github</string>
+    <string name="common_medium">Medium</string>
+    <string name="cd_linkedin">My linkedin address</string>
+    <string name="cd_github">My github address</string>
+    <string name="cd_medium">My medium address</string>
 </resources>
