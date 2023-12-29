@@ -10,8 +10,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tolgakurucay.mynotebooknew.R
 import com.tolgakurucay.mynotebooknew.presentation.custom.AlertDialogType
+import com.tolgakurucay.mynotebooknew.presentation.custom.CustomLottieLoading
 import com.tolgakurucay.mynotebooknew.presentation.custom.CustomAlertDialog
-import com.tolgakurucay.mynotebooknew.presentation.custom.CustomLoading
 
 @Preview
 @Composable
@@ -29,46 +29,48 @@ fun BaseScaffold(
 
     Scaffold(
         modifier = modifier,
-        content = content,
         topBar = topBar,
         bottomBar = bottomBar,
         snackbarHost = snackBarHost
-    )
-    if (isShownLoading.value) {
-        CustomLoading()
-    }
+    ) {
+        content.invoke(it)
+        if (isShownLoading.value) { CustomLottieLoading() }
 
-    isShownError.value?.let { baseExc ->
-        var message: String
+        isShownError.value?.let { baseExc ->
+            var message: String
 
-        baseExc.exceptionType?.let {
-            message = when (it) {
-                ExceptionType.SIGNIN -> stringResource(id = R.string.error_signin)
+            baseExc.exceptionType?.let {
+                message = when (it) {
+                    ExceptionType.SIGNIN -> stringResource(id = R.string.error_signin)
 
-                ExceptionType.CREATE_EMAIL_PASSWORD -> stringResource(id = R.string.error_register_email_password)
+                    ExceptionType.CREATE_EMAIL_PASSWORD -> stringResource(id = R.string.error_register_email_password)
 
-                ExceptionType.EMAIL_NOT_VERIFIED -> stringResource(id = R.string.error_email_not_verified)
+                    ExceptionType.EMAIL_NOT_VERIFIED -> stringResource(id = R.string.error_email_not_verified)
+                }
+
+                CustomAlertDialog(
+                    type = AlertDialogType.OKAY, descriptionText = message,
+                    onConfirm = {
+                        state.myNotebookException.value = null
+                    },
+                )
+
+            }
+            baseExc.cause?.let {
+                CustomAlertDialog(
+                    type = AlertDialogType.OKAY, descriptionText = it.localizedMessage,
+                    onConfirm = {
+                        state.myNotebookException.value = null
+                    },
+                )
             }
 
-            CustomAlertDialog(
-                type = AlertDialogType.OKAY, descriptionText = message,
-                onConfirm = {
-                    state.myNotebookException.value = null
-                },
-            )
 
         }
-        baseExc.cause?.let {
-            CustomAlertDialog(
-                type = AlertDialogType.OKAY, descriptionText = it.localizedMessage,
-                onConfirm = {
-                    state.myNotebookException.value = null
-                },
-            )
-        }
-
-
     }
+
+
+
 
 
 }

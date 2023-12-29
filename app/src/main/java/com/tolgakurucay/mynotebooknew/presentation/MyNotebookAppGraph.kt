@@ -19,7 +19,7 @@ import com.tolgakurucay.mynotebooknew.presentation.auth.forgot_password.ForgotPa
 import com.tolgakurucay.mynotebooknew.presentation.main.home.HomePage
 import com.tolgakurucay.mynotebooknew.presentation.main.home.HomeNavigations
 import com.tolgakurucay.mynotebooknew.presentation.auth.login.LoginPage
-import com.tolgakurucay.mynotebooknew.presentation.main.profile.ProfilePage
+import com.tolgakurucay.mynotebooknew.presentation.main.profile.main.ProfilePage
 import com.tolgakurucay.mynotebooknew.presentation.auth.register.Register
 import com.tolgakurucay.mynotebooknew.presentation.main.edit_or_view_note.EditOrViewNotePage
 import com.tolgakurucay.mynotebooknew.util.slideLeftEnter
@@ -71,7 +71,11 @@ fun MyNotebookAppGraph(
         composable(Destinations.PROFILE_ROUTE,
             enterTransition = { slideLeftEnter() },
             exitTransition = { slideRightExit() }) {
-            ProfilePage()
+            ProfilePage(
+                onBackPressed = {
+
+                },
+            )
         }
 
         composable(Destinations.LOGIN_ROUTE,

@@ -101,8 +101,23 @@
     <string name="action_share">Paylaş</string>
     <string name="cd_share">Paylaş ikonu</string>
     <string name="action_select_the_share_app">Paylaşılacak uygulamayı seçiniz</string>
-    <string name="action_cancel">Cancel</string>
+    <string name="action_cancel">İptal</string>
     <string name="question_you_want_undo">Geri almak ister misin?</string>
     <string name="common_undo">Geri Al</string>
     <string name="error_not_logged_in_with_google">Google ile giriş yapılamadı, lütfen daha sonra tekrar deneyiniz</string>
+    <string name="profile_page">Profil Ekranı</string>
+    <string name="cd_profile_picture">Profil Fotoğrafın</string>
+    <string name="action_update">Güncelle</string>
+    <string name="cd_right">Hakların İkonu</string>
+    <string name="common_english">İngilizce</string>
+    <string name="common_turkish">Türkçe</string>
+    <string name="common_tolga_kurucay">Tolga Kuruçay</string>
+    <string name="cd_tolga_kurucay">Foroğrafım</string>
+    <string name="who_am_i_description">Selam!, Ben Tolga Kuruçay, insanların hayatlarını kolaylaştırmak için burdayım. Aşağıdaki adreste iletişim bilgilerime ulaşabilirsin;</string>
+    <string name="common_linkedin">LinkedIn</string>
+    <string name="common_github">Github</string>
+    <string name="common_medium">Medium</string>
+    <string name="cd_linkedin">Linkedin Adresim</string>
+    <string name="cd_github">Github Adresim</string>
+    <string name="cd_medium">Medium Adresim</string>
 </resources>

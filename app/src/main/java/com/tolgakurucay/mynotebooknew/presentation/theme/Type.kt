@@ -12,7 +12,7 @@ import com.tolgakurucay.mynotebooknew.R
 //Implementation Example
 //https://developer.android.com/jetpack/compose/designsystems/material3
 
-private val Comfortaa = FontFamily(
+val Comfortaa = FontFamily(
     Font(R.font.comfortaa_light, FontWeight.Light),
     Font(R.font.comfortaa_regular, FontWeight.Normal),
     Font(R.font.comfortaa_medium, FontWeight.Medium),
