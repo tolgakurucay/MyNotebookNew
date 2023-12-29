@@ -1,9 +1,8 @@
-package com.tolgakurucay.mynotebooknew.presentation.main.profile
+package com.tolgakurucay.mynotebooknew.presentation.main.profile.main
 
-import android.widget.Toast
+import android.content.Context
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -16,21 +15,18 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.Wallpapers
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -38,19 +34,32 @@ import com.tolgakurucay.mynotebooknew.R
 import com.tolgakurucay.mynotebooknew.domain.base.BaseScaffold
 import com.tolgakurucay.mynotebooknew.presentation.custom.ButtonType
 import com.tolgakurucay.mynotebooknew.presentation.custom.CustomButton
+import com.tolgakurucay.mynotebooknew.presentation.main.profile.change_language.ChangeLanguagePage
+import com.tolgakurucay.mynotebooknew.presentation.main.profile.who_am_i.WhoAmIPage
+import com.tolgakurucay.mynotebooknew.util.AppLanguage
+import com.tolgakurucay.mynotebooknew.util.setCurrentLanguage
+import kotlinx.coroutines.CoroutineScope
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ProfilePage(viewModel: ProfileViewModel = hiltViewModel(), onBackPressed: () -> Unit) {
+
+    val context: Context = LocalContext.current
 
     LaunchedEffect(
         key1 = Unit,
         block = { viewModel.getProfileInformations() }
     )
 
+
+
     ProfileContent(
-        viewModel.state.collectAsStateWithLifecycle().value,
-        onBackPressed = onBackPressed
+        state = viewModel.state.collectAsStateWithLifecycle().value,
+        onBackPressed = onBackPressed,
+        onLanguageChanged = {
+            context.setCurrentLanguage(it)
+            viewModel.setLanguageTagToDataStore(it)
+        }
     )
 }
 
@@ -62,23 +71,24 @@ fun ProfileContent(
     state: ProfileState = ProfileState(),
     pagerState: PagerState = rememberPagerState() { 3 },
     onBackPressed: () -> Unit = {},
-    onUpdateClicked: () -> Unit = {}
+    onUpdateClicked: () -> Unit = {},
+    onLanguageChanged: (lng: AppLanguage) -> Unit = {}
 ) {
 
-    val isSelectedEnglish = remember {
-        mutableStateOf<Boolean?>(null)
+    val languageState = remember {
+        mutableStateOf<AppLanguage?>(null)
     }
 
-    when (isSelectedEnglish.value) {
-        true -> Toast.makeText(LocalContext.current, "İlgilizce seçildi", Toast.LENGTH_SHORT).show()
-        false -> Toast.makeText(LocalContext.current, "Türkçe seçildi", Toast.LENGTH_SHORT).show()
-        else->{}
+    LaunchedEffect(key1 = languageState.value) {
+        languageState.value?.let {safeAppLanguage->
+            onLanguageChanged.invoke(safeAppLanguage)
+        }
     }
 
 
     BaseScaffold(
         state = state,
-        topBar = { ProfileTopBar(rights = state.rights, onBackPressed = onBackPressed) }) {
+        topBar = { ProfileTopBar(rights = state.rights, onBackPressed = onBackPressed) }) { it ->
 
         Column(modifier = Modifier.padding(it)) {
             Row(
@@ -115,18 +125,15 @@ fun ProfileContent(
                     .fillMaxSize()
                     .padding(8.dp),
                 verticalAlignment = Alignment.CenterVertically,
-            ) {
+            ) { pageNumber ->
 
 
-                when (it) {
+                when (pageNumber) {
                     0 -> {
                         ChangeLanguagePage(
-                            onEnglishSelected = {
-                                isSelectedEnglish.value = true
-                            },
-                            onTurkishSelected = {
-                                isSelectedEnglish.value = false
-                            },
+                            onLanguageChanged = {
+                                languageState.value = it
+                            }
                         )
                     }
 
@@ -135,10 +142,9 @@ fun ProfileContent(
                     }
 
                     2 -> {
-                       WhoAmIPage()
+                        WhoAmIPage()
                     }
                 }
-                //  Text(text = "deneme")
             }
 
         }

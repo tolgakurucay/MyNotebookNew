@@ -1,4 +1,4 @@
-package com.tolgakurucay.mynotebooknew.presentation.main.profile
+package com.tolgakurucay.mynotebooknew.presentation.main.profile.main
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable

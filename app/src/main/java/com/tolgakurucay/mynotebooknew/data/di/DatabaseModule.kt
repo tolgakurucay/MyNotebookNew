@@ -3,6 +3,7 @@ package com.tolgakurucay.mynotebooknew.data.di
 import android.content.Context
 import androidx.room.Room
 import com.tolgakurucay.mynotebooknew.data.database.AppDatabase
+import com.tolgakurucay.mynotebooknew.data.database.DataStoreManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -24,6 +25,10 @@ object DatabaseModule {
     @Singleton
     @Provides
     fun injectDao(database: AppDatabase) = database.noteDao()
+
+    @Singleton
+    @Provides
+    fun injectDataStore(@ApplicationContext context: Context) = DataStoreManager(context)
 
 
 }

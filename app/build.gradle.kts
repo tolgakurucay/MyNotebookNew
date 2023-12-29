@@ -131,6 +131,8 @@ android {
         debugImplementation("androidx.compose.ui:ui-tooling")
         debugImplementation("androidx.compose.ui:ui-test-manifest")
         androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.4.3")
+        implementation("androidx.appcompat:appcompat:1.6.1")
+
 
         //Jetpack Navigation
         val navVersion = "2.7.0"
@@ -147,7 +149,6 @@ android {
         implementation("com.google.dagger:hilt-android:2.44.2")
         kapt("com.google.dagger:hilt-android-compiler:2.44.2")
         implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
-3
         //Retrofit
 
         implementation("com.squareup.retrofit2:retrofit:2.9.0")
@@ -189,10 +190,12 @@ android {
         //Lottie animations
         implementation("com.airbnb.android:lottie-compose:4.0.0")
 
+        //Data store
+        implementation("androidx.datastore:datastore-preferences:1.0.0")
+
 
     }
     kapt {
         correctErrorTypes = true
     }
 }
-

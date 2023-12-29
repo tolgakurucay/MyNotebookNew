@@ -1,4 +1,4 @@
-package com.tolgakurucay.mynotebooknew.presentation.main.profile
+package com.tolgakurucay.mynotebooknew.presentation.main.profile.who_am_i
 
 import android.content.Intent
 import androidx.compose.foundation.Image
@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -21,10 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.ParagraphStyle
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextMotion
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
@@ -49,7 +45,7 @@ fun WhoAmIPage() {
         mutableStateOf(false)
     }
 
-    if(isNavigateToLinkedin.value){
+    if (isNavigateToLinkedin.value) {
         LocalContext.current.startActivity(
             Intent(Intent.ACTION_VIEW).also {
                 it.data = "https://www.linkedin.com/in/tolgakurucay/".toUri()
@@ -58,7 +54,7 @@ fun WhoAmIPage() {
         isNavigateToLinkedin.setStateFalse()
     }
 
-    if(isNavigateToGithub.value){
+    if (isNavigateToGithub.value) {
         LocalContext.current.startActivity(
             Intent(Intent.ACTION_VIEW).also {
                 it.data = "https://github.com/tolgakurucay".toUri()
@@ -67,7 +63,7 @@ fun WhoAmIPage() {
         isNavigateToGithub.setStateFalse()
     }
 
-    if(isNavigateToMedium.value){
+    if (isNavigateToMedium.value) {
         LocalContext.current.startActivity(
             Intent(Intent.ACTION_VIEW).also {
                 it.data = "https://medium.com/@tolgakurucay".toUri()
@@ -75,9 +71,6 @@ fun WhoAmIPage() {
         )
         isNavigateToMedium.setStateFalse()
     }
-
-
-
 
 
 
@@ -110,10 +103,7 @@ fun WhoAmIPage() {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 16.dp)
-                    .clickable {
-
-
-                    },
+                    .clickable { isNavigateToLinkedin.setStateTrue() },
                 horizontalArrangement = Arrangement.Center
             ) {
                 Image(
@@ -122,17 +112,7 @@ fun WhoAmIPage() {
                         id = R.string.cd_linkedin
                     ),
                 )
-                ClickableText(
-                    text = AnnotatedString(
-                        stringResource(id = R.string.common_linkedin),
-                        paragraphStyle = ParagraphStyle(textMotion = TextMotion.Animated)
-                    ),
-                    onClick = {
-                        isNavigateToLinkedin.setStateTrue()
-                    },
-                    modifier = Modifier.padding(start = 16.dp),
-                    style = MaterialTheme.typography.bodyLarge
-                )
+                WhoAmIText(value = stringResource(id = R.string.common_linkedin))
             }
 
             Row(
@@ -151,17 +131,7 @@ fun WhoAmIPage() {
                         id = R.string.cd_github
                     ),
                 )
-                ClickableText(
-                    text = AnnotatedString(
-                        stringResource(id = R.string.common_github),
-                        paragraphStyle = ParagraphStyle(textMotion = TextMotion.Animated)
-                    ),
-                    onClick = {
-
-                    },
-                    modifier = Modifier.padding(start = 16.dp),
-                    style = MaterialTheme.typography.bodyLarge
-                )
+                WhoAmIText(value = stringResource(id = R.string.common_github))
             }
 
             Row(
@@ -180,17 +150,8 @@ fun WhoAmIPage() {
                         id = R.string.cd_medium
                     ),
                 )
-                ClickableText(
-                    text = AnnotatedString(
-                        stringResource(id = R.string.common_medium),
-                        paragraphStyle = ParagraphStyle(textMotion = TextMotion.Animated)
-                    ),
-                    onClick = {
+                WhoAmIText(stringResource(id = R.string.common_medium))
 
-                    },
-                    modifier = Modifier.padding(start = 16.dp),
-                    style = MaterialTheme.typography.bodyLarge
-                )
             }
 
 
