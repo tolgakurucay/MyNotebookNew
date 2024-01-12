@@ -121,6 +121,16 @@ fun Long?.orZero() : Long{
     }
 }
 
+@JvmName("setNullableStateFalse")
+fun MutableState<Boolean?>.setStateFalse(){
+    value = false
+}
+
+@JvmName("setNullableStateTrue")
+fun MutableState<Boolean?>.setStateTrue(){
+    value = true
+}
+
 fun MutableState<Boolean>.setStateFalse(){
     value = false
 }

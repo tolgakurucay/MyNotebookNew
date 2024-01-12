@@ -120,4 +120,6 @@
     <string name="cd_linkedin">Linkedin Adresim</string>
     <string name="cd_github">Github Adresim</string>
     <string name="cd_medium">Medium Adresim</string>
+    <string name="common_dark_mode">Karanlık Mod</string>
+    <string name="common_light_mode">Aydıklık Mod</string>
 </resources>

@@ -119,4 +119,6 @@
     <string name="cd_linkedin">My linkedin address</string>
     <string name="cd_github">My github address</string>
     <string name="cd_medium">My medium address</string>
+    <string name="common_dark_mode">Dark Mode</string>
+    <string name="common_light_mode">Light Mode</string>
 </resources>

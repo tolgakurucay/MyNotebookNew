@@ -22,6 +22,7 @@ import com.tolgakurucay.mynotebooknew.presentation.auth.login.LoginPage
 import com.tolgakurucay.mynotebooknew.presentation.main.profile.main.ProfilePage
 import com.tolgakurucay.mynotebooknew.presentation.auth.register.Register
 import com.tolgakurucay.mynotebooknew.presentation.main.edit_or_view_note.EditOrViewNotePage
+import com.tolgakurucay.mynotebooknew.presentation.main.profile.light_dark_mode.ViewMode
 import com.tolgakurucay.mynotebooknew.util.slideLeftEnter
 import com.tolgakurucay.mynotebooknew.util.slideRightExit
 
@@ -32,6 +33,7 @@ fun MyNotebookAppGraph(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
     startDestination: String = Destinations.HOME_ROUTE,
+    onViewModeChanged: (viewMode: ViewMode) -> Unit = {},
     navActions: Actions = remember(navController) {
         Actions(navController)
     }
@@ -73,8 +75,9 @@ fun MyNotebookAppGraph(
             exitTransition = { slideRightExit() }) {
             ProfilePage(
                 onBackPressed = {
-
+                    navActions.onBackPressed()
                 },
+                onViewModeChanged = onViewModeChanged
             )
         }
 

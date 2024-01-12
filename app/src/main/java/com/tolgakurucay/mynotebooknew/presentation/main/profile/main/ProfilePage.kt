@@ -20,7 +20,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -35,16 +34,32 @@ import com.tolgakurucay.mynotebooknew.domain.base.BaseScaffold
 import com.tolgakurucay.mynotebooknew.presentation.custom.ButtonType
 import com.tolgakurucay.mynotebooknew.presentation.custom.CustomButton
 import com.tolgakurucay.mynotebooknew.presentation.main.profile.change_language.ChangeLanguagePage
+import com.tolgakurucay.mynotebooknew.presentation.main.profile.light_dark_mode.LightDarkModeScreen
+import com.tolgakurucay.mynotebooknew.presentation.main.profile.light_dark_mode.ViewMode
 import com.tolgakurucay.mynotebooknew.presentation.main.profile.who_am_i.WhoAmIPage
 import com.tolgakurucay.mynotebooknew.util.AppLanguage
 import com.tolgakurucay.mynotebooknew.util.setCurrentLanguage
-import kotlinx.coroutines.CoroutineScope
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun ProfilePage(viewModel: ProfileViewModel = hiltViewModel(), onBackPressed: () -> Unit) {
+fun ProfilePage(
+    viewModel: ProfileViewModel = hiltViewModel(),
+    onViewModeChanged: (viewMode: ViewMode) -> Unit = {},
+    onBackPressed: () -> Unit,
+) {
 
     val context: Context = LocalContext.current
+    val appLanguage = remember {
+        mutableStateOf<AppLanguage?>(null)
+    }
+
+    LaunchedEffect(key1 = appLanguage.value){
+        appLanguage.value?.let { safeAppLanguage ->
+            context.setCurrentLanguage(safeAppLanguage)
+            viewModel.setLanguageTagToDataStore(safeAppLanguage)
+            onBackPressed.invoke()
+        }
+    }
 
     LaunchedEffect(
         key1 = Unit,
@@ -52,13 +67,15 @@ fun ProfilePage(viewModel: ProfileViewModel = hiltViewModel(), onBackPressed: ()
     )
 
 
-
     ProfileContent(
         state = viewModel.state.collectAsStateWithLifecycle().value,
         onBackPressed = onBackPressed,
+        onViewModeChanged = {
+            viewModel.setViewModeToDataStore(it)
+            onViewModeChanged.invoke(it)
+        },
         onLanguageChanged = {
-            context.setCurrentLanguage(it)
-            viewModel.setLanguageTagToDataStore(it)
+            appLanguage.value = it
         }
     )
 }
@@ -72,18 +89,10 @@ fun ProfileContent(
     pagerState: PagerState = rememberPagerState() { 3 },
     onBackPressed: () -> Unit = {},
     onUpdateClicked: () -> Unit = {},
-    onLanguageChanged: (lng: AppLanguage) -> Unit = {}
+    onLanguageChanged: (lng: AppLanguage) -> Unit = {},
+    onViewModeChanged: (viewMode: ViewMode) -> Unit = {}
 ) {
 
-    val languageState = remember {
-        mutableStateOf<AppLanguage?>(null)
-    }
-
-    LaunchedEffect(key1 = languageState.value) {
-        languageState.value?.let {safeAppLanguage->
-            onLanguageChanged.invoke(safeAppLanguage)
-        }
-    }
 
 
     BaseScaffold(
@@ -132,13 +141,15 @@ fun ProfileContent(
                     0 -> {
                         ChangeLanguagePage(
                             onLanguageChanged = {
-                                languageState.value = it
+                               onLanguageChanged.invoke(it)
                             }
                         )
                     }
 
                     1 -> {
-                        Text(text = "deneme1")
+                        LightDarkModeScreen{viewMode ->
+                            onViewModeChanged.invoke(viewMode)
+                        }
                     }
 
                     2 -> {

@@ -4,11 +4,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tolgakurucay.mynotebooknew.data.database.DataStoreManager
 import com.tolgakurucay.mynotebooknew.domain.repository.ProfileRepository
+import com.tolgakurucay.mynotebooknew.presentation.main.profile.light_dark_mode.ViewMode
 import com.tolgakurucay.mynotebooknew.util.AppLanguage
 import com.tolgakurucay.mynotebooknew.util.callService
 import com.tolgakurucay.mynotebooknew.util.executeFlow
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -41,5 +41,15 @@ class ProfileViewModel @Inject constructor(
             dataStore.storeLanguageTag(languageTag)
         }
     }
+
+    fun setViewModeToDataStore(viewMode: ViewMode) {
+        viewModelScope.launch {
+            when (viewMode) {
+                ViewMode.DARK -> dataStore.storeIsDarkModeTag(true)
+                ViewMode.LIGHT -> dataStore.storeIsDarkModeTag(false)
+            }
+        }
+    }
+
 
 }
