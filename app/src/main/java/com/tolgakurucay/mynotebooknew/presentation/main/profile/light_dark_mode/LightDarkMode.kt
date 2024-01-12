@@ -26,7 +26,7 @@ import com.tolgakurucay.mynotebooknew.util.AppLanguage
 
 @Preview
 @Composable
-fun LightDarkModeScreen(onViewModeChanged: (ViewMode) -> Unit = {}) {
+fun LightDarkModeScreen(viewModeType: ViewMode?=null, onViewModeChanged: (ViewMode) -> Unit = {}) {
     Box(
         modifier = Modifier
             .fillMaxWidth(),
@@ -34,7 +34,7 @@ fun LightDarkModeScreen(onViewModeChanged: (ViewMode) -> Unit = {}) {
     ) {
 
         val viewMode = remember {
-            mutableStateOf<ViewMode?>(null)
+            mutableStateOf<ViewMode?>(viewModeType)
         }
 
         LaunchedEffect(

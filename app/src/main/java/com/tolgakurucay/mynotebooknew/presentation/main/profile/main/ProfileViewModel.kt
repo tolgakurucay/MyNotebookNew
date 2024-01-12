@@ -25,6 +25,10 @@ class ProfileViewModel @Inject constructor(
     private val _state = MutableStateFlow(ProfileState())
     val state: StateFlow<ProfileState> = _state.asStateFlow()
 
+    init {
+        getViewModeFromDataStore()
+    }
+
     fun getProfileInformations() {
         viewModelScope.callService(
             baseState = _state.value,
@@ -49,6 +53,18 @@ class ProfileViewModel @Inject constructor(
                 ViewMode.LIGHT -> dataStore.storeIsDarkModeTag(false)
             }
         }
+    }
+
+    private fun getViewModeFromDataStore() {
+        viewModelScope.callService(baseState = _state.value,
+            success = { isDarkMode ->
+                val viewMode = if(isDarkMode == true) ViewMode.DARK else if(isDarkMode == false) ViewMode.LIGHT else null
+                _state.update { it.copy(viewMode = viewMode) }
+            },
+            service = {
+                dataStore.getIsDarkModeTag().executeFlow()
+            }
+        )
     }
 
 

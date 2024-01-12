@@ -147,7 +147,7 @@ fun ProfileContent(
                     }
 
                     1 -> {
-                        LightDarkModeScreen{viewMode ->
+                        LightDarkModeScreen(state.viewMode){ viewMode ->
                             onViewModeChanged.invoke(viewMode)
                         }
                     }
