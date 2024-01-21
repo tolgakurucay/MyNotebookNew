@@ -3,6 +3,7 @@ package com.tolgakurucay.mynotebooknew.presentation.main.profile.main
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tolgakurucay.mynotebooknew.data.database.DataStoreManager
+import com.tolgakurucay.mynotebooknew.domain.model.profile.ProfileResponse
 import com.tolgakurucay.mynotebooknew.domain.repository.ProfileRepository
 import com.tolgakurucay.mynotebooknew.presentation.main.profile.light_dark_mode.ViewMode
 import com.tolgakurucay.mynotebooknew.util.AppLanguage
@@ -33,6 +34,14 @@ class ProfileViewModel @Inject constructor(
         viewModelScope.callService(
             baseState = _state.value,
             success = { response ->
+                viewModelScope.callService(_state.value,
+                    success = {safeRights->
+                        _state.update {
+                            it.copy(rights = safeRights)
+                        }
+                    },
+                    service = { repo.getRights().executeFlow() })
+
                 _state.update {
                     it.copy(response)
                 }
@@ -58,11 +67,23 @@ class ProfileViewModel @Inject constructor(
     private fun getViewModeFromDataStore() {
         viewModelScope.callService(baseState = _state.value,
             success = { isDarkMode ->
-                val viewMode = if(isDarkMode == true) ViewMode.DARK else if(isDarkMode == false) ViewMode.LIGHT else null
+                val viewMode =
+                    if (isDarkMode == true) ViewMode.DARK else if (isDarkMode == false) ViewMode.LIGHT else null
                 _state.update { it.copy(viewMode = viewMode) }
             },
             service = {
                 dataStore.getIsDarkModeTag().executeFlow()
+            }
+        )
+    }
+
+    fun updateProfileInformation(req: ProfileResponse) {
+        viewModelScope.callService(baseState = _state.value,
+            success = {
+                getProfileInformations()
+            },
+            service = {
+                repo.updateProfileInformation(req).executeFlow()
             }
         )
     }

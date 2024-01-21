@@ -122,4 +122,11 @@
     <string name="cd_medium">Medium Adresim</string>
     <string name="common_dark_mode">Karanlık Mod</string>
     <string name="common_light_mode">Aydıklık Mod</string>
+    <string name="action_update_profile">Profili Güncelle</string>
+    <string name="action_add_photo">Fotoğraf Ekle</string>
+    <string name="no_phone">Telefon yok</string>
+    <string name="no_name">İsim yok</string>
+    <string name="no_surname">Soyisim yok</string>
+    <string name="no_mail">E-posta yok</string>
+    <string name="photo_added">Fotoğraf eklendi!</string>
 </resources>

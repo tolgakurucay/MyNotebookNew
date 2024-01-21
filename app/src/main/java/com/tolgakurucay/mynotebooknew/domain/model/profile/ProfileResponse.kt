@@ -9,5 +9,6 @@ data class ProfileResponse(
     val surname: String? = null,
     val photo: String? = null,
     val phoneNumber: String? = null,
-    val mail: String? = null
+    val mail: String? = null,
+
 ) : Parcelable

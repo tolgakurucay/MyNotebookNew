@@ -121,4 +121,11 @@
     <string name="cd_medium">My medium address</string>
     <string name="common_dark_mode">Dark Mode</string>
     <string name="common_light_mode">Light Mode</string>
+    <string name="action_update_profile">Update Profile</string>
+    <string name="action_add_photo">Add photo</string>
+    <string name="no_phone">No phone entered</string>
+    <string name="no_name">No name entered</string>
+    <string name="no_surname">No surname entered</string>
+    <string name="no_mail">No mail entered</string>
+    <string name="photo_added">Photo added!</string>
 </resources>

@@ -47,7 +47,7 @@ fun ProfileTopBar(rights: Int? = null, onBackPressed: () -> Unit = {}) {
             )
 
             Image(
-                painter = painterResource(id = R.drawable.baseline_menu),
+                painter = painterResource(id = R.drawable.ic_right),
                 contentDescription = stringResource(
                     id = R.string.cd_right
                 )

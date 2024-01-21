@@ -6,9 +6,10 @@ import kotlinx.coroutines.flow.Flow
 interface ProfileRepository {
 
     suspend fun getProfileInfo(): Flow<ProfileResponse>
-    suspend fun getRights()
+    suspend fun getRights(): Flow<Int>
     suspend fun getPaymentHistory()
     suspend fun deleteAccount()
+    suspend fun updateProfileInformation(request: ProfileResponse): Flow<Boolean>
 
 
 }

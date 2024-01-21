@@ -26,22 +26,24 @@ fun String?.toBitmap(): Bitmap? {
 fun Bitmap?.makeSmallerBitmap(maximumSize: Int): Bitmap? {
 
     this?.let {
-        val bitmapRatio: Double = width.toDouble() / height.toDouble()
+        val safeBitmap = this.copy(Bitmap.Config.ARGB_8888,true)
+        val bitmapRatio: Double = safeBitmap.width.toDouble() / safeBitmap.height.toDouble()
         if (bitmapRatio > 1) {
             //landscape
-            width = maximumSize
-            val scaledHeight = width / bitmapRatio
-            height = scaledHeight.toInt()
+            safeBitmap.width = maximumSize
+            val scaledHeight = safeBitmap.width / bitmapRatio
+            safeBitmap.height = scaledHeight.toInt()
         } else {
             //portrait
-            height = maximumSize
+            safeBitmap.height = maximumSize
             val scaledWidth = height * bitmapRatio
-            width = scaledWidth.toInt()
+            safeBitmap.width = scaledWidth.toInt()
         }
-        return Bitmap.createScaledBitmap(this, width, height, true)
+         return Bitmap.createScaledBitmap(this, safeBitmap.width, safeBitmap.height, true)
     } ?: kotlin.run {
         return null
     }
 
 
 }
+

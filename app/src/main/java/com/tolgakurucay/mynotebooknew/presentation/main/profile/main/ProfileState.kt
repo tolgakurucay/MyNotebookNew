@@ -7,5 +7,5 @@ import com.tolgakurucay.mynotebooknew.presentation.main.profile.light_dark_mode.
 data class ProfileState(
     val profileResponse: ProfileResponse = ProfileResponse(),
     val rights: Int? = null,
-    val viewMode: ViewMode? = null
+    val viewMode: ViewMode? = null,
 ) : BaseState()
