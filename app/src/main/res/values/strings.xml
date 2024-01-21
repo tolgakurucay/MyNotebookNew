@@ -134,4 +134,8 @@
     <string name="title_premium_bucket">Premium Bucket</string>
     <string name="title_advantage_bucket">Advantage Bucket</string>
     <string name="title_basic_bucket">Basic Bucket</string>
+    <string name="profile_bottom_item_language">Language</string>
+    <string name="profile_bottom_item_payment">Payment</string>
+    <string name="profile_bottom_item_view_mode">View Mode</string>
+    <string name="profile_bottom_item_who_am_i">Who am I</string>
 </resources>

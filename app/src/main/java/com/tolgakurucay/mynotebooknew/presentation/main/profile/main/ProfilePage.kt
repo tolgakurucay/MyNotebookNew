@@ -4,13 +4,12 @@ import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -19,8 +18,18 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.DarkMode
+import androidx.compose.material.icons.outlined.DeveloperBoard
+import androidx.compose.material.icons.outlined.Language
+import androidx.compose.material.icons.outlined.Payment
+import androidx.compose.material.icons.twotone.DarkMode
+import androidx.compose.material.icons.twotone.DeveloperBoard
+import androidx.compose.material.icons.twotone.Language
+import androidx.compose.material.icons.twotone.Payment
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -39,9 +48,12 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -66,6 +78,7 @@ import com.tolgakurucay.mynotebooknew.util.toBase64
 import com.tolgakurucay.mynotebooknew.util.toBitmap
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import org.intellij.lang.annotations.Language
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -144,6 +157,25 @@ fun ProfileContent(
 ) {
 
     val context = LocalContext.current
+    val tabItems = listOf(
+        ProfileTabItem(
+            title = stringResource(id = R.string.profile_bottom_item_language),
+            unselectedIcon = Icons.Outlined.Language,
+            selectedIcon = Icons.TwoTone.Language
+        ), ProfileTabItem(
+            title = stringResource(id = R.string.profile_bottom_item_payment),
+            unselectedIcon = Icons.Outlined.Payment,
+            selectedIcon = Icons.TwoTone.Payment
+        ), ProfileTabItem(
+            title = stringResource(id = R.string.profile_bottom_item_view_mode),
+            unselectedIcon = Icons.Outlined.DarkMode,
+            selectedIcon = Icons.TwoTone.DarkMode
+        ), ProfileTabItem(
+            title = stringResource(id = R.string.profile_bottom_item_who_am_i),
+            unselectedIcon = Icons.Outlined.DeveloperBoard,
+            selectedIcon = Icons.TwoTone.DeveloperBoard
+        )
+    )
 
     BaseScaffold(
         state = state,
@@ -209,7 +241,7 @@ fun ProfileContent(
                 pageSpacing = 16.dp,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .fillMaxHeight(0.9f)
+                    .weight(1f)
                     .padding(8.dp)
                     .drawBehind {
                         drawRoundRect(
@@ -247,9 +279,10 @@ fun ProfileContent(
                             }
                         )
                     }
+
                     1 -> {
-                        PaymentPage{paymentType ->
-                        Toast.makeText(context,paymentType.name,Toast.LENGTH_SHORT).show()
+                        PaymentPage { paymentType ->
+                            Toast.makeText(context, paymentType.name, Toast.LENGTH_SHORT).show()
 
                         }
                     }
@@ -266,19 +299,31 @@ fun ProfileContent(
                 }
             }
 
-            TabRow(selectedTabIndex = pagerState.currentPage) {
-                for (i in 0 until pagerState.pageCount) {
-                    ProfileTabItem(
-                        onClick = { coroutineScope.launch { pagerState.animateScrollToPage(i) } })
+            TabRow(
+                selectedTabIndex = pagerState.currentPage,
+                modifier = Modifier.align(Alignment.End)
+            ) {
+                tabItems.forEachIndexed { index, profileTabItem ->
+                    Tab(
+                        selected = index == pagerState.currentPage,
+                        onClick = { coroutineScope.launch { pagerState.animateScrollToPage(index) } },
+                        text = {
+                            Text(
+                                text = profileTabItem.title,
+                                style = MaterialTheme.typography.bodySmall,
+                                textAlign = TextAlign.Center,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
+                            )
+                        }, icon = {
+                            Icon(
+                                imageVector = if (pagerState.currentPage == index) profileTabItem.selectedIcon else profileTabItem.unselectedIcon,
+                                contentDescription = null
+                            )
+                        }
+                    )
                 }
             }
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(5.dp)
-                    .background(Color.Red)
-                    .padding(top = 4.dp)
-            )
 
 
         }
@@ -286,4 +331,10 @@ fun ProfileContent(
 
     }
 }
+
+data class ProfileTabItem(
+    val title: String,
+    val unselectedIcon: ImageVector,
+    val selectedIcon: ImageVector
+)
 
