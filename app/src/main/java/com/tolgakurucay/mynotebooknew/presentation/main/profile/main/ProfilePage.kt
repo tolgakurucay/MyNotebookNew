@@ -1,6 +1,7 @@
 package com.tolgakurucay.mynotebooknew.presentation.main.profile.main
 
 import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -53,6 +54,7 @@ import com.tolgakurucay.mynotebooknew.presentation.custom.CustomButton
 import com.tolgakurucay.mynotebooknew.presentation.main.profile.change_language.ChangeLanguagePage
 import com.tolgakurucay.mynotebooknew.presentation.main.profile.light_dark_mode.LightDarkModeScreen
 import com.tolgakurucay.mynotebooknew.presentation.main.profile.light_dark_mode.ViewMode
+import com.tolgakurucay.mynotebooknew.presentation.main.profile.payment.PaymentPage
 import com.tolgakurucay.mynotebooknew.presentation.main.profile.who_am_i.WhoAmIPage
 import com.tolgakurucay.mynotebooknew.presentation.theme.LightOrange
 import com.tolgakurucay.mynotebooknew.util.AppLanguage
@@ -134,13 +136,14 @@ fun ProfilePage(
 fun ProfileContent(
     state: ProfileState = ProfileState(),
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
-    pagerState: PagerState = rememberPagerState() { 3 },
+    pagerState: PagerState = rememberPagerState() { 4 },
     onBackPressed: () -> Unit = {},
     onUpdateClicked: () -> Unit = {},
     onLanguageChanged: (lng: AppLanguage) -> Unit = {},
     onViewModeChanged: (viewMode: ViewMode) -> Unit = {}
 ) {
 
+    val context = LocalContext.current
 
     BaseScaffold(
         state = state,
@@ -244,14 +247,20 @@ fun ProfileContent(
                             }
                         )
                     }
-
                     1 -> {
+                        PaymentPage{paymentType ->
+                        Toast.makeText(context,paymentType.name,Toast.LENGTH_SHORT).show()
+
+                        }
+                    }
+
+                    2 -> {
                         LightDarkModeScreen(state.viewMode) { viewMode ->
                             onViewModeChanged.invoke(viewMode)
                         }
                     }
 
-                    2 -> {
+                    3 -> {
                         WhoAmIPage()
                     }
                 }
@@ -262,7 +271,6 @@ fun ProfileContent(
                     ProfileTabItem(
                         onClick = { coroutineScope.launch { pagerState.animateScrollToPage(i) } })
                 }
-
             }
             Box(
                 modifier = Modifier

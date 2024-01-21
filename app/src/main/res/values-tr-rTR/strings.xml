@@ -129,4 +129,10 @@
     <string name="no_surname">Soyisim yok</string>
     <string name="no_mail">E-posta yok</string>
     <string name="photo_added">Fotoğraf eklendi!</string>
+    <string name="right_20">20 Hak</string>
+    <string name="right_50">50 Hak</string>
+    <string name="right_100">100 Hak</string>
+    <string name="title_premium_bucket">Premium Sepet</string>
+    <string name="title_advantage_bucket">Avantajlı Sepet</string>
+    <string name="title_basic_bucket">Temel Sepet</string>
 </resources>

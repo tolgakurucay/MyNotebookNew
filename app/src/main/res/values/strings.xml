@@ -128,4 +128,10 @@
     <string name="no_surname">No surname entered</string>
     <string name="no_mail">No mail entered</string>
     <string name="photo_added">Photo added!</string>
+    <string name="right_20">20 Right</string>
+    <string name="right_50">50 Right</string>
+    <string name="right_100">100 Right</string>
+    <string name="title_premium_bucket">Premium Bucket</string>
+    <string name="title_advantage_bucket">Advantage Bucket</string>
+    <string name="title_basic_bucket">Basic Bucket</string>
 </resources>
