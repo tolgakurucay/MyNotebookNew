@@ -2,6 +2,9 @@ package com.tolgakurucay.mynotebooknew.util
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.ImageDecoder
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Parcelable
@@ -121,11 +124,30 @@ fun Long?.orZero() : Long{
     }
 }
 
+@JvmName("setNullableStateFalse")
+fun MutableState<Boolean?>.setStateFalse(){
+    value = false
+}
+
+@JvmName("setNullableStateTrue")
+fun MutableState<Boolean?>.setStateTrue(){
+    value = true
+}
+
 fun MutableState<Boolean>.setStateFalse(){
     value = false
 }
 
 fun MutableState<Boolean>.setStateTrue(){
     value = true
+}
+
+fun Uri?.toBitmap(context: Context): Bitmap? {
+   this?.let {
+       val source = ImageDecoder.createSource(context.contentResolver, this)
+       return ImageDecoder.decodeBitmap(source)
+   } ?: run {
+       return null
+   }
 }
 

@@ -3,12 +3,13 @@ package com.tolgakurucay.mynotebooknew.presentation.main.profile.main
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tolgakurucay.mynotebooknew.data.database.DataStoreManager
+import com.tolgakurucay.mynotebooknew.domain.model.profile.ProfileResponse
 import com.tolgakurucay.mynotebooknew.domain.repository.ProfileRepository
+import com.tolgakurucay.mynotebooknew.presentation.main.profile.light_dark_mode.ViewMode
 import com.tolgakurucay.mynotebooknew.util.AppLanguage
 import com.tolgakurucay.mynotebooknew.util.callService
 import com.tolgakurucay.mynotebooknew.util.executeFlow
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -25,10 +26,22 @@ class ProfileViewModel @Inject constructor(
     private val _state = MutableStateFlow(ProfileState())
     val state: StateFlow<ProfileState> = _state.asStateFlow()
 
+    init {
+        getViewModeFromDataStore()
+    }
+
     fun getProfileInformations() {
         viewModelScope.callService(
             baseState = _state.value,
             success = { response ->
+                viewModelScope.callService(_state.value,
+                    success = {safeRights->
+                        _state.update {
+                            it.copy(rights = safeRights)
+                        }
+                    },
+                    service = { repo.getRights().executeFlow() })
+
                 _state.update {
                     it.copy(response)
                 }
@@ -41,5 +54,39 @@ class ProfileViewModel @Inject constructor(
             dataStore.storeLanguageTag(languageTag)
         }
     }
+
+    fun setViewModeToDataStore(viewMode: ViewMode) {
+        viewModelScope.launch {
+            when (viewMode) {
+                ViewMode.DARK -> dataStore.storeIsDarkModeTag(true)
+                ViewMode.LIGHT -> dataStore.storeIsDarkModeTag(false)
+            }
+        }
+    }
+
+    private fun getViewModeFromDataStore() {
+        viewModelScope.callService(baseState = _state.value,
+            success = { isDarkMode ->
+                val viewMode =
+                    if (isDarkMode == true) ViewMode.DARK else if (isDarkMode == false) ViewMode.LIGHT else null
+                _state.update { it.copy(viewMode = viewMode) }
+            },
+            service = {
+                dataStore.getIsDarkModeTag().executeFlow()
+            }
+        )
+    }
+
+    fun updateProfileInformation(req: ProfileResponse) {
+        viewModelScope.callService(baseState = _state.value,
+            success = {
+                getProfileInformations()
+            },
+            service = {
+                repo.updateProfileInformation(req).executeFlow()
+            }
+        )
+    }
+
 
 }

@@ -119,4 +119,23 @@
     <string name="cd_linkedin">My linkedin address</string>
     <string name="cd_github">My github address</string>
     <string name="cd_medium">My medium address</string>
+    <string name="common_dark_mode">Dark Mode</string>
+    <string name="common_light_mode">Light Mode</string>
+    <string name="action_update_profile">Update Profile</string>
+    <string name="action_add_photo">Add photo</string>
+    <string name="no_phone">No phone entered</string>
+    <string name="no_name">No name entered</string>
+    <string name="no_surname">No surname entered</string>
+    <string name="no_mail">No mail entered</string>
+    <string name="photo_added">Photo added!</string>
+    <string name="right_20">20 Right</string>
+    <string name="right_50">50 Right</string>
+    <string name="right_100">100 Right</string>
+    <string name="title_premium_bucket">Premium Bucket</string>
+    <string name="title_advantage_bucket">Advantage Bucket</string>
+    <string name="title_basic_bucket">Basic Bucket</string>
+    <string name="profile_bottom_item_language">Language</string>
+    <string name="profile_bottom_item_payment">Payment</string>
+    <string name="profile_bottom_item_view_mode">View Mode</string>
+    <string name="profile_bottom_item_who_am_i">Who am I</string>
 </resources>
