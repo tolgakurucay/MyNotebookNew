@@ -1,24 +1,24 @@
 package com.tolgakurucay.mynotebooknew.data.repository
 
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
-import com.tolgakurucay.mynotebooknew.data.database.NoteDao
+import com.tolgakurucay.mynotebooknew.data.datasources.home_data_source.HomeDataSource
 import com.tolgakurucay.mynotebooknew.domain.model.main.NoteModel
 import com.tolgakurucay.mynotebooknew.domain.repository.HomeRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class HomeRepositoryImp @Inject constructor(
-    private val auth: FirebaseAuth,
-    private val firestore: FirebaseFirestore,
-    private val noteDao: NoteDao
+    private val homeDataSource: HomeDataSource
 ) : HomeRepository {
-    override suspend fun getAllNotesFromRemote(): Flow<List<NoteModel>> = noteDao.getAllNotes()
-    override suspend fun getAllNotesFromLocale(): Flow<List<NoteModel>> = noteDao.getAllNotes()
-    override suspend fun updateNoteFromLocale(model: NoteModel): Int? = noteDao.updateNote(model)
-    override suspend fun updateNotesFromLocale(list: List<NoteModel>): Int? = noteDao.update(list)
-    override suspend fun addNoteToLocale(model: NoteModel): Long = noteDao.addNote(model)
-    override suspend fun deleteNoteFromLocale(model: NoteModel): Int = noteDao.deleteNote(model)
-    override suspend fun deleteNotesFromLocale(list: List<NoteModel>): Int = noteDao.deleteNotes(list)
-    override suspend fun searchNoteByAll(searchText: String): Flow<List<NoteModel>> = noteDao.searchNoteByAll(searchText)
+    override suspend fun getAllNotesFromRemote(): Flow<List<NoteModel>> = homeDataSource.getAllNotesFromRemote()
+    override suspend fun getAllNotesFromLocale(): Flow<List<NoteModel>> = homeDataSource.getAllNotesFromLocale()
+    override suspend fun updateNoteFromLocale(model: NoteModel): Int? = homeDataSource.updateNoteFromLocale(model)
+    override suspend fun updateNotesFromLocale(list: List<NoteModel>): Int? = homeDataSource.updateNotesFromLocale(list)
+    override suspend fun updateNoteFromRemote(model: NoteModel): Flow<Boolean> = homeDataSource.updateNoteFromRemote(model)
+    override suspend fun addNoteToLocale(model: NoteModel): Long = homeDataSource.addNoteToLocale(model)
+    override suspend fun addNoteToRemote(model: NoteModel): Flow<Boolean> = homeDataSource.addNoteToRemote(model)
+    override suspend fun deleteNoteFromLocale(model: NoteModel): Int = homeDataSource.deleteNoteFromLocale(model)
+    override suspend fun deleteNoteFromRemote(model: NoteModel): Flow<Boolean> = homeDataSource.deleteNoteFromRemote(model)
+    override suspend fun deleteNotesFromLocale(list: List<NoteModel>): Int = homeDataSource.deleteNotesFromLocale(list)
+    override suspend fun deleteNotesFromRemote(list: List<NoteModel>): Flow<Boolean> = homeDataSource.deleteNotesFromRemote(list)
+    override suspend fun searchNoteByAll(searchText: String): Flow<List<NoteModel>> = homeDataSource.searchNoteByAllKeywords(searchText)
 }

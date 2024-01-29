@@ -6,11 +6,11 @@ import com.tolgakurucay.mynotebooknew.domain.model.main.NoteModel
 import com.tolgakurucay.mynotebooknew.domain.model.main.NoteType
 import com.tolgakurucay.mynotebooknew.domain.repository.AlarmScheduler
 import com.tolgakurucay.mynotebooknew.domain.use_case.auth.LogOut
-import com.tolgakurucay.mynotebooknew.domain.use_case.main.DeleteNotes
-import com.tolgakurucay.mynotebooknew.domain.use_case.main.EditNote
-import com.tolgakurucay.mynotebooknew.domain.use_case.main.EditNotes
-import com.tolgakurucay.mynotebooknew.domain.use_case.main.GetNotesFromLocale
-import com.tolgakurucay.mynotebooknew.domain.use_case.main.SearchNotesByText
+import com.tolgakurucay.mynotebooknew.domain.use_case.main.locale.DeleteNotesFromLocale
+import com.tolgakurucay.mynotebooknew.domain.use_case.main.locale.UpdateNoteFromRemote
+import com.tolgakurucay.mynotebooknew.domain.use_case.main.locale.UpdateNotesFromRemote
+import com.tolgakurucay.mynotebooknew.domain.use_case.main.locale.GetNotesFromLocale
+import com.tolgakurucay.mynotebooknew.domain.use_case.main.locale.SearchNotesByText
 import com.tolgakurucay.mynotebooknew.util.callService
 import com.tolgakurucay.mynotebooknew.util.isNotNull
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -25,9 +25,9 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val logOut: LogOut,
     private val getNote: GetNotesFromLocale,
-    private val updateNote: EditNote,
-    private val deleteNotes: DeleteNotes,
-    private val editNotes: EditNotes,
+    private val updateNote: UpdateNoteFromRemote,
+    private val deleteNotesFromLocale: DeleteNotesFromLocale,
+    private val updateNotesFromRemote: UpdateNotesFromRemote,
     private val searchNotesByText: SearchNotesByText,
     private val alarmScheduler: AlarmScheduler,
     ) : ViewModel() {
@@ -80,7 +80,7 @@ class HomeViewModel @Inject constructor(
 
             },
             service = {
-                editNotes.invoke(mappedList)
+                updateNotesFromRemote.invoke(mappedList)
             },
         )
     }
@@ -92,7 +92,7 @@ class HomeViewModel @Inject constructor(
 
             },
             service = {
-                deleteNotes.invoke(_state.value.notes.filter { it.isSelected })
+                deleteNotesFromLocale.invoke(_state.value.notes.filter { it.isSelected })
             },
         )
     }
@@ -104,7 +104,7 @@ class HomeViewModel @Inject constructor(
             service = {
                 val mappedList = _state.value.notes.filter { it.isSelected }
                     .map { it.copy(isSelected = it.isSelected.not()) }
-                editNotes.invoke(mappedList)
+                updateNotesFromRemote.invoke(mappedList)
             },
         )
     }

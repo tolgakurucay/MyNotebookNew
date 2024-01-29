@@ -7,7 +7,6 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import com.tolgakurucay.mynotebooknew.domain.model.main.NoteModel
-import com.tolgakurucay.mynotebooknew.domain.model.main.NoteType
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -41,7 +40,7 @@ interface NoteDao {
     suspend fun updateNote(noteModel: NoteModel): Int?
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun update(items: List<NoteModel>) : Int?
+    suspend fun updateNotes(items: List<NoteModel>) : Int?
 
     @Query("Select * from NoteTable")
     fun getAllNotes(): Flow<List<NoteModel>>

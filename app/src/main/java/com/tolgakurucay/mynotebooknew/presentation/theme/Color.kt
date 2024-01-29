@@ -6,10 +6,36 @@ import androidx.compose.ui.graphics.Color
 // MyNotebookNew Colors
 val Black = Color(0xFF000000)
 val White = Color(0xFFFFFFFF)
-val DarkGray = Color(0xFF454545)
-val LightGray = Color(0xFF999999)
-val DarkOrange = Color(0xFFDC7633)
+
 val LightOrange = Color(0xFFF5B041)
+val DarkOrange = Color(0xFFD35400)
+
+val LightBlue = Color(0xFF3498DB)
+val DarkBlue = Color(0xFF2980B9)
+
+val LightGreen = Color(0xFF2ECC71)
+val DarkGreen = Color(0xFF27AE60)
+
+val LightRed = Color(0xFFE74C3C)
+val DarkRed = Color(0xFFC0392B)
+
+val LightGray = Color(0xFFBDC3C7)
+val DarkGray = Color(0xFF7F8C8D)
+
+val LightPurple = Color(0xFF9B59B6)
+val DarkPurple = Color(0xFF8E44AD)
+
+val LightYellow = Color(0xFFF39C12)
+val DarkYellow = Color(0xFFD68910)
+
+// Pembe Tonları
+val LightPink = Color(0xFFFFB6C1)
+val DarkPink = Color(0xFFFF69B4)
+
+// Cyan Tonları
+val LightCyan = Color(0xFFADD8E6)
+val DarkCyan = Color(0xFF008B8B)
+
 
 
 
