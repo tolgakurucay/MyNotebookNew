@@ -1,5 +1,6 @@
 package com.tolgakurucay.mynotebooknew.domain.repository
 
+import android.provider.ContactsContract.CommonDataKinds.Note
 import com.tolgakurucay.mynotebooknew.domain.model.main.NoteModel
 import kotlinx.coroutines.flow.Flow
 
@@ -17,6 +18,7 @@ interface HomeRepository {
     //Add note
     suspend fun addNoteToLocale(model: NoteModel): Long
     suspend fun addNoteToRemote(model: NoteModel): Flow<Boolean>
+    suspend fun addNotesToRemote(list: List<NoteModel>): Flow<Boolean>
 
     //Delete note
     suspend fun deleteNoteFromLocale(model: NoteModel): Int

@@ -3,7 +3,7 @@ package com.tolgakurucay.mynotebooknew.presentation.main.edit_or_view_note
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tolgakurucay.mynotebooknew.domain.model.main.NoteModel
-import com.tolgakurucay.mynotebooknew.domain.use_case.main.locale.UpdateNoteFromRemote
+import com.tolgakurucay.mynotebooknew.domain.use_case.main.locale.UpdateNoteFromLocale
 import com.tolgakurucay.mynotebooknew.util.callService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class EditOrViewViewModel @Inject constructor(
-    private val updateNoteFromRemote: UpdateNoteFromRemote
+    private val updateNoteFromLocale: UpdateNoteFromLocale
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(EditOrViewState())
@@ -24,7 +24,7 @@ class EditOrViewViewModel @Inject constructor(
             success = {
                 _state.value = _state.value.copy(hasUpdated = true)
             },
-            service = { updateNoteFromRemote.invoke(updatedModel) },
+            service = { updateNoteFromLocale.invoke(updatedModel) },
         )
     }
 

@@ -6,8 +6,8 @@ import com.tolgakurucay.mynotebooknew.domain.model.main.NoteModel
 import com.tolgakurucay.mynotebooknew.domain.model.main.NoteType
 import com.tolgakurucay.mynotebooknew.domain.repository.AlarmScheduler
 import com.tolgakurucay.mynotebooknew.domain.use_case.main.locale.DeleteNotesFromLocale
-import com.tolgakurucay.mynotebooknew.domain.use_case.main.locale.UpdateNoteFromRemote
-import com.tolgakurucay.mynotebooknew.domain.use_case.main.locale.UpdateNotesFromRemote
+import com.tolgakurucay.mynotebooknew.domain.use_case.main.locale.UpdateNoteFromLocale
+import com.tolgakurucay.mynotebooknew.domain.use_case.main.locale.UpdateNotesFromLocale
 import com.tolgakurucay.mynotebooknew.domain.use_case.main.locale.GetNotesFromLocale
 import com.tolgakurucay.mynotebooknew.domain.use_case.main.locale.SearchNotesByText
 import com.tolgakurucay.mynotebooknew.util.callService
@@ -21,9 +21,9 @@ import javax.inject.Inject
 @HiltViewModel
 class FavoritesViewModel @Inject constructor(
     private val getNotes: GetNotesFromLocale,
-    private val updateNote: UpdateNoteFromRemote,
+    private val updateNote: UpdateNoteFromLocale,
     private val deleteNotesFromLocale: DeleteNotesFromLocale,
-    private val updateNotesFromRemote: UpdateNotesFromRemote,
+    private val updateNotesFromLocale: UpdateNotesFromLocale,
     private val searchNotesByText: SearchNotesByText,
     private val alarmScheduler: AlarmScheduler,
 
@@ -64,7 +64,7 @@ class FavoritesViewModel @Inject constructor(
             service = {
                 val filteredList = _state.value.list.filter { it.isSelected }
                     .map { it.copy(noteType = NoteType.NOTE.name, isSelected = false) }
-                updateNotesFromRemote.invoke(filteredList)
+                updateNotesFromLocale.invoke(filteredList)
             },
         )
     }
@@ -78,7 +78,7 @@ class FavoritesViewModel @Inject constructor(
             service = {
                 val mappedList = _state.value.list.filter { it.isSelected }
                     .map { it.copy(isSelected = it.isSelected.not()) }
-                updateNotesFromRemote.invoke(mappedList)
+                updateNotesFromLocale.invoke(mappedList)
             },
         )
     }

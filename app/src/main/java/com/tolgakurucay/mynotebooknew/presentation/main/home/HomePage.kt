@@ -261,6 +261,7 @@ fun HomePage(
                 is HomeTopBarActions.Search -> viewModel.searchNotesByText(it.searchString)
                 HomeTopBarActions.SetAnAlarm -> {}
                 HomeTopBarActions.Share -> isShared.setStateTrue()
+                HomeTopBarActions.Cloud -> viewModel.
             }
         },
         onSnackBarUndoClicked = {

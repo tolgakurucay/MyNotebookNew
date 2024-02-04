@@ -7,16 +7,19 @@ import com.tolgakurucay.mynotebooknew.domain.model.main.NoteType
 import com.tolgakurucay.mynotebooknew.domain.repository.AlarmScheduler
 import com.tolgakurucay.mynotebooknew.domain.use_case.auth.LogOut
 import com.tolgakurucay.mynotebooknew.domain.use_case.main.locale.DeleteNotesFromLocale
-import com.tolgakurucay.mynotebooknew.domain.use_case.main.locale.UpdateNoteFromRemote
-import com.tolgakurucay.mynotebooknew.domain.use_case.main.locale.UpdateNotesFromRemote
+import com.tolgakurucay.mynotebooknew.domain.use_case.main.locale.UpdateNoteFromLocale
+import com.tolgakurucay.mynotebooknew.domain.use_case.main.locale.UpdateNotesFromLocale
 import com.tolgakurucay.mynotebooknew.domain.use_case.main.locale.GetNotesFromLocale
 import com.tolgakurucay.mynotebooknew.domain.use_case.main.locale.SearchNotesByText
+import com.tolgakurucay.mynotebooknew.domain.use_case.main.remote.AddNoteToRemote
+import com.tolgakurucay.mynotebooknew.domain.use_case.main.remote.AddNotesToRemote
 import com.tolgakurucay.mynotebooknew.util.callService
 import com.tolgakurucay.mynotebooknew.util.isNotNull
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
@@ -25,11 +28,12 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val logOut: LogOut,
     private val getNote: GetNotesFromLocale,
-    private val updateNote: UpdateNoteFromRemote,
+    private val updateNote: UpdateNoteFromLocale,
     private val deleteNotesFromLocale: DeleteNotesFromLocale,
-    private val updateNotesFromRemote: UpdateNotesFromRemote,
+    private val updateNotesFromLocale: UpdateNotesFromLocale,
     private val searchNotesByText: SearchNotesByText,
     private val alarmScheduler: AlarmScheduler,
+    private val addNoteToRemote: AddNotesToRemote
     ) : ViewModel() {
 
 
@@ -80,7 +84,7 @@ class HomeViewModel @Inject constructor(
 
             },
             service = {
-                updateNotesFromRemote.invoke(mappedList)
+                updateNotesFromLocale.invoke(mappedList)
             },
         )
     }
@@ -104,7 +108,7 @@ class HomeViewModel @Inject constructor(
             service = {
                 val mappedList = _state.value.notes.filter { it.isSelected }
                     .map { it.copy(isSelected = it.isSelected.not()) }
-                updateNotesFromRemote.invoke(mappedList)
+                updateNotesFromLocale.invoke(mappedList)
             },
         )
     }
@@ -139,9 +143,23 @@ class HomeViewModel @Inject constructor(
 
     }
 
-
     fun dismissSnackBar() {
         _state.update { it.copy(isSnackBarShow = false) }
+    }
+
+    fun addSelectedNotesToCloud(){
+        viewModelScope.callService(
+            baseState = _state.value,
+            success = {
+
+            },
+            service = {
+
+               addNoteToRemote.invoke(NoteModel())
+
+
+            },
+        )
     }
 
 

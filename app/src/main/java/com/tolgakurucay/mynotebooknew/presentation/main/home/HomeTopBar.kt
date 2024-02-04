@@ -123,6 +123,9 @@ fun HomeTopBar(
                         DropdownMenuItem(
                             text = { Text(text = stringResource(id = R.string.action_add_favorite)) },
                             onClick = { actions.invoke(HomeTopBarActions.Favorite) })
+                        DropdownMenuItem(
+                            text = { Text(text = stringResource(id = R.string.action_add_to_cloud)) },
+                            onClick = { actions.invoke(HomeTopBarActions.Cloud) })
                         if (showItemsForOneAction) {
                             DropdownMenuItem(
                                 text = { Text(text = stringResource(id = R.string.action_share)) },
@@ -166,4 +169,5 @@ sealed class HomeTopBarActions {
     object Share : HomeTopBarActions()
     object SetAnAlarm : HomeTopBarActions()
     object Favorite : HomeTopBarActions()
+    object Cloud : HomeTopBarActions()
 }

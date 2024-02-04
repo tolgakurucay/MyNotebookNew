@@ -68,6 +68,9 @@ class HomeDataSource @Inject constructor(
             emit(true)
         }
     }
-
+    
+    fun addNotesToRemote(noteList: List<NoteModel>): Flow<Boolean> = flow {
+        // TODO:      
+    }
 
 }
