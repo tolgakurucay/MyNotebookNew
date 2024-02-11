@@ -148,7 +148,9 @@ fun MyNotebookAppGraph(
         composable(Destinations.CLOUD_ROUTE,
             enterTransition = { slideLeftEnter() },
             exitTransition = { slideRightExit() }) {
-            CloudPage()
+            CloudPage(onNoteItemClicked = {
+
+            })
         }
 
         composable(

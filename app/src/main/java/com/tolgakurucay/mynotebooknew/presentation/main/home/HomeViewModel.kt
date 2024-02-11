@@ -13,8 +13,11 @@ import com.tolgakurucay.mynotebooknew.domain.use_case.main.locale.GetNotesFromLo
 import com.tolgakurucay.mynotebooknew.domain.use_case.main.locale.SearchNotesByText
 import com.tolgakurucay.mynotebooknew.domain.use_case.main.remote.AddNoteToRemote
 import com.tolgakurucay.mynotebooknew.domain.use_case.main.remote.AddNotesToRemote
+import com.tolgakurucay.mynotebooknew.domain.use_case.main.remote.DecreaseUserRights
+import com.tolgakurucay.mynotebooknew.domain.use_case.main.remote.GetUserRights
 import com.tolgakurucay.mynotebooknew.util.callService
 import com.tolgakurucay.mynotebooknew.util.isNotNull
+import com.tolgakurucay.mynotebooknew.util.safeLet
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -33,7 +36,9 @@ class HomeViewModel @Inject constructor(
     private val updateNotesFromLocale: UpdateNotesFromLocale,
     private val searchNotesByText: SearchNotesByText,
     private val alarmScheduler: AlarmScheduler,
-    private val addNoteToRemote: AddNotesToRemote
+    private val addNotesToRemote: AddNotesToRemote,
+    private val getUserRights: GetUserRights,
+    private val decreaseUserRights: DecreaseUserRights
     ) : ViewModel() {
 
 
@@ -147,20 +152,48 @@ class HomeViewModel @Inject constructor(
         _state.update { it.copy(isSnackBarShow = false) }
     }
 
-    fun addSelectedNotesToCloud(){
+    fun addSelectedNotesToCloud(noteList: List<NoteModel>) {
         viewModelScope.callService(
             baseState = _state.value,
             success = {
-
+                safeLet(_state.value.userRights,_state.value.notes.filter { it.isSelected }){right, selectedNotes->
+                    decreaseUserRights(right - selectedNotes.size)
+                    getNotes()
+                }
             },
             service = {
-
-               addNoteToRemote.invoke(NoteModel())
-
-
+                addNotesToRemote.invoke(noteList)
             },
         )
     }
+
+    fun getUserRights() {
+        viewModelScope.callService(
+            baseState = _state.value,
+            success = { right ->
+                _state.update { it.copy(userRights = right) }
+            },
+            service = {
+                getUserRights.invoke()
+            },
+        )
+    }
+
+    private fun decreaseUserRights(newRight: Int) {
+        viewModelScope.callService(
+            baseState = _state.value,
+            success = {
+                _state.update {
+                    it.copy(userRights = newRight)
+                }
+            },
+            service = {
+                decreaseUserRights.invoke(newRight)
+            },
+        )
+    }
+
+
 
 
 }

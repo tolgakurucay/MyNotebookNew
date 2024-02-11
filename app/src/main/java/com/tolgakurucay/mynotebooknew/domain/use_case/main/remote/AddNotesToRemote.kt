@@ -7,6 +7,6 @@ import javax.inject.Inject
 
 class AddNotesToRemote @Inject constructor(private val repository: HomeRepository): BaseUseCase() {
 
-    suspend operator fun invoke(list: List<NoteModel>) = execute(repository.addNotesToRemote(list))
+    suspend operator fun invoke(list: List<NoteModel>) = executeFlow(repository.addNotesToRemote(list))
 
 }

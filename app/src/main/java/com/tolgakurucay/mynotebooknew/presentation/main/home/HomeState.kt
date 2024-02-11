@@ -7,5 +7,6 @@ data class HomeState(
     var isUserLoggedOut: Boolean? = null,
     val notes: List<NoteModel> = listOf(),
     val isShowingTheMenu: Boolean = false,
-    var isSnackBarShow: Boolean = false
+    var isSnackBarShow: Boolean = false,
+    var userRights: Int? = null
 ) : BaseState()

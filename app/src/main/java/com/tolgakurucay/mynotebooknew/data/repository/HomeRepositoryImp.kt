@@ -21,5 +21,7 @@ class HomeRepositoryImp @Inject constructor(
     override suspend fun deleteNoteFromRemote(model: NoteModel): Flow<Boolean> = homeDataSource.deleteNoteFromRemote(model)
     override suspend fun deleteNotesFromLocale(list: List<NoteModel>): Int = homeDataSource.deleteNotesFromLocale(list)
     override suspend fun deleteNotesFromRemote(list: List<NoteModel>): Flow<Boolean> = homeDataSource.deleteNotesFromRemote(list)
-    override suspend fun searchNoteByAll(searchText: String): Flow<List<NoteModel>> = homeDataSource.searchNoteByAllKeywords(searchText)
+    override suspend fun searchNoteByAll(searchText: String): Flow<List<NoteModel>> = homeDataSource.searchNoteByAll(searchText)
+    override suspend fun getUserRights(): Flow<Int> = homeDataSource.getUserRights()
+    override suspend fun decreaseUserRights(newRight: Int): Flow<Boolean> = homeDataSource.decreaseUserRights(newRight)
 }

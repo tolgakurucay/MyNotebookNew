@@ -139,4 +139,6 @@
     <string name="profile_bottom_item_view_mode">View Mode</string>
     <string name="profile_bottom_item_who_am_i">Who am I</string>
     <string name="cloud_page">Cloud Page</string>
+    <string name="desc_empty_right_dialog">There is no any right to save notes to remote.</string>
+    <string name="desc_less_right_dialog">Your rights are insufficient. Please buy rights to save your notes to cloud</string>
 </resources>

@@ -4,6 +4,10 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.tolgakurucay.mynotebooknew.data.database.NoteDao
 import com.tolgakurucay.mynotebooknew.domain.model.main.NoteModel
+import com.tolgakurucay.mynotebooknew.domain.repository.HomeRepository
+import com.tolgakurucay.mynotebooknew.util.convert
+import com.tolgakurucay.mynotebooknew.util.isNotNull
+import com.tolgakurucay.mynotebooknew.util.isNull
 import com.tolgakurucay.mynotebooknew.util.serializeToMap
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -14,63 +18,89 @@ class HomeDataSource @Inject constructor(
     private val firestore: FirebaseFirestore,
     private val auth: FirebaseAuth,
     private val noteDao: NoteDao,
-) {
+) : HomeRepository {
     //Locale Functions
-    fun getAllNotesFromLocale(): Flow<List<NoteModel>> = noteDao.getAllNotes()
-    suspend fun updateNoteFromLocale(noteModel: NoteModel): Int? = noteDao.updateNote(noteModel)
-    suspend fun updateNotesFromLocale(noteList: List<NoteModel>): Int? =
-        noteDao.updateNotes(noteList)
+    override suspend fun getAllNotesFromLocale(): Flow<List<NoteModel>> = noteDao.getAllNotes()
+    override suspend fun updateNoteFromLocale(model: NoteModel): Int? = noteDao.updateNote(model)
+    override suspend fun updateNotesFromLocale(list: List<NoteModel>): Int? =
+        noteDao.updateNotes(list)
 
-    suspend fun addNoteToLocale(noteModel: NoteModel) = noteDao.addNote(noteModel)
-    suspend fun deleteNoteFromLocale(model: NoteModel): Int = noteDao.deleteNote(model)
-    suspend fun deleteNotesFromLocale(noteList: List<NoteModel>): Int =
-        noteDao.deleteNotes(noteList)
+    override suspend fun addNoteToLocale(model: NoteModel) = noteDao.addNote(model)
+    override suspend fun deleteNoteFromLocale(model: NoteModel): Int = noteDao.deleteNote(model)
+    override suspend fun deleteNotesFromLocale(list: List<NoteModel>): Int =
+        noteDao.deleteNotes(list)
 
-    fun searchNoteByAllKeywords(searchText: String): Flow<List<NoteModel>> =
+    override suspend fun searchNoteByAll(searchText: String): Flow<List<NoteModel>> =
         noteDao.searchNoteByAll(searchText)
 
     //Remote Functions
-    fun addNoteToRemote(noteModel: NoteModel): Flow<Boolean> = flow {
-        firestore.collection("Notes").document(auth.currentUser!!.uid).collection("Notes").add(noteModel).await()
+    override suspend fun addNoteToRemote(model: NoteModel): Flow<Boolean> = flow {
+        firestore.collection("Notes").document(auth.currentUser!!.uid).collection("Notes")
+            .add(model).await()
         emit(true)
     }
 
-    fun getAllNotesFromRemote(): Flow<List<NoteModel>> = flow {
+    override suspend fun getAllNotesFromRemote(): Flow<List<NoteModel>> = flow {
         firestore.collection("Notes").document(auth.currentUser!!.uid).collection("Notes").get()
             .await()?.let { queryListSnapshot ->
                 emit(queryListSnapshot.map { it.toObject(NoteModel::class.java) })
             }
     }
 
-    fun updateNoteFromRemote(noteModel: NoteModel): Flow<Boolean> = flow {
-        val snapshot = firestore.collection("Notes").document(auth.currentUser!!.uid).collection("Notes")
-            .whereEqualTo("id", noteModel.id).get().await()
-        snapshot.documents.first().reference.update(noteModel.serializeToMap()).await()
+    override suspend fun updateNoteFromRemote(model: NoteModel): Flow<Boolean> = flow {
+        val snapshot =
+            firestore.collection("Notes").document(auth.currentUser!!.uid).collection("Notes")
+                .whereEqualTo("id", model.id).get().await()
+        snapshot.documents.first().reference.update(model.serializeToMap()).await()
         emit(true)
     }
 
-    fun deleteNoteFromRemote(noteModel: NoteModel): Flow<Boolean> = flow {
-        val snapshot = firestore.collection("Notes").document(auth.currentUser!!.uid).collection("Notes")
-            .whereEqualTo("id", noteModel.id).get().await()
+    override suspend fun deleteNoteFromRemote(model: NoteModel): Flow<Boolean> = flow {
+        val snapshot =
+            firestore.collection("Notes").document(auth.currentUser!!.uid).collection("Notes")
+                .whereEqualTo("id", model.id).get().await()
         snapshot.documents.first().reference.delete().await()
         emit(true)
     }
 
-    fun deleteNotesFromRemote(noteList: List<NoteModel>): Flow<Boolean> = flow {
+    override suspend fun deleteNotesFromRemote(list: List<NoteModel>): Flow<Boolean> = flow {
         firestore.collection("Notes").document(auth.currentUser!!.uid).collection("Notes").get()
             .await()?.let { snapShotList ->
-            snapShotList.forEach { snapShot ->
-                val snapShotModel = snapShot.toObject(NoteModel::class.java)
-                if (snapShot.exists() && noteList.contains(snapShotModel)) {
-                    snapShot.reference.delete()
+                snapShotList.forEach { snapShot ->
+                    val snapShotModel = snapShot.toObject(NoteModel::class.java)
+                    if (snapShot.exists() && list.contains(snapShotModel)) {
+                        snapShot.reference.delete()
+                    }
                 }
+                emit(true)
             }
-            emit(true)
+    }
+
+    override suspend fun addNotesToRemote(list: List<NoteModel>): Flow<Boolean> = flow {
+        list.forEachIndexed { index,model->
+            firestore.collection("Notes").document(auth.currentUser!!.uid).collection("Notes").add(model).await()
+            if(index + 1 == list.size) emit(true)
+        }
+
+    }
+
+    override suspend fun getUserRights(): Flow<Int> = flow {
+        firestore.collection("Right").document(auth.currentUser!!.uid).get().await()?.let {
+            val right = it.getDouble("right")?.toInt()
+            if(right.isNull()){
+                firestore.collection("Right").document(auth.currentUser!!.uid).update("right",0).await()
+                emit(0)
+            }
+            else{
+                emit(right!!)
+            }
         }
     }
-    
-    fun addNotesToRemote(noteList: List<NoteModel>): Flow<Boolean> = flow {
-        // TODO:      
+
+    override suspend fun decreaseUserRights(newRight: Int): Flow<Boolean> = flow {
+        firestore.collection("Right").document(auth.currentUser!!.uid).update("right", newRight)
+            .await()
+        emit(true)
     }
 
 }

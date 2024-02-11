@@ -55,6 +55,7 @@ import com.tolgakurucay.mynotebooknew.presentation.custom.ButtonSize
 import com.tolgakurucay.mynotebooknew.presentation.custom.ButtonType
 import com.tolgakurucay.mynotebooknew.presentation.custom.CustomAlertDialog
 import com.tolgakurucay.mynotebooknew.presentation.custom.CustomButton
+import com.tolgakurucay.mynotebooknew.util.isNull
 import com.tolgakurucay.mynotebooknew.util.orZero
 import com.tolgakurucay.mynotebooknew.util.setStateFalse
 import com.tolgakurucay.mynotebooknew.util.setStateTrue
@@ -85,7 +86,54 @@ fun HomePage(
     val isShowTheDatePickerDialog = remember { mutableStateOf(false) }
     val isShowDeleteDialog = remember { mutableStateOf(false) }
     val isShowTheTimePickerDialog = remember { mutableStateOf(false) }
+    val isShowEmptyRightDialog = remember { mutableStateOf(false) }
+    val isShowLessRightDialog = remember { mutableStateOf(false) }
 
+    LaunchedEffect(key1 = observableState.value.userRights){
+        observableState.value.userRights?.let {safeRights->
+            if(safeRights == 0){
+                isShowEmptyRightDialog.setStateTrue()
+            }
+            else if(safeRights < observableState.value.notes.filter { it.isSelected }.size){
+                isShowLessRightDialog.setStateTrue()
+            }
+            else{
+                viewModel.addSelectedNotesToCloud(observableState.value.notes.filter { it.isSelected })
+            }
+        }
+    }
+
+    if(isShowEmptyRightDialog.value){
+        CustomAlertDialog(type = AlertDialogType.YES_OR_NO,
+            titleRes = R.string.common_information,
+            descriptionText = stringResource(
+                id = R.string.desc_empty_right_dialog
+            ),
+            onConfirm = {
+                homeNavigations.invoke(HomeNavigations.PROFILE)
+                isShowEmptyRightDialog.setStateFalse()
+            },
+            onDismiss = {
+                isShowEmptyRightDialog.setStateFalse()
+            }
+        )
+    }
+
+    if(isShowLessRightDialog.value){
+        CustomAlertDialog(type = AlertDialogType.YES_OR_NO,
+            titleRes = R.string.common_information,
+            descriptionText = stringResource(
+                id = R.string.desc_less_right_dialog
+            ),
+            onConfirm = {
+                homeNavigations.invoke(HomeNavigations.PROFILE)
+                isShowLessRightDialog.setStateFalse()
+            },
+            onDismiss = {
+                isShowLessRightDialog.setStateFalse()
+            }
+        )
+    }
 
     if (isShared.value) {
         val model = observableState.value.notes.find { it.isSelected }
@@ -261,7 +309,9 @@ fun HomePage(
                 is HomeTopBarActions.Search -> viewModel.searchNotesByText(it.searchString)
                 HomeTopBarActions.SetAnAlarm -> {}
                 HomeTopBarActions.Share -> isShared.setStateTrue()
-                HomeTopBarActions.Cloud -> viewModel.
+                HomeTopBarActions.Cloud -> {
+                    viewModel.getUserRights()
+                }
             }
         },
         onSnackBarUndoClicked = {

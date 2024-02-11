@@ -1,6 +1,5 @@
 package com.tolgakurucay.mynotebooknew.domain.repository
 
-import android.provider.ContactsContract.CommonDataKinds.Note
 import com.tolgakurucay.mynotebooknew.domain.model.main.NoteModel
 import kotlinx.coroutines.flow.Flow
 
@@ -30,6 +29,12 @@ interface HomeRepository {
 
     //Get notes from DB by searchText
     suspend fun searchNoteByAll(searchText: String): Flow<List<NoteModel>>
+
+    //Get User Rights
+    suspend fun getUserRights(): Flow<Int>
+
+    //Decrease User Rights
+    suspend fun decreaseUserRights(newRight: Int): Flow<Boolean>
 
 
 

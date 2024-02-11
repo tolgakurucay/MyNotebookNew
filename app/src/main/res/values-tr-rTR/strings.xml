@@ -140,4 +140,6 @@
     <string name="profile_bottom_item_view_mode">Karanlık Mod</string>
     <string name="profile_bottom_item_who_am_i">Ben Kimim?</string>
     <string name="cloud_page">Bulut Ekranı</string>
+    <string name="desc_empty_right_dialog">There is no any right to save notes to remote.</string>
+    <string name="desc_less_right_dialog">Your rights are insufficient. Please buy rights to save your notes to cloud</string>
 </resources>
