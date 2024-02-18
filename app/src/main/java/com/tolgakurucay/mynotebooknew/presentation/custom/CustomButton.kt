@@ -53,6 +53,7 @@ fun CustomButton(
                     ButtonType.OK -> R.string.common_okay
                     ButtonType.CANCEL -> R.string.action_cancel
                     ButtonType.UPDATE -> R.string.action_update
+                    ButtonType.DELETE_NOTE -> R.string.action_delete_note
                     else -> R.string.common_space
                 },
             ), style = MaterialTheme.typography.labelMedium
@@ -72,7 +73,8 @@ enum class ButtonType {
     UPDATE_NOTE,
     OK,
     CANCEL,
-    UPDATE
+    UPDATE,
+    DELETE_NOTE
 }
 
 enum class ButtonSize {

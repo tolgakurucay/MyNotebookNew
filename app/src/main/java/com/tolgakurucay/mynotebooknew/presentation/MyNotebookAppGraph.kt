@@ -64,7 +64,7 @@ fun MyNotebookAppGraph(
                     navActions.navigateToLogin(popUpRoute = Destinations.HOME_ROUTE)
                 },
                 onNoteItemClicked = {
-                    navActions.navigateToEditOrView(it, Destinations.EDIT_OR_VIEW_ROUTE)
+                    navActions.navigateToEditOrView(it, Destinations.HOME_ROUTE)
                 }
             )
 
@@ -149,7 +149,7 @@ fun MyNotebookAppGraph(
             enterTransition = { slideLeftEnter() },
             exitTransition = { slideRightExit() }) {
             CloudPage(onNoteItemClicked = {
-
+                navActions.navigateToEditOrView(it)
             })
         }
 

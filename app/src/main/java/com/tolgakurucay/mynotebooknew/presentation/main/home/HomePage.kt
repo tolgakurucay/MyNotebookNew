@@ -89,8 +89,8 @@ fun HomePage(
     val isShowEmptyRightDialog = remember { mutableStateOf(false) }
     val isShowLessRightDialog = remember { mutableStateOf(false) }
 
-    LaunchedEffect(key1 = observableState.value.userRights){
-        observableState.value.userRights?.let {safeRights->
+    LaunchedEffect(key1 = observableState.value.userRightsToAddNote){
+        observableState.value.userRightsToAddNote?.let {safeRights->
             if(safeRights == 0){
                 isShowEmptyRightDialog.setStateTrue()
             }
@@ -98,7 +98,7 @@ fun HomePage(
                 isShowLessRightDialog.setStateTrue()
             }
             else{
-                viewModel.addSelectedNotesToCloud(observableState.value.notes.filter { it.isSelected })
+                viewModel.addSelectedNotesToCloud(observableState.value.notes)
             }
         }
     }

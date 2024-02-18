@@ -8,5 +8,6 @@ data class HomeState(
     val notes: List<NoteModel> = listOf(),
     val isShowingTheMenu: Boolean = false,
     var isSnackBarShow: Boolean = false,
-    var userRights: Int? = null
+    var userRights: Int? = null,
+    var userRightsToAddNote: Int? = null
 ) : BaseState()

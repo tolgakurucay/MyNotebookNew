@@ -4,8 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tolgakurucay.mynotebooknew.domain.model.main.NoteModel
 import com.tolgakurucay.mynotebooknew.domain.model.main.NoteType
-import com.tolgakurucay.mynotebooknew.domain.use_case.main.locale.GetNotesFromLocale
-import com.tolgakurucay.mynotebooknew.domain.use_case.main.remote.DeleteNoteFromRemote
 import com.tolgakurucay.mynotebooknew.domain.use_case.main.remote.DeleteNotesFromRemote
 import com.tolgakurucay.mynotebooknew.domain.use_case.main.remote.GetNotesFromRemote
 import com.tolgakurucay.mynotebooknew.domain.use_case.main.remote.UpdateNoteFromRemote
@@ -21,19 +19,18 @@ import javax.inject.Inject
 @HiltViewModel
 class CloudViewModel @Inject constructor(
     private val getNotes: GetNotesFromRemote,
-    private val deleteNote: DeleteNoteFromRemote,
     private val updateNote: UpdateNoteFromRemote,
     private val deleteNotes: DeleteNotesFromRemote
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow(CloudState())
+    private var _state = MutableStateFlow(CloudState())
     val state: StateFlow<CloudState> = _state
 
     init {
         getNotes()
     }
 
-    fun getNotes() {
+    private fun getNotes() {
         viewModelScope.callService(
             baseState = _state.value,
             success = { list ->
@@ -46,18 +43,6 @@ class CloudViewModel @Inject constructor(
                 }
             },
             service = { getNotes.invoke() }
-        )
-    }
-
-    fun deleteNote(noteModel: NoteModel) {
-        viewModelScope.callService(
-            baseState = _state.value,
-            success = { wasDeleted ->
-                _state.update {
-                    it.copy(noteDeleted = wasDeleted)
-                }
-            },
-            service = { deleteNote.invoke(noteModel) }
         )
     }
 
@@ -85,13 +70,16 @@ class CloudViewModel @Inject constructor(
         )
     }
 
-    fun doSelectableOrNot(model: NoteModel){
-        val noteList = _state.value.noteList
-        val modelIndex = noteList.indexOf(model)
+    fun doSelectableOrNot(model: NoteModel) {
+        val currentList = _state.value.noteList
+        val modelIndex = currentList.indexOf(model)
         model.isSelected = model.isSelected.not()
-        noteList[modelIndex] = model
+        currentList[modelIndex] = model
         _state.update {
-            it.copy(noteList = noteList)
+            it.copy(
+                noteList = currentList.toArrayList(),
+                changeStateManually = _state.value.changeStateManually.not(),
+                isShowingTheMenu = currentList.any { it.isSelected })
         }
     }
 
@@ -99,18 +87,14 @@ class CloudViewModel @Inject constructor(
         viewModelScope.callService(
             baseState = _state.value,
             success = { wasAllDeleted ->
-                if (wasAllDeleted) getNotes()
+                if (wasAllDeleted) getNotes(); _state.value
             },
             service = { deleteNotes.invoke(_state.value.noteList.filter { it.isSelected }) }
         )
     }
 
     // TODO:
-    fun searchNotesByText(searchString: String){
+    fun searchNotesByText(searchString: String) {
 
     }
-
-
-
-
 }

@@ -5,8 +5,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.tolgakurucay.mynotebooknew.data.database.NoteDao
 import com.tolgakurucay.mynotebooknew.domain.model.main.NoteModel
 import com.tolgakurucay.mynotebooknew.domain.repository.HomeRepository
-import com.tolgakurucay.mynotebooknew.util.convert
-import com.tolgakurucay.mynotebooknew.util.isNotNull
 import com.tolgakurucay.mynotebooknew.util.isNull
 import com.tolgakurucay.mynotebooknew.util.serializeToMap
 import kotlinx.coroutines.flow.Flow
@@ -67,8 +65,7 @@ class HomeDataSource @Inject constructor(
         firestore.collection("Notes").document(auth.currentUser!!.uid).collection("Notes").get()
             .await()?.let { snapShotList ->
                 snapShotList.forEach { snapShot ->
-                    val snapShotModel = snapShot.toObject(NoteModel::class.java)
-                    if (snapShot.exists() && list.contains(snapShotModel)) {
+                 if(list.any { it.id ==  snapShot.getDouble("id")?.toInt()}){
                         snapShot.reference.delete()
                     }
                 }

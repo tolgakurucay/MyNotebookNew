@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -27,7 +28,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.tolgakurucay.mynotebooknew.R
-import com.tolgakurucay.mynotebooknew.presentation.main.home.HomeTopBarActions
 import com.tolgakurucay.mynotebooknew.util.setStateFalse
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
@@ -72,13 +72,12 @@ fun CloudTopBar(
 
                 AnimatedVisibility(visible = showingTheSearchBar.value.not()) {
                     Text(
-                        text = stringResource(id = R.string.app_name),
+                        text = stringResource(id = R.string.cloud_page),
                         style = MaterialTheme.typography.titleLarge,
                         maxLines = 2,
                         modifier = Modifier
-                            .fillMaxWidth(0.7f)
                             .basicMarquee()
-
+                            .wrapContentWidth()
                     )
                 }
 

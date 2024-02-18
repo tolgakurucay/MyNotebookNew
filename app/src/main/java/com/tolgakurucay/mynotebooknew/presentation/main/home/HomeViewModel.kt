@@ -98,7 +98,7 @@ class HomeViewModel @Inject constructor(
         viewModelScope.callService(
             baseState = _state.value,
             success = {
-
+                getNotes()
             },
             service = {
                 deleteNotesFromLocale.invoke(_state.value.notes.filter { it.isSelected })
@@ -156,8 +156,9 @@ class HomeViewModel @Inject constructor(
         viewModelScope.callService(
             baseState = _state.value,
             success = {
-                safeLet(_state.value.userRights,_state.value.notes.filter { it.isSelected }){right, selectedNotes->
+                safeLet(_state.value.userRightsToAddNote,_state.value.notes.filter { it.isSelected }){right, selectedNotes->
                     decreaseUserRights(right - selectedNotes.size)
+                    deleteSelectedNotes()
                     getNotes()
                 }
             },
@@ -171,7 +172,7 @@ class HomeViewModel @Inject constructor(
         viewModelScope.callService(
             baseState = _state.value,
             success = { right ->
-                _state.update { it.copy(userRights = right) }
+                _state.update { it.copy(userRightsToAddNote = right) }
             },
             service = {
                 getUserRights.invoke()
