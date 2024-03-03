@@ -19,6 +19,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -36,12 +37,13 @@ import com.tolgakurucay.mynotebooknew.util.setStateFalse
 fun HomeTopBar(
     showingTheToolbar: Boolean = false,
     showItemsForOneAction: Boolean = false,
-    actions: (HomeTopBarActions) -> Unit = {}
+    expandMenu: Boolean = false,
+    actions: (HomeTopBarActions) -> Unit = {},
 ) {
 
-    val menuState = remember {
-        mutableStateOf(false)
-    }
+    val expandTheMenu = remember { mutableStateOf(false) }
+
+    expandTheMenu.value = expandMenu
 
     val showingTheSearchBar = remember {
         mutableStateOf(false)
@@ -109,14 +111,14 @@ fun HomeTopBar(
                     ), modifier = Modifier
                         .padding(end = 8.dp)
                         .clickable {
-                            menuState.value = menuState.value.not()
+                            expandTheMenu.value = expandTheMenu.value.not()
                         }
                 )
 
-                if (menuState.value) {
+                if (expandTheMenu.value) {
                     DropdownMenu(
-                        expanded = menuState.value,
-                        onDismissRequest = { menuState.value = menuState.value.not() }) {
+                        expanded = expandTheMenu.value,
+                        onDismissRequest = { expandTheMenu.value = expandTheMenu.value.not() }) {
                         DropdownMenuItem(
                             text = { Text(text = stringResource(id = R.string.action_delete)) },
                             onClick = { actions.invoke(HomeTopBarActions.Delete) })

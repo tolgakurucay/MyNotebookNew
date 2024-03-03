@@ -35,6 +35,7 @@ fun CustomButton(
             Modifier
                 .padding(horizontal = horizontalMargin)
                 .wrapContentWidth()
+
         }
     }
 
@@ -77,9 +78,9 @@ enum class ButtonType {
     DELETE_NOTE
 }
 
-enum class ButtonSize {
+enum class ButtonSize(buttonCount: Int? = null) {
     MATCH_PARENT,
-    WRAP_CONTENT
+    WRAP_CONTENT,
 }
 
 

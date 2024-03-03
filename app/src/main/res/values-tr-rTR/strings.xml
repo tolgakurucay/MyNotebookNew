@@ -140,9 +140,12 @@
     <string name="profile_bottom_item_view_mode">Karanlık Mod</string>
     <string name="profile_bottom_item_who_am_i">Ben Kimim?</string>
     <string name="cloud_page">Bulut Ekranı</string>
-    <string name="desc_empty_right_dialog">There is no any right to save notes to remote.</string>
-    <string name="desc_less_right_dialog">Your rights are insufficient. Please buy rights to save your notes to cloud</string>
+    <string name="desc_empty_right_dialog">Buluta yüklemek için hiç hakkınız yok.</string>
+    <string name="desc_less_right_dialog">Buluta yüklemek için hakların yetersiz. Lütfen hak satın al</string>
     <string name="cloud_no_content">Hiç bulut notu yok</string>
     <string name="action_delete_note">NOTU SİL</string>
     <string name="question_delete_note">Bu notu silmek istediğinden emin misin?</string>
+    <string name="question_you_want_add_favorites">Bütün seçilen notları favorilere eklemek istediğine emin misin?</string>
+    <string name="question_you_want_add_cloud">Bütün seçilen notları buluta eklemek istediğine emin misin?</string>
+
 </resources>

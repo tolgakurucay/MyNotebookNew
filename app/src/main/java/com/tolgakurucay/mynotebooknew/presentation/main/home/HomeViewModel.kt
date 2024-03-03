@@ -39,7 +39,7 @@ class HomeViewModel @Inject constructor(
     private val addNotesToRemote: AddNotesToRemote,
     private val getUserRights: GetUserRights,
     private val decreaseUserRights: DecreaseUserRights
-    ) : ViewModel() {
+) : ViewModel() {
 
 
     private val _state = MutableStateFlow(HomeState())
@@ -79,6 +79,9 @@ class HomeViewModel @Inject constructor(
         viewModelScope.callService(
             baseState = _state.value,
             success = {
+                if (_state.value.notes.filter { it.isSelected }.size == 1) {
+                    _state.update { it.copy(expandTheMenu = true) }
+                }
             },
             service = { updateNote.invoke(model) })
     }
@@ -122,7 +125,7 @@ class HomeViewModel @Inject constructor(
     }
 
     fun searchNotesByText(text: String) = viewModelScope.callService(
-        _state.value,
+        baseState = _state.value,
         success = { list ->
             _state.update {
                 it.copy(notes = list.filter { it.noteType == NoteType.NOTE.name })
@@ -133,21 +136,25 @@ class HomeViewModel @Inject constructor(
 
     fun setAnAlarm(model: NoteModel) {
         alarmScheduler.schedule(model)
-        viewModelScope.callService(baseState = _state.value, success = {
-            _state.update {
-                it.copy(isSnackBarShow = true)
-            }
-        }, service = { updateNote.invoke(model) })
-
+        viewModelScope.callService(
+            baseState = _state.value,
+            success = {
+                _state.update {
+                    it.copy(isSnackBarShow = true)
+                }
+            }, service = { updateNote.invoke(model) })
     }
 
     fun cancelTheAlarm(model: NoteModel) {
         alarmScheduler.cancel(model)
-        viewModelScope.callService(baseState = _state.value, success = {
-            _state.update {
-                it.copy(isSnackBarShow = false)
-            }
-        }, service = { updateNote.invoke(model) })
+        viewModelScope.callService(
+            baseState = _state.value,
+            success = {
+                _state.update {
+                    it.copy(isSnackBarShow = false)
+                }
+            },
+            service = { updateNote.invoke(model) })
 
     }
 
@@ -159,7 +166,9 @@ class HomeViewModel @Inject constructor(
         viewModelScope.callService(
             baseState = _state.value,
             success = {
-                safeLet(_state.value.userRightsToAddNote,_state.value.notes.filter { it.isSelected }){right, selectedNotes->
+                safeLet(
+                    _state.value.userRightsToAddNote,
+                    _state.value.notes.filter { it.isSelected }) { right, selectedNotes ->
                     decreaseUserRights(right - selectedNotes.size)
                     deleteSelectedNotes()
                     getNotes()
@@ -196,8 +205,6 @@ class HomeViewModel @Inject constructor(
             },
         )
     }
-
-
 
 
 }

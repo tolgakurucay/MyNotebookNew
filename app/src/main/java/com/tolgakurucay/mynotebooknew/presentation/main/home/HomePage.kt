@@ -58,6 +58,10 @@ import com.tolgakurucay.mynotebooknew.presentation.custom.ButtonSize
 import com.tolgakurucay.mynotebooknew.presentation.custom.ButtonType
 import com.tolgakurucay.mynotebooknew.presentation.custom.CustomAlertDialog
 import com.tolgakurucay.mynotebooknew.presentation.custom.CustomButton
+import com.tolgakurucay.mynotebooknew.presentation.theme.marginExtraSmall
+import com.tolgakurucay.mynotebooknew.presentation.theme.marginLarge
+import com.tolgakurucay.mynotebooknew.presentation.theme.marginMedium
+import com.tolgakurucay.mynotebooknew.presentation.theme.marginSmall
 import com.tolgakurucay.mynotebooknew.util.orZero
 import com.tolgakurucay.mynotebooknew.util.setStateFalse
 import com.tolgakurucay.mynotebooknew.util.share
@@ -70,9 +74,9 @@ import java.time.ZoneId
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomePage(
+    context: Context = LocalContext.current,
     viewModel: HomeViewModel = hiltViewModel(),
     homeNavigation: (HomeNavigations) -> Unit,
-    context: Context = LocalContext.current,
     onLogOutClicked: () -> Unit,
     onNoteItemClicked: (NoteModel) -> Unit,
     datePickerState: DatePickerState = rememberDatePickerState(),
@@ -90,31 +94,30 @@ fun HomePage(
     var isShowTheTimePickerDialog by remember { mutableStateOf(false) }
     var isShowEmptyRightDialog by remember { mutableStateOf(false) }
     var isShowLessRightDialog by remember { mutableStateOf(false) }
+    var isShowFavoriteDialog by remember { mutableStateOf(false) }
+    var isShowCloudDialog by remember { mutableStateOf(false) }
 
 
     HomeContent(
         state = observableState.value,
         homeNavigations = homeNavigation,
-        onLogOutClicked = {
-            isShowingExitDialog = true
-        },
+        onLogOutClicked = { isShowingExitDialog = true },
         onNoteItemClicked = { noteModel ->
             if (observableState.value.isShowingTheMenu.not()) {
                 onNoteItemClicked.invoke(noteModel)
             } else {
                 viewModel.doSelectableOrNot(noteModel.copy(isSelected = noteModel.isSelected.not()))
             }
-
         },
         onNoteItemLongClicked = { viewModel.doSelectableOrNot(it) },
         onTopBarActionsClicked = {
             when (it) {
                 HomeTopBarActions.Delete -> isShowDeleteDialog = true
-                HomeTopBarActions.Favorite -> viewModel.addNotesToFavorite(observableState.value.notes.filter { it.isSelected })
+                HomeTopBarActions.Favorite -> isShowFavoriteDialog = true
                 is HomeTopBarActions.Search -> viewModel.searchNotesByText(it.searchString)
-                HomeTopBarActions.SetAnAlarm -> {}
+                HomeTopBarActions.SetAnAlarm -> isShowTheDatePickerDialog = true
                 HomeTopBarActions.Share -> isShared = true
-                HomeTopBarActions.Cloud -> { viewModel.getUserRights() }
+                HomeTopBarActions.Cloud -> isShowCloudDialog = true
             }
         },
         onSnackBarUndoClicked = {
@@ -138,6 +141,38 @@ fun HomePage(
                 viewModel.addSelectedNotesToCloud(observableState.value.notes)
             }
         }
+    }
+
+    if(isShowCloudDialog){
+        CustomAlertDialog(type = AlertDialogType.YES_OR_NO,
+            titleRes = R.string.common_information,
+            descriptionText = stringResource(
+                id = R.string.question_you_want_add_cloud
+            ),
+            onConfirm = {
+                viewModel.getUserRights()
+                isShowCloudDialog = false
+            },
+            onDismiss = {
+                isShowCloudDialog = false
+            }
+        )
+    }
+
+    if(isShowFavoriteDialog){
+        CustomAlertDialog(type = AlertDialogType.YES_OR_NO,
+            titleRes = R.string.common_information,
+            descriptionText = stringResource(
+                id = R.string.question_you_want_add_favorites
+            ),
+            onConfirm = {
+                viewModel.addNotesToFavorite(observableState.value.notes.filter { it.isSelected })
+                isShowFavoriteDialog = false
+            },
+            onDismiss = {
+                isShowFavoriteDialog = false
+            }
+        )
     }
 
     if (isShowEmptyRightDialog) {
@@ -187,13 +222,13 @@ fun HomePage(
             ),
             onConfirm = {
                 viewModel.deleteSelectedNotes()
+                isShowDeleteDialog = false
             },
             onDismiss = {
                 isShowDeleteDialog = false
             }
         )
     }
-
 
 
     LaunchedEffect(key1 = Unit) {
@@ -208,7 +243,7 @@ fun HomePage(
 
 
     if (observableState.value.isUserLoggedOut == true) {
-        LaunchedEffect(key1 = "LogOut") {
+        LaunchedEffect(Unit) {
             onLogOutClicked.invoke()
         }
     }
@@ -235,13 +270,13 @@ fun HomePage(
             DatePicker(state = datePickerState)
             Row(
                 modifier = Modifier
-                    .padding(16.dp)
+                    .padding(marginLarge)
                     .fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 CustomButton(
                     ButtonType.CANCEL,
-                    horizontalMargin = 4.dp,
+                    horizontalMargin = marginSmall,
                     buttonSize = ButtonSize.WRAP_CONTENT
                 ) {
                     coroutineScope.launch {
@@ -252,7 +287,7 @@ fun HomePage(
                 }
                 CustomButton(
                     ButtonType.OK,
-                    horizontalMargin = 4.dp,
+                    horizontalMargin = marginSmall,
                     buttonSize = ButtonSize.WRAP_CONTENT
                 ) {
                     coroutineScope.launch {
@@ -270,26 +305,26 @@ fun HomePage(
     }
 
     if (isShowTheTimePickerDialog) {
-
         Box(
-            modifier = Modifier.clip(MaterialTheme.shapes.medium)
+            modifier = Modifier.clip(MaterialTheme.shapes.medium).padding(marginExtraSmall)
         ) {
             Dialog(onDismissRequest = { isShowTheTimePickerDialog = false }) {
                 Column(
                     modifier = Modifier
                         .background(MaterialTheme.colorScheme.background)
-                        .padding(16.dp)
+                        .padding(marginSmall),
+                    horizontalAlignment = Alignment.CenterHorizontally
 
                 ) {
                     TimePicker(state = timePickerState)
-                    Spacer(modifier = Modifier.padding(top = 8.dp))
+                    Spacer(modifier = Modifier.padding(top = marginMedium))
                     Row(
                         horizontalArrangement = Arrangement.SpaceBetween,
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         CustomButton(
                             ButtonType.CANCEL,
-                            horizontalMargin = 4.dp,
+                            horizontalMargin = marginSmall,
                             buttonSize = ButtonSize.WRAP_CONTENT
                         ) {
 
@@ -297,7 +332,7 @@ fun HomePage(
                         }
                         CustomButton(
                             ButtonType.OK,
-                            horizontalMargin = 4.dp,
+                            horizontalMargin = marginSmall,
                             buttonSize = ButtonSize.WRAP_CONTENT
                         ) {
                             isShowTheTimePickerDialog = false
@@ -349,7 +384,8 @@ fun HomeContent(
             HomeTopBar(
                 showingTheToolbar = state.isShowingTheMenu,
                 actions = onTopBarActionsClicked,
-                showItemsForOneAction = state.notes.filter { it.isSelected }.size == 1
+                showItemsForOneAction = state.notes.filter { it.isSelected }.size == 1,
+                expandMenu = state.expandTheMenu
             )
         },
         bottomBar = {
@@ -379,7 +415,7 @@ fun HomeContent(
                         LazyVerticalStaggeredGrid(
                             columns = StaggeredGridCells.Fixed(2),
                             contentPadding = PaddingValues(
-                                horizontal = 15.dp, vertical = 5.dp
+                                horizontal = marginLarge, vertical = marginSmall
                             ),
                             modifier = Modifier.fillMaxSize(),
                         ) {
@@ -409,11 +445,7 @@ fun HomeContent(
                         style = MaterialTheme.typography.bodyLarge, textAlign = TextAlign.Center
                     )
                 }
-
-
             }
-
-
         }
     )
 
@@ -429,13 +461,8 @@ fun HomeContent(
                     withDismissAction = true
                 ).also {
                     when (it.ordinal) {
-                        0 -> {
-                            onSnackBarDismissed.invoke()
-                        }
-
-                        1 -> {
-                            onSnackBarUndoClicked.invoke()
-                        }
+                        0 -> onSnackBarDismissed.invoke()
+                        1 -> onSnackBarUndoClicked.invoke()
                     }
 
                 }
