@@ -1,5 +1,6 @@
 package com.tolgakurucay.mynotebooknew.presentation.auth.login
 
+import android.content.Context
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
@@ -52,16 +53,12 @@ import com.tolgakurucay.mynotebooknew.presentation.custom.CustomAlertDialog
 import com.tolgakurucay.mynotebooknew.presentation.custom.CustomButton
 import com.tolgakurucay.mynotebooknew.presentation.custom.TextFieldType
 import com.tolgakurucay.mynotebooknew.presentation.theme.Black
-import com.tolgakurucay.mynotebooknew.presentation.theme.size125
-import com.tolgakurucay.mynotebooknew.presentation.theme.spacing10
-import com.tolgakurucay.mynotebooknew.presentation.theme.spacing16
-import com.tolgakurucay.mynotebooknew.presentation.theme.spacing18
-import com.tolgakurucay.mynotebooknew.presentation.theme.spacing20
-import com.tolgakurucay.mynotebooknew.presentation.theme.spacing30
-import com.tolgakurucay.mynotebooknew.presentation.theme.spacing32
-import com.tolgakurucay.mynotebooknew.presentation.theme.spacing40
-import com.tolgakurucay.mynotebooknew.presentation.theme.spacing5
-import com.tolgakurucay.mynotebooknew.presentation.theme.spacing70
+import com.tolgakurucay.mynotebooknew.presentation.theme.marginExtraLarge
+import com.tolgakurucay.mynotebooknew.presentation.theme.marginLarge
+import com.tolgakurucay.mynotebooknew.presentation.theme.marginMedium
+import com.tolgakurucay.mynotebooknew.presentation.theme.marginSmall
+import com.tolgakurucay.mynotebooknew.presentation.theme.pageDividerMedium
+import com.tolgakurucay.mynotebooknew.presentation.theme.pageDividerLarge
 import com.tolgakurucay.mynotebooknew.util.isNotNull
 import com.tolgakurucay.mynotebooknew.util.safeLet
 import com.tolgakurucay.mynotebooknew.util.setStateFalse
@@ -71,6 +68,7 @@ import com.tolgakurucay.mynotebooknew.util.showLog
 
 @Composable
 fun LoginPage(
+    context: Context = LocalContext.current,
     viewModel: LoginViewModel = hiltViewModel(),
     onNavigateToRegisterMain: () -> Unit = {},
     onNavigateToForgotPasswordMain: () -> Unit = {},
@@ -79,7 +77,6 @@ fun LoginPage(
 
 
     val state by viewModel.state.collectAsStateWithLifecycle()
-    val context = LocalContext.current
 
 
     if (state.isUserAuthenticated == true) {
@@ -183,28 +180,28 @@ fun LoginContent(
             textAlign = TextAlign.End,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(end = spacing30, top = spacing30),
+                .padding(end = marginExtraLarge, top = marginExtraLarge),
             style = MaterialTheme.typography.displaySmall
         )
 
 
-        Spacer(modifier = Modifier.padding(vertical = spacing70))
+        Spacer(modifier = Modifier.padding(vertical = pageDividerMedium))
         CustomTextField(
-            horizontalMargin = spacing10,
+            horizontalMargin = marginMedium,
             textFieldType = TextFieldType.EMAIL,
             onValueChange = {
                 email = it
             },
         )
-        Spacer(modifier = Modifier.padding(vertical = spacing5))
+        Spacer(modifier = Modifier.padding(vertical = marginSmall))
         CustomTextField(
-            horizontalMargin = spacing10,
+            horizontalMargin = marginMedium,
             textFieldType = TextFieldType.PASSWORD,
             onValueChange = {
                 password = it
             },
         )
-        Spacer(modifier = Modifier.padding(vertical = spacing20))
+        Spacer(modifier = Modifier.padding(vertical = marginLarge))
         Text(
             text = stringResource(id = R.string.common_did_you_forgot_password),
             modifier = Modifier
@@ -213,10 +210,10 @@ fun LoginContent(
                     onNavigateToForgotPasswordContent.invoke()
                 }, style = MaterialTheme.typography.bodyMedium
         )
-        Spacer(modifier = Modifier.padding(top = spacing18))
+        Spacer(modifier = Modifier.padding(top = marginLarge))
 
         CustomButton(
-            buttonType = ButtonType.LOGIN, horizontalMargin = spacing10,
+            buttonType = ButtonType.LOGIN, horizontalMargin = marginMedium,
             onClick = {
                 if ((arrayOf(email, password).validateCustomTextFields())) {
                     safeLet(email, password) { p1, p2 ->
@@ -228,18 +225,18 @@ fun LoginContent(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = spacing16),
+                .padding(top = marginLarge),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
                 text = stringResource(id = R.string.common_dont_you_have_an_account),
-                modifier = Modifier.padding(start = spacing30),
+                modifier = Modifier.padding(start = marginExtraLarge),
                 style = MaterialTheme.typography.bodyMedium
             )
             Text(
                 text = stringResource(id = R.string.common_register),
                 modifier = Modifier
-                    .padding(end = spacing30)
+                    .padding(end = marginLarge)
                     .clickable {
                         onNavigateToRegisterContent.invoke()
                     },
@@ -248,25 +245,25 @@ fun LoginContent(
 
 
         }
-        Spacer(modifier = Modifier.padding(top = spacing32))
+        Spacer(modifier = Modifier.padding(top = marginExtraLarge))
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier.fillMaxWidth()
         ) {
-            Divider(color = Black, modifier = Modifier.width(size125))
+            Divider(color = Black, modifier = Modifier.width(pageDividerLarge))
             Text(
                 text = stringResource(id = R.string.common_or_sign_in_with),
                 style = MaterialTheme.typography.bodySmall
             )
-            Divider(color = Black, modifier = Modifier.width(size125))
+            Divider(color = Black, modifier = Modifier.width(pageDividerLarge))
 
         }
 
         Row(
             horizontalArrangement = Arrangement.SpaceAround, modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = spacing40, bottom = spacing40)
+                .padding(vertical = marginExtraLarge)
         ) {
             IconButton(
                 onClick = {}, modifier = Modifier

@@ -37,10 +37,7 @@ fun <T> CoroutineScope.callService(
                     }
                 }
             }.collect()
-
-
     }
-
 }
 
 

@@ -1,11 +1,13 @@
 package com.tolgakurucay.mynotebooknew.presentation.activity
 
 import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -38,19 +40,20 @@ class MainActivity @Inject constructor() : ComponentActivity() {
     @Inject
     lateinit var dataStoreManager: DataStoreManager
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            val state = mainViewModel.state.collectAsStateWithLifecycle()
-            setup()
-            observeState(state = state.value)
+            Setup()
+            ObserveState()
         }
 
+        checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS)
 
     }
 
     @Composable
-    private fun setup() {
+    private fun Setup() {
         LaunchedEffect(
             key1 = dataStoreManager.getLanguageTag(),
             block = {
@@ -60,37 +63,36 @@ class MainActivity @Inject constructor() : ComponentActivity() {
             },
         )
     }
-}
+    @Composable
+    private fun ObserveState(
+        onViewModeChanged: (ViewMode) -> Unit = {}
+    ) {
+        val state = mainViewModel.state.collectAsStateWithLifecycle().value
 
+        val viewModeChanged = remember { mutableStateOf<ViewMode?>(null) }
+        if (state.isUserLoggedIn) {
+            val darkTheme = if (state.isDarkMode == true || viewModeChanged.value == ViewMode.DARK) {
+                true
+            } else if (state.isDarkMode == false || viewModeChanged.value == ViewMode.LIGHT) {
+                false
+            } else {
+                null
+            }
 
-@Composable
-private fun observeState(
-    state: MainState,
-    onViewModeChanged: (ViewMode) -> Unit = {}
-) {
-    val viewModeChanged = remember { mutableStateOf<ViewMode?>(null) }
-    if (state.isUserLoggedIn) {
-        val darkTheme = if (state.isDarkMode == true || viewModeChanged.value == ViewMode.DARK) {
-            true
-        } else if (state.isDarkMode == false || viewModeChanged.value == ViewMode.LIGHT) {
-            false
+            MyNotebookNewTheme(darkTheme = darkTheme) {
+                MyNotebookAppGraph(
+                    startDestination = Destinations.HOME_ROUTE,
+                    onViewModeChanged = onViewModeChanged
+                )
+            }
+
         } else {
-            null
-        }
-
-        MyNotebookNewTheme(darkTheme = darkTheme) {
-            MyNotebookAppGraph(
-                startDestination = Destinations.HOME_ROUTE,
-                onViewModeChanged = onViewModeChanged
-            )
-        }
-
-    } else {
-        MyNotebookNewTheme(darkTheme = (state.isDarkMode == true || viewModeChanged.value == ViewMode.DARK)) {
-            MyNotebookAppGraph(
-                startDestination = Destinations.LOGIN_ROUTE,
-                onViewModeChanged = onViewModeChanged
-            )
+            MyNotebookNewTheme(darkTheme = (state.isDarkMode == true || viewModeChanged.value == ViewMode.DARK)) {
+                MyNotebookAppGraph(
+                    startDestination = Destinations.LOGIN_ROUTE,
+                    onViewModeChanged = onViewModeChanged
+                )
+            }
         }
     }
 }

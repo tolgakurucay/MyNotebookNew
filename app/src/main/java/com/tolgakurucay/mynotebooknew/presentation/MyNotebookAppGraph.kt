@@ -10,7 +10,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.google.gson.Gson
 import com.tolgakurucay.mynotebooknew.domain.model.main.NoteModel
 import com.tolgakurucay.mynotebooknew.presentation.main.add_note.AddNotePage
 import com.tolgakurucay.mynotebooknew.presentation.main.cloud.CloudPage
@@ -23,6 +22,7 @@ import com.tolgakurucay.mynotebooknew.presentation.main.profile.main.ProfilePage
 import com.tolgakurucay.mynotebooknew.presentation.auth.register.Register
 import com.tolgakurucay.mynotebooknew.presentation.main.edit_or_view_note.EditOrViewNotePage
 import com.tolgakurucay.mynotebooknew.presentation.main.profile.light_dark_mode.ViewMode
+import com.tolgakurucay.mynotebooknew.util.fromJson
 import com.tolgakurucay.mynotebooknew.util.slideLeftEnter
 import com.tolgakurucay.mynotebooknew.util.slideRightExit
 
@@ -37,7 +37,6 @@ fun MyNotebookAppGraph(
     navActions: Actions = remember(navController) {
         Actions(navController)
     }
-
 ) {
 
     NavHost(
@@ -46,12 +45,11 @@ fun MyNotebookAppGraph(
         modifier = modifier
     ) {
 
-
         composable(
             Destinations.HOME_ROUTE,
         ) {
             HomePage(
-                homeNavigations = { homeNavigation ->
+                homeNavigation = { homeNavigation ->
                     when (homeNavigation) {
                         HomeNavigations.FAVORITES -> navActions.navigateToFavorites()
                         HomeNavigations.CLOUD -> navActions.navigateToCloud()
@@ -64,10 +62,9 @@ fun MyNotebookAppGraph(
                     navActions.navigateToLogin(popUpRoute = Destinations.HOME_ROUTE)
                 },
                 onNoteItemClicked = {
-                    navActions.navigateToEditOrView(it, Destinations.HOME_ROUTE)
+                    navActions.navigateToEditOrView(it)
                 }
             )
-
         }
 
         composable(Destinations.PROFILE_ROUTE,
@@ -121,7 +118,8 @@ fun MyNotebookAppGraph(
             )
         }
 
-        composable(Destinations.FAVORITES_ROUTE,
+        composable(
+            Destinations.FAVORITES_ROUTE,
             enterTransition = { slideLeftEnter() },
             exitTransition = { slideRightExit() }) {
             FavoritesPage(
@@ -134,7 +132,8 @@ fun MyNotebookAppGraph(
             )
         }
 
-        composable(Destinations.ADD_NOTE_ROUTE,
+        composable(
+            Destinations.ADD_NOTE_ROUTE,
             enterTransition = { slideLeftEnter() },
             exitTransition = { slideRightExit() }) {
 
@@ -145,7 +144,8 @@ fun MyNotebookAppGraph(
                 },
             )
         }
-        composable(Destinations.CLOUD_ROUTE,
+        composable(
+            Destinations.CLOUD_ROUTE,
             enterTransition = { slideLeftEnter() },
             exitTransition = { slideRightExit() }) {
             CloudPage(onNoteItemClicked = {
@@ -165,7 +165,7 @@ fun MyNotebookAppGraph(
         ) {
 
             it.arguments?.getString(DestinationsArgs.NOTE_ARG)?.let { noteModelJson ->
-                val model = Gson().fromJson(noteModelJson, NoteModel::class.java)
+                val model = noteModelJson.fromJson(NoteModel::class.java)
                 EditOrViewNotePage(
                     noteModel = model,
                     onBackPressed = {

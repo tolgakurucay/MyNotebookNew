@@ -12,7 +12,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.tolgakurucay.mynotebooknew.R
-import com.tolgakurucay.mynotebooknew.presentation.theme.radius30
+import com.tolgakurucay.mynotebooknew.presentation.theme.radiusExtraLarge
 
 @Preview
 @Composable
@@ -58,7 +58,7 @@ fun HomeBottomBar(
 
         },
         modifier = Modifier.clip(
-            RoundedCornerShape(topStart = radius30, topEnd = radius30)
+            RoundedCornerShape(topStart = radiusExtraLarge, topEnd = radiusExtraLarge)
         ),
         floatingActionButton = {
             FloatingActionButton(onClick = { homeNavigation.invoke(HomeNavigations.ADD_NOTE) }) {

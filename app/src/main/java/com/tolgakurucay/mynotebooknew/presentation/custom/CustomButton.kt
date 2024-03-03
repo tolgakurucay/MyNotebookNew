@@ -12,7 +12,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import com.tolgakurucay.mynotebooknew.R
-import com.tolgakurucay.mynotebooknew.presentation.theme.spacing0
+import com.tolgakurucay.mynotebooknew.presentation.theme.zero
 
 
 @Preview
@@ -20,7 +20,7 @@ import com.tolgakurucay.mynotebooknew.presentation.theme.spacing0
 fun CustomButton(
     buttonType: ButtonType = ButtonType.DEFAULT,
     buttonSize: ButtonSize = ButtonSize.MATCH_PARENT,
-    horizontalMargin: Dp = spacing0,
+    horizontalMargin: Dp = zero,
     onClick: () -> Unit = {}
 ) {
 

@@ -25,14 +25,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.tolgakurucay.mynotebooknew.R
 import com.tolgakurucay.mynotebooknew.domain.model.main.NoteModel
-import com.tolgakurucay.mynotebooknew.presentation.theme.spacing15
 import com.tolgakurucay.mynotebooknew.util.toDate
 import com.tolgakurucay.mynotebooknew.util.toSimpleString
 import com.tolgakurucay.mynotebooknew.presentation.theme.LightBlue
 import com.tolgakurucay.mynotebooknew.presentation.theme.LightGreen
+import com.tolgakurucay.mynotebooknew.presentation.theme.imageSizeLarge
+import com.tolgakurucay.mynotebooknew.presentation.theme.imageSizeMedium
+import com.tolgakurucay.mynotebooknew.presentation.theme.marginLarge
+import com.tolgakurucay.mynotebooknew.presentation.theme.marginMedium
+import com.tolgakurucay.mynotebooknew.presentation.theme.marginSmall
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -43,7 +46,7 @@ fun CloudNoteItem(
     onLongClicked: (NoteModel?) -> Unit = {}
 ) {
 
-    Box(modifier = Modifier.padding(5.dp)) {
+    Box(modifier = Modifier.padding(marginSmall)) {
         ElevatedCard(
             shape = CardDefaults.elevatedShape, colors = CardDefaults.cardColors(
                 if(model?.isSelected == false) LightBlue else LightGreen, Color.Red
@@ -58,7 +61,7 @@ fun CloudNoteItem(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(10.dp)
+                    .padding(marginMedium)
             ) {
 
                 Column(modifier = Modifier.align(Alignment.TopStart)) {
@@ -73,8 +76,8 @@ fun CloudNoteItem(
                         style = MaterialTheme.typography.bodySmall,
                         maxLines = 4,
                         modifier = Modifier
-                            .padding(top = 4.dp)
-                            .padding(top = 16.dp)
+                            .padding(top = marginSmall)
+                            .padding(top = marginLarge)
                     )
 
                 }
@@ -84,19 +87,19 @@ fun CloudNoteItem(
                         contentDescription = stringResource(
                             id = R.string.cd_note_image
                         ), modifier = Modifier
-                            .width(75.dp)
-                            .height(75.dp)
+                            .width(imageSizeLarge)
+                            .height(imageSizeLarge)
                     )
 
                     FloatingActionButton(
                         onClick = { }, modifier = Modifier
-                            .padding(top = 16.dp)
+                            .padding(top = marginLarge)
                             .align(Alignment.End)
                     ) {
                         Icon(
                             imageVector = Icons.Filled.NavigateNext,
                             contentDescription = "",
-                            Modifier.size(50.dp),
+                            Modifier.size(imageSizeMedium),
                         )
                     }
                 }
@@ -104,7 +107,7 @@ fun CloudNoteItem(
                     text = model?.date?.toDate()?.toSimpleString() ?: "12.09.2000",
                     modifier = Modifier
                         .align(Alignment.BottomCenter)
-                        .padding(top = spacing15),
+                        .padding(top = marginLarge),
                     style = MaterialTheme.typography.bodySmall
                 )
 

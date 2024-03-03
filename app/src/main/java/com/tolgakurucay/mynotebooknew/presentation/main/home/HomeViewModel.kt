@@ -51,7 +51,10 @@ class HomeViewModel @Inject constructor(
             success = { list ->
                 val isAnySelected = list.find { it.isSelected }
                 _state.update {
-                    it.copy(notes = list, isShowingTheMenu = isAnySelected.isNotNull())
+                    it.copy(
+                        notes = list.filter { model -> model.noteType == NoteType.NOTE.name },
+                        isShowingTheMenu = isAnySelected.isNotNull()
+                    )
                 }
             },
             service = {

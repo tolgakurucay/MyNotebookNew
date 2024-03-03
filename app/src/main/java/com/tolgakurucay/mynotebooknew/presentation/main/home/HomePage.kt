@@ -1,5 +1,6 @@
 package com.tolgakurucay.mynotebooknew.presentation.main.home
 
+import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -31,9 +32,11 @@ import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -55,10 +58,8 @@ import com.tolgakurucay.mynotebooknew.presentation.custom.ButtonSize
 import com.tolgakurucay.mynotebooknew.presentation.custom.ButtonType
 import com.tolgakurucay.mynotebooknew.presentation.custom.CustomAlertDialog
 import com.tolgakurucay.mynotebooknew.presentation.custom.CustomButton
-import com.tolgakurucay.mynotebooknew.util.isNull
 import com.tolgakurucay.mynotebooknew.util.orZero
 import com.tolgakurucay.mynotebooknew.util.setStateFalse
-import com.tolgakurucay.mynotebooknew.util.setStateTrue
 import com.tolgakurucay.mynotebooknew.util.share
 import com.tolgakurucay.mynotebooknew.util.showLog
 import com.tolgakurucay.mynotebooknew.util.toDate
@@ -70,7 +71,8 @@ import java.time.ZoneId
 @Composable
 fun HomePage(
     viewModel: HomeViewModel = hiltViewModel(),
-    homeNavigations: (HomeNavigations) -> Unit,
+    homeNavigation: (HomeNavigations) -> Unit,
+    context: Context = LocalContext.current,
     onLogOutClicked: () -> Unit,
     onNoteItemClicked: (NoteModel) -> Unit,
     datePickerState: DatePickerState = rememberDatePickerState(),
@@ -81,68 +83,103 @@ fun HomePage(
 
     val observableState = viewModel.state.collectAsStateWithLifecycle()
 
-    val isShowingExitDialog = remember { mutableStateOf(false) }
-    val isShared = remember { mutableStateOf(false) }
-    val isShowTheDatePickerDialog = remember { mutableStateOf(false) }
-    val isShowDeleteDialog = remember { mutableStateOf(false) }
-    val isShowTheTimePickerDialog = remember { mutableStateOf(false) }
-    val isShowEmptyRightDialog = remember { mutableStateOf(false) }
-    val isShowLessRightDialog = remember { mutableStateOf(false) }
+    var isShowingExitDialog by remember { mutableStateOf(false) }
+    var isShared by remember { mutableStateOf(false) }
+    var isShowTheDatePickerDialog by remember { mutableStateOf(false) }
+    var isShowDeleteDialog by remember { mutableStateOf(false) }
+    var isShowTheTimePickerDialog by remember { mutableStateOf(false) }
+    var isShowEmptyRightDialog by remember { mutableStateOf(false) }
+    var isShowLessRightDialog by remember { mutableStateOf(false) }
 
-    LaunchedEffect(key1 = observableState.value.userRightsToAddNote){
-        observableState.value.userRightsToAddNote?.let {safeRights->
-            if(safeRights == 0){
-                isShowEmptyRightDialog.setStateTrue()
+
+    HomeContent(
+        state = observableState.value,
+        homeNavigations = homeNavigation,
+        onLogOutClicked = {
+            isShowingExitDialog = true
+        },
+        onNoteItemClicked = { noteModel ->
+            if (observableState.value.isShowingTheMenu.not()) {
+                onNoteItemClicked.invoke(noteModel)
+            } else {
+                viewModel.doSelectableOrNot(noteModel.copy(isSelected = noteModel.isSelected.not()))
             }
-            else if(safeRights < observableState.value.notes.filter { it.isSelected }.size){
-                isShowLessRightDialog.setStateTrue()
+
+        },
+        onNoteItemLongClicked = { viewModel.doSelectableOrNot(it) },
+        onTopBarActionsClicked = {
+            when (it) {
+                HomeTopBarActions.Delete -> isShowDeleteDialog = true
+                HomeTopBarActions.Favorite -> viewModel.addNotesToFavorite(observableState.value.notes.filter { it.isSelected })
+                is HomeTopBarActions.Search -> viewModel.searchNotesByText(it.searchString)
+                HomeTopBarActions.SetAnAlarm -> {}
+                HomeTopBarActions.Share -> isShared = true
+                HomeTopBarActions.Cloud -> { viewModel.getUserRights() }
             }
-            else{
+        },
+        onSnackBarUndoClicked = {
+            observableState.value.notes.find { it.isSelected }?.let { safeModel ->
+                safeModel.alarmDate = null
+                viewModel.cancelTheAlarm(safeModel)
+            }
+        },
+        onSnackBarDismissed = {
+            viewModel.dismissSnackBar()
+        }
+    )
+
+    LaunchedEffect(key1 = observableState.value.userRightsToAddNote) {
+        observableState.value.userRightsToAddNote?.let { safeRights ->
+            if (safeRights == 0) {
+                isShowEmptyRightDialog = true
+            } else if (safeRights < observableState.value.notes.filter { it.isSelected }.size) {
+                isShowLessRightDialog = true
+            } else {
                 viewModel.addSelectedNotesToCloud(observableState.value.notes)
             }
         }
     }
 
-    if(isShowEmptyRightDialog.value){
+    if (isShowEmptyRightDialog) {
         CustomAlertDialog(type = AlertDialogType.YES_OR_NO,
             titleRes = R.string.common_information,
             descriptionText = stringResource(
                 id = R.string.desc_empty_right_dialog
             ),
             onConfirm = {
-                homeNavigations.invoke(HomeNavigations.PROFILE)
-                isShowEmptyRightDialog.setStateFalse()
+                homeNavigation.invoke(HomeNavigations.PROFILE)
+                isShowEmptyRightDialog = false
             },
             onDismiss = {
-                isShowEmptyRightDialog.setStateFalse()
+                isShowEmptyRightDialog = false
             }
         )
     }
 
-    if(isShowLessRightDialog.value){
+    if (isShowLessRightDialog) {
         CustomAlertDialog(type = AlertDialogType.YES_OR_NO,
             titleRes = R.string.common_information,
             descriptionText = stringResource(
                 id = R.string.desc_less_right_dialog
             ),
             onConfirm = {
-                homeNavigations.invoke(HomeNavigations.PROFILE)
-                isShowLessRightDialog.setStateFalse()
+                homeNavigation.invoke(HomeNavigations.PROFILE)
+                isShowLessRightDialog = false
             },
             onDismiss = {
-                isShowLessRightDialog.setStateFalse()
+                isShowLessRightDialog = false
             }
         )
     }
 
-    if (isShared.value) {
+    if (isShared) {
         val model = observableState.value.notes.find { it.isSelected }
-        LocalContext.current.share(model?.title.toString(), model?.description.toString()) {
-            isShared.setStateFalse()
+        context.share(model?.title.toString(), model?.description.toString()) {
+            isShared = false
         }
     }
 
-    if (isShowDeleteDialog.value) {
+    if (isShowDeleteDialog) {
         CustomAlertDialog(type = AlertDialogType.YES_OR_NO,
             titleRes = R.string.common_information,
             descriptionText = stringResource(
@@ -152,7 +189,7 @@ fun HomePage(
                 viewModel.deleteSelectedNotes()
             },
             onDismiss = {
-                isShowDeleteDialog.setStateFalse()
+                isShowDeleteDialog = false
             }
         )
     }
@@ -176,21 +213,21 @@ fun HomePage(
         }
     }
 
-    if (isShowingExitDialog.value) {
+    if (isShowingExitDialog) {
         CustomAlertDialog(
             type = AlertDialogType.YES_OR_NO,
             descriptionText = stringResource(id = R.string.question_you_want_exit),
             onConfirm = { viewModel.logOut() },
-            onDismiss = { isShowingExitDialog.value = false })
+            onDismiss = { isShowingExitDialog = false })
     }
 
 
-    if (isShowTheDatePickerDialog.value) {
+    if (isShowTheDatePickerDialog) {
         ModalBottomSheet(
             onDismissRequest = {
                 coroutineScope.launch {
                     bottomSheetState.hide()
-                    isShowTheDatePickerDialog.setStateFalse()
+                    isShowTheDatePickerDialog = false
                 }
             },
             sheetState = bottomSheetState
@@ -209,7 +246,7 @@ fun HomePage(
                 ) {
                     coroutineScope.launch {
                         bottomSheetState.hide()
-                        isShowTheDatePickerDialog.setStateFalse()
+                        isShowTheDatePickerDialog = false
                     }
 
                 }
@@ -220,8 +257,8 @@ fun HomePage(
                 ) {
                     coroutineScope.launch {
                         bottomSheetState.hide()
-                        isShowTheDatePickerDialog.setStateFalse()
-                        isShowTheTimePickerDialog.setStateTrue()
+                        isShowTheDatePickerDialog = false
+                        isShowTheTimePickerDialog = true
                     }
 
                 }
@@ -232,12 +269,12 @@ fun HomePage(
 
     }
 
-    if (isShowTheTimePickerDialog.value) {
+    if (isShowTheTimePickerDialog) {
 
         Box(
             modifier = Modifier.clip(MaterialTheme.shapes.medium)
         ) {
-            Dialog(onDismissRequest = { isShowTheTimePickerDialog.setStateFalse() }) {
+            Dialog(onDismissRequest = { isShowTheTimePickerDialog = false }) {
                 Column(
                     modifier = Modifier
                         .background(MaterialTheme.colorScheme.background)
@@ -256,19 +293,18 @@ fun HomePage(
                             buttonSize = ButtonSize.WRAP_CONTENT
                         ) {
 
-                            isShowTheTimePickerDialog.setStateFalse()
+                            isShowTheTimePickerDialog = false
                         }
                         CustomButton(
                             ButtonType.OK,
                             horizontalMargin = 4.dp,
                             buttonSize = ButtonSize.WRAP_CONTENT
                         ) {
-                            isShowTheTimePickerDialog.setStateFalse()
+                            isShowTheTimePickerDialog = false
 
                             val selectedDate =
                                 datePickerState.selectedDateMillis.orZero() + (timePickerState.minute * 1000).toLong() + (timePickerState.hour * 60 * 1000).toLong()
 
-                            // val tenSecond = System.currentTimeMillis() + 10000
                             observableState.value.notes.find { it.isSelected }?.let {
                                 it.alarmDate = selectedDate
                                 viewModel.setAnAlarm(it)
@@ -287,43 +323,6 @@ fun HomePage(
     }
 
 
-    HomeContent(
-        observableState.value,
-        homeNavigations = homeNavigations,
-        onLogOutClicked = {
-            isShowingExitDialog.value = true
-        },
-        onNoteItemClicked = { noteModel ->
-            if (observableState.value.isShowingTheMenu.not()) {
-                onNoteItemClicked.invoke(noteModel)
-            } else {
-                viewModel.doSelectableOrNot(noteModel.copy(isSelected = noteModel.isSelected.not()))
-            }
-
-        },
-        onNoteItemLongClicked = { viewModel.doSelectableOrNot(it) },
-        onTopBarActionsClicked = {
-            when (it) {
-                HomeTopBarActions.Delete -> isShowDeleteDialog.setStateTrue()
-                HomeTopBarActions.Favorite -> viewModel.addNotesToFavorite(observableState.value.notes.filter { it.isSelected })
-                is HomeTopBarActions.Search -> viewModel.searchNotesByText(it.searchString)
-                HomeTopBarActions.SetAnAlarm -> {}
-                HomeTopBarActions.Share -> isShared.setStateTrue()
-                HomeTopBarActions.Cloud -> {
-                    viewModel.getUserRights()
-                }
-            }
-        },
-        onSnackBarUndoClicked = {
-            observableState.value.notes.find { it.isSelected }?.let { safeModel ->
-                safeModel.alarmDate = null
-                viewModel.cancelTheAlarm(safeModel)
-            }
-        },
-        onSnackBarDismissed = {
-            viewModel.dismissSnackBar()
-        }
-    )
 }
 
 @Preview
@@ -337,40 +336,12 @@ fun HomeContent(
     onTopBarActionsClicked: (HomeTopBarActions) -> Unit = {},
     onSnackBarDismissed: () -> Unit = {},
     onSnackBarUndoClicked: () -> Unit = {},
-
-    ) {
+) {
 
     val snackbarState = remember { SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
     val snackBarMessage = stringResource(id = R.string.question_you_want_undo)
     val snackBarButtonMessage = stringResource(id = R.string.common_undo)
-
-
-
-    if (state.isSnackBarShow) {
-        LaunchedEffect(Unit) {
-            coroutineScope.launch {
-                snackbarState.showSnackbar(
-                    message = snackBarMessage,
-                    actionLabel = snackBarButtonMessage,
-                    duration = SnackbarDuration.Long,
-                    withDismissAction = true
-                ).also {
-                    when (it.ordinal) {
-                        0 -> {
-                            onSnackBarDismissed.invoke()
-                        }
-
-                        1 -> {
-                            onSnackBarUndoClicked.invoke()
-                        }
-                    }
-
-                }
-
-            }
-        }
-    }
 
     BaseScaffold(
         state = state,
@@ -412,7 +383,7 @@ fun HomeContent(
                             ),
                             modifier = Modifier.fillMaxSize(),
                         ) {
-                            items(state.notes.filter { it.noteType == NoteType.NOTE.name }) { model ->
+                            items(state.notes) { model ->
                                 NoteItem(
                                     model,
                                     onClicked = { noteModel ->
@@ -445,6 +416,33 @@ fun HomeContent(
 
         }
     )
+
+
+
+    if (state.isSnackBarShow) {
+        LaunchedEffect(Unit) {
+            coroutineScope.launch {
+                snackbarState.showSnackbar(
+                    message = snackBarMessage,
+                    actionLabel = snackBarButtonMessage,
+                    duration = SnackbarDuration.Long,
+                    withDismissAction = true
+                ).also {
+                    when (it.ordinal) {
+                        0 -> {
+                            onSnackBarDismissed.invoke()
+                        }
+
+                        1 -> {
+                            onSnackBarUndoClicked.invoke()
+                        }
+                    }
+
+                }
+
+            }
+        }
+    }
 
 
 }

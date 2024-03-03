@@ -16,8 +16,10 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor(private val isUserLoggedIn: IsUserLoggedIn,private val dataStoreManager: DataStoreManager) :
-    ViewModel() {
+class MainViewModel @Inject constructor(
+    private val isUserLoggedIn: IsUserLoggedIn,
+    private val dataStoreManager: DataStoreManager
+) : ViewModel() {
 
     private val _state = MutableStateFlow(MainState())
     val state: StateFlow<MainState> = _state
@@ -31,7 +33,7 @@ class MainViewModel @Inject constructor(private val isUserLoggedIn: IsUserLogged
         viewModelScope.callService(
             baseState = _state.value,
             success = {
-                _state.value = _state.value.copy(isUserLoggedIn = it)
+                _state.update { state -> state.copy(isUserLoggedIn = it) }
             },
             service = { isUserLoggedIn.invoke() })
     }
@@ -41,9 +43,7 @@ class MainViewModel @Inject constructor(private val isUserLoggedIn: IsUserLogged
             viewModelScope.callService(
                 baseState = _state.value,
                 success = { isDarkMode ->
-                    _state.update {
-                        it.copy(isDarkMode = isDarkMode)
-                    }
+                    _state.update { state -> state.copy(isDarkMode = isDarkMode) }
                 },
                 service = { dataStoreManager.getIsDarkModeTag().executeFlow() })
         }

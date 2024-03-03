@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.window.DialogProperties
 import com.tolgakurucay.mynotebooknew.R
-import com.tolgakurucay.mynotebooknew.presentation.theme.spacing10
+import com.tolgakurucay.mynotebooknew.presentation.theme.marginMedium
 
 @Composable
 fun CustomAlertDialog(
@@ -57,7 +57,7 @@ fun CustomAlertDialog(
                                     onConfirm?.invoke()
                                     showDialog.value = false
                                 }
-                                .padding(horizontal = spacing10),
+                                .padding(horizontal = marginMedium),
                         )
                     }
 
@@ -69,7 +69,7 @@ fun CustomAlertDialog(
                                     onConfirm?.invoke()
                                     showDialog.value = false
                                 }
-                                .padding(horizontal = spacing10),
+                                .padding(horizontal = marginMedium),
                         )
 
                     }
@@ -89,7 +89,7 @@ fun CustomAlertDialog(
                                     onDismiss?.invoke()
                                     showDialog.value = false
                                 }
-                                .padding(horizontal = spacing10),
+                                .padding(horizontal = marginMedium),
                         )
                     }
                 }

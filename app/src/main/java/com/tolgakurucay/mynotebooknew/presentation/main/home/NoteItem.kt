@@ -8,27 +8,28 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ImageNotSupported
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.tolgakurucay.mynotebooknew.R
 import com.tolgakurucay.mynotebooknew.domain.model.main.NoteModel
 import com.tolgakurucay.mynotebooknew.presentation.theme.LightOrange
-import com.tolgakurucay.mynotebooknew.presentation.theme.radius10
-import com.tolgakurucay.mynotebooknew.presentation.theme.size50
-import com.tolgakurucay.mynotebooknew.presentation.theme.spacing15
-import com.tolgakurucay.mynotebooknew.presentation.theme.spacing5
+import com.tolgakurucay.mynotebooknew.presentation.theme.imageSizeMedium
+import com.tolgakurucay.mynotebooknew.presentation.theme.marginLarge
+import com.tolgakurucay.mynotebooknew.presentation.theme.marginMedium
+import com.tolgakurucay.mynotebooknew.presentation.theme.marginSmall
+import com.tolgakurucay.mynotebooknew.presentation.theme.strokeMedium
+import com.tolgakurucay.mynotebooknew.presentation.theme.strokeThick
 import com.tolgakurucay.mynotebooknew.util.toDate
 import com.tolgakurucay.mynotebooknew.util.toSimpleString
 
@@ -43,7 +44,7 @@ fun NoteItem(
 
     Box(
         modifier = Modifier
-            .padding(spacing5)
+            .padding(marginSmall)
             .combinedClickable(
                 onClick = { onClicked.invoke(model) },
                 onLongClick = { onLongClicked.invoke(model) },
@@ -51,39 +52,48 @@ fun NoteItem(
 
 
     ) {
-
         Column(
             modifier = Modifier
                 .border(
-                    width = if (model?.isSelected == false) 1.dp else 3.dp,
+                    width = if (model?.isSelected == false) strokeMedium else strokeThick,
                     color = if (model?.isSelected == false) LightOrange else Color.Green,
-                    shape = RoundedCornerShape(radius10)
+                    shape = RoundedCornerShape(marginMedium)
                 )
                 .fillMaxWidth()
-                .padding(spacing5)
+                .padding(marginSmall)
 
         ) {
 
-            Row(modifier = Modifier.fillMaxWidth()) {
+            Row(modifier = Modifier
+                .fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 Image(
-                    painter = painterResource(id = R.drawable.plus_black),
+                    imageVector = Icons.Filled.ImageNotSupported,
                     contentDescription = stringResource(
                         id = R.string.cd_note_image
-                    ), modifier = Modifier
-                        .align(Alignment.CenterVertically)
-                        .width(size50)
-                        .height(size50)
+                    ),
+                    modifier = Modifier
+                        .size(imageSizeMedium)
+
                 )
-                Column {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+
+                    ) {
                     Text(
                         text = model?.title ?: stringResource(id = R.string.common_not_titled),
-                        style = MaterialTheme.typography.titleMedium, maxLines = 2
+                        style = MaterialTheme.typography.titleMedium,
+                        maxLines = 2
+
                     )
                     Text(
                         text = model?.description
                             ?: stringResource(id = R.string.common_not_added_description),
                         style = MaterialTheme.typography.bodySmall, maxLines = 4
                     )
+
                 }
             }
 
@@ -91,7 +101,7 @@ fun NoteItem(
                 text = model?.date?.toDate()?.toSimpleString() ?: "12.09.2000",
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
-                    .padding(top = spacing15),
+                    .padding(top = marginLarge),
                 style = MaterialTheme.typography.bodySmall
             )
 

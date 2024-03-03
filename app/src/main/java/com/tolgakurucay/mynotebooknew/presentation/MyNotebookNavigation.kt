@@ -16,6 +16,7 @@ import com.tolgakurucay.mynotebooknew.presentation.ScreenNames.EDIT_OR_VIEW_NOTE
 import com.tolgakurucay.mynotebooknew.presentation.ScreenNames.FAVORITES_SCREEN
 import com.tolgakurucay.mynotebooknew.presentation.ScreenNames.PROFILE_SCREEN
 import com.tolgakurucay.mynotebooknew.util.showLog
+import com.tolgakurucay.mynotebooknew.util.toJson
 
 
 /**
@@ -89,7 +90,6 @@ class Actions(private val navController: NavHostController) {
                     inclusive = true
                 }
             }
-
         }
     }
 
@@ -99,8 +99,6 @@ class Actions(private val navController: NavHostController) {
                 inclusive = true
             }
         }
-
-
     }
 
     fun navigateToAddNote() {
@@ -108,7 +106,6 @@ class Actions(private val navController: NavHostController) {
             this.popUpTo(Destinations.ADD_NOTE_ROUTE) {
                 inclusive = true
             }
-
         }
     }
 
@@ -119,27 +116,23 @@ class Actions(private val navController: NavHostController) {
     fun navigateToCloud() {
         navController.navigate(Destinations.CLOUD_ROUTE) {
             this.popUpTo(Destinations.REGISTER_ROUTE)
-
         }
-
     }
 
     fun navigateToProfile() {
         navController.navigate(Destinations.PROFILE_ROUTE)
+
     }
 
-
     fun navigateToEditOrView(noteModel: NoteModel, popUpRoute: String? = null) {
-        val modelToJson = Gson().toJson(noteModel)
-        navController.navigate("$EDIT_OR_VIEW_NOTE_SCREEN/$modelToJson") {
+        val serializedModel = noteModel.toJson()
+        navController.navigate("$EDIT_OR_VIEW_NOTE_SCREEN/$serializedModel") {
             popUpRoute?.let { safeRoute ->
                 popUpTo(safeRoute) {
                     inclusive = true
                 }
             }
         }
-
-
     }
 
     fun onBackPressed() {
