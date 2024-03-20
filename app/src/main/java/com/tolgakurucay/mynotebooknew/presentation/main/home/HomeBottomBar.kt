@@ -1,9 +1,5 @@
 package com.tolgakurucay.mynotebooknew.presentation.main.home
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.FloatingActionButton
@@ -16,7 +12,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.tolgakurucay.mynotebooknew.R
-import com.tolgakurucay.mynotebooknew.presentation.theme.radius30
+import com.tolgakurucay.mynotebooknew.presentation.theme.radiusExtraLarge
 
 @Preview
 @Composable
@@ -62,7 +58,7 @@ fun HomeBottomBar(
 
         },
         modifier = Modifier.clip(
-            RoundedCornerShape(topStart = radius30, topEnd = radius30)
+            RoundedCornerShape(topStart = radiusExtraLarge, topEnd = radiusExtraLarge)
         ),
         floatingActionButton = {
             FloatingActionButton(onClick = { homeNavigation.invoke(HomeNavigations.ADD_NOTE) }) {

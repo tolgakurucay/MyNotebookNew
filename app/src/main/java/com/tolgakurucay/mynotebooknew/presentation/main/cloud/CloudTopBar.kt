@@ -1,4 +1,4 @@
-package com.tolgakurucay.mynotebooknew.presentation.main.home
+package com.tolgakurucay.mynotebooknew.presentation.main.cloud
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -19,7 +20,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -28,22 +28,20 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.tolgakurucay.mynotebooknew.R
-import com.tolgakurucay.mynotebooknew.presentation.main.favorites.FavoritesTopBarActions
 import com.tolgakurucay.mynotebooknew.util.setStateFalse
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Preview
 @Composable
-fun HomeTopBar(
+fun CloudTopBar(
     showingTheToolbar: Boolean = false,
     showItemsForOneAction: Boolean = false,
-    expandMenu: Boolean = false,
-    actions: (HomeTopBarActions) -> Unit = {},
+    actions: (CloudTopBarActions) -> Unit = {}
 ) {
 
-    val expandTheMenu = remember { mutableStateOf(false) }
-
-    expandTheMenu.value = expandMenu
+    val menuState = remember {
+        mutableStateOf(false)
+    }
 
     val showingTheSearchBar = remember {
         mutableStateOf(false)
@@ -61,7 +59,7 @@ fun HomeTopBar(
                         value = searchedString.value,
                         onValueChange = {
                             searchedString.value = it
-                            actions.invoke(HomeTopBarActions.Search(it))
+                            actions.invoke(CloudTopBarActions.Search(it))
                         },
                         modifier = Modifier
                             .padding(horizontal = 4.dp, vertical = 8.dp)
@@ -74,13 +72,12 @@ fun HomeTopBar(
 
                 AnimatedVisibility(visible = showingTheSearchBar.value.not()) {
                     Text(
-                        text = stringResource(id = R.string.app_name),
+                        text = stringResource(id = R.string.cloud_page),
                         style = MaterialTheme.typography.titleLarge,
                         maxLines = 2,
                         modifier = Modifier
-                            .fillMaxWidth(0.7f)
                             .basicMarquee()
-
+                            .wrapContentWidth()
                     )
                 }
 
@@ -111,30 +108,21 @@ fun HomeTopBar(
                     ), modifier = Modifier
                         .padding(end = 8.dp)
                         .clickable {
-                            expandTheMenu.value = expandTheMenu.value.not()
+                            menuState.value = menuState.value.not()
                         }
                 )
 
-                if (expandTheMenu.value) {
+                if (menuState.value) {
                     DropdownMenu(
-                        expanded = expandTheMenu.value,
-                        onDismissRequest = { expandTheMenu.value = expandTheMenu.value.not() }) {
+                        expanded = menuState.value,
+                        onDismissRequest = { menuState.value = menuState.value.not() }) {
                         DropdownMenuItem(
                             text = { Text(text = stringResource(id = R.string.action_delete)) },
-                            onClick = { actions.invoke(HomeTopBarActions.Delete) })
-                        DropdownMenuItem(
-                            text = { Text(text = stringResource(id = R.string.action_add_favorite)) },
-                            onClick = { actions.invoke(HomeTopBarActions.Favorite) })
-                        DropdownMenuItem(
-                            text = { Text(text = stringResource(id = R.string.action_add_to_cloud)) },
-                            onClick = { actions.invoke(HomeTopBarActions.Cloud) })
+                            onClick = { actions.invoke(CloudTopBarActions.Delete) })
                         if (showItemsForOneAction) {
                             DropdownMenuItem(
                                 text = { Text(text = stringResource(id = R.string.action_share)) },
-                                onClick = { actions.invoke(HomeTopBarActions.Share) })
-                            DropdownMenuItem(
-                                text = { Text(text = stringResource(id = R.string.action_set_an_alarm)) },
-                                onClick = { actions.invoke(HomeTopBarActions.SetAnAlarm) })
+                                onClick = { actions.invoke(CloudTopBarActions.Share) })
                         }
 
 
@@ -165,11 +153,8 @@ fun HomeTopBar(
 }
 
 
-sealed class HomeTopBarActions {
-    object Delete : HomeTopBarActions()
-    class Search(val searchString: String) : HomeTopBarActions()
-    object Share : HomeTopBarActions()
-    object SetAnAlarm : HomeTopBarActions()
-    object Favorite : HomeTopBarActions()
-    object Cloud : HomeTopBarActions()
+sealed class CloudTopBarActions {
+    object Delete : CloudTopBarActions()
+    class Search(val searchString: String) : CloudTopBarActions()
+    object Share : CloudTopBarActions()
 }

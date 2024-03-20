@@ -196,6 +196,9 @@ android {
         //coil
         implementation("io.coil-kt:coil-compose:2.5.0")
 
+        //constraint layout compose
+        implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
+
 
     }
     kapt {

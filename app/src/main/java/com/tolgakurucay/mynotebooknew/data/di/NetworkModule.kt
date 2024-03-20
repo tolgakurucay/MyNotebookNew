@@ -6,6 +6,8 @@ import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.tolgakurucay.mynotebooknew.BuildConfig
+import com.tolgakurucay.mynotebooknew.data.database.NoteDao
+import com.tolgakurucay.mynotebooknew.data.datasources.home_data_source.HomeDataSource
 import com.tolgakurucay.mynotebooknew.domain.base.MyNotebookNewService
 import dagger.Module
 import dagger.Provides
@@ -61,5 +63,13 @@ object NetworkModule {
     @Singleton
     @Provides
     fun provideFirestore(): FirebaseFirestore = FirebaseFirestore.getInstance()
+
+    @Singleton
+    @Provides
+    fun provideHomeDataSource(
+        firestore: FirebaseFirestore,
+        auth: FirebaseAuth,
+        noteDao: NoteDao
+    ): HomeDataSource = HomeDataSource(firestore, auth, noteDao)
 
 }

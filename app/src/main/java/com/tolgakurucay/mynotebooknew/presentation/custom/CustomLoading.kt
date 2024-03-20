@@ -20,7 +20,7 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
-import com.tolgakurucay.mynotebooknew.presentation.theme.size32
+import com.tolgakurucay.mynotebooknew.presentation.theme.imageSizeMedium
 
 
 
@@ -28,7 +28,7 @@ import com.tolgakurucay.mynotebooknew.presentation.theme.size32
 
 @Composable
 fun CustomLoading(
-    size: Dp = size32, // indicator size
+    size: Dp = imageSizeMedium, // indicator size
     sweepAngle: Float = 90f, // angle (lenght) of indicator arc
     color: Color = MaterialTheme.colorScheme.primary, // color of indicator arc line
     strokeWidth: Dp = ProgressIndicatorDefaults.CircularStrokeWidth
@@ -50,7 +50,7 @@ fun CustomLoading(
                 durationMillis = 1100,
                 easing = LinearEasing
             )
-        )
+        ), label = ""
     )
 
     val stroke = with(LocalDensity.current) {

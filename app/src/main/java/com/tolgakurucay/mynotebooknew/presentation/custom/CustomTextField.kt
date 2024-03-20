@@ -37,14 +37,14 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import com.tolgakurucay.mynotebooknew.R
-import com.tolgakurucay.mynotebooknew.presentation.theme.spacing0
+import com.tolgakurucay.mynotebooknew.presentation.theme.zero
 
 
 @Preview
 @Composable
 fun CustomTextField(
     textFieldType: TextFieldType = TextFieldType.EMAIL,
-    horizontalMargin: Dp = spacing0,
+    horizontalMargin: Dp = zero,
     defaultValue: String = "",
     onValueChange: (newValue: String?) -> Unit = {}
 ) {

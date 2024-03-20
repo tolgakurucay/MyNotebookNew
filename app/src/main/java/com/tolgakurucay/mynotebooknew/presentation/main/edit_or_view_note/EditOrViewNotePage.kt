@@ -1,6 +1,5 @@
 package com.tolgakurucay.mynotebooknew.presentation.main.edit_or_view_note
 
-
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Column
@@ -9,24 +8,28 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.tolgakurucay.mynotebooknew.R
 import com.tolgakurucay.mynotebooknew.domain.base.BaseScaffold
 import com.tolgakurucay.mynotebooknew.domain.base.validateCustomTextFields
 import com.tolgakurucay.mynotebooknew.domain.model.main.NoteModel
+import com.tolgakurucay.mynotebooknew.presentation.custom.AlertDialogType
 import com.tolgakurucay.mynotebooknew.presentation.custom.ButtonType
+import com.tolgakurucay.mynotebooknew.presentation.custom.CustomAlertDialog
 import com.tolgakurucay.mynotebooknew.presentation.custom.CustomButton
 import com.tolgakurucay.mynotebooknew.presentation.custom.CustomTextField
 import com.tolgakurucay.mynotebooknew.presentation.custom.TextFieldType
-import com.tolgakurucay.mynotebooknew.presentation.theme.spacing15
-import com.tolgakurucay.mynotebooknew.presentation.theme.spacing5
-import com.tolgakurucay.mynotebooknew.util.showLog
+import com.tolgakurucay.mynotebooknew.presentation.theme.marginLarge
+import com.tolgakurucay.mynotebooknew.presentation.theme.marginSmall
 
 @Composable
 fun EditOrViewNotePage(
@@ -34,13 +37,25 @@ fun EditOrViewNotePage(
     viewModel: EditOrViewViewModel = hiltViewModel(),
     onBackPressed: () -> Unit,
 ) {
+
+    val state = viewModel.state.collectAsStateWithLifecycle().value
+
+    LaunchedEffect(key1 = state.hasDeleted) {
+        if (state.hasDeleted) {
+            onBackPressed.invoke()
+        }
+    }
+
     EditOrViewNoteContent(
         model = noteModel,
         onBackPressed = onBackPressed,
-        updateNoteToLocale = {
-            viewModel.updateNoteFromLocale(it)
+        updateNote = {
+            viewModel.updateNote(it)
         },
-        uiState = viewModel.state.collectAsStateWithLifecycle().value
+        deleteNote = {
+            viewModel.deleteNote(it)
+        },
+        uiState = state
     )
 
 }
@@ -50,11 +65,14 @@ fun EditOrViewNotePage(
 private fun EditOrViewNoteContent(
     model: NoteModel = NoteModel(),
     onBackPressed: () -> Unit = {},
-    updateNoteToLocale: (NoteModel) -> Unit = {},
+    updateNote: (NoteModel) -> Unit = {},
+    deleteNote: (NoteModel) -> Unit = {},
     uiState: EditOrViewState = EditOrViewState()
 ) {
     var title by remember { mutableStateOf(model.title) }
     var description by remember { mutableStateOf(model.description) }
+    var isShowDeleteNote by remember { mutableStateOf(false) }
+
 
     val galleryLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.GetMultipleContents()) { uriList ->
@@ -63,6 +81,15 @@ private fun EditOrViewNoteContent(
 
     if (uiState.hasUpdated) onBackPressed.invoke()
 
+    if (isShowDeleteNote) {
+        CustomAlertDialog(type = AlertDialogType.YES_OR_NO,
+            R.string.action_delete,
+            stringResource(
+                id = R.string.question_delete_note
+            ),
+            onConfirm = { deleteNote.invoke(model) },
+            onDismiss = { isShowDeleteNote = false })
+    }
 
 
 
@@ -78,7 +105,7 @@ private fun EditOrViewNoteContent(
         Column(
             modifier = Modifier
                 .padding(it)
-                .padding(horizontal = spacing15)
+                .padding(horizontal = marginLarge)
                 .verticalScroll(rememberScrollState())
         ) {
 
@@ -89,7 +116,7 @@ private fun EditOrViewNoteContent(
                     title = it
                 }
             )
-            Spacer(modifier = Modifier.padding(vertical = spacing5))
+            Spacer(modifier = Modifier.padding(vertical = marginSmall))
             CustomTextField(
                 textFieldType = TextFieldType.DESCRIPTION,
                 defaultValue = description.toString(),
@@ -97,15 +124,23 @@ private fun EditOrViewNoteContent(
                     description = it
                 }
             )
-            Spacer(modifier = Modifier.padding(vertical = spacing5))
+            Spacer(modifier = Modifier.padding(vertical = marginSmall))
             CustomButton(
-                buttonType = ButtonType.UPDATE_NOTE, horizontalMargin = spacing15,
+                buttonType = ButtonType.UPDATE_NOTE, horizontalMargin = marginLarge,
                 onClick = {
                     if (arrayOf(title, description).validateCustomTextFields()) {
-                        updateNoteToLocale.invoke(
+                        updateNote.invoke(
                             model.copy(title = title, description = description)
                         )
                     }
+                },
+            )
+            Spacer(modifier = Modifier.padding(vertical = marginSmall))
+            CustomButton(
+                buttonType = ButtonType.DELETE_NOTE,
+                horizontalMargin = marginLarge,
+                onClick = {
+                    isShowDeleteNote = true
                 },
             )
 

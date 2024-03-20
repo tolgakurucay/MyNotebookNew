@@ -151,3 +151,7 @@ fun Uri?.toBitmap(context: Context): Bitmap? {
    }
 }
 
+fun <T> List<T>.toArrayList(): ArrayList<T> {
+    return ArrayList(this)
+}
+

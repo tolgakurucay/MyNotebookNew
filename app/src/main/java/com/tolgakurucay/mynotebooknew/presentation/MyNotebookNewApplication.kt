@@ -19,23 +19,22 @@ import javax.inject.Inject
 
 @HiltAndroidApp
 class MyNotebookNewApplication : Application() {
-
     override fun onCreate() {
         super.onCreate()
         createNotificationChannel()
 
     }
-
-
     private fun createNotificationChannel() {
-        val channelId = "alarm_note_channel"
-        val channelName = "Alarm Note Channel"
         val notificationManager = getSystemService(NotificationManager::class.java)
         val channel =
-            NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_HIGH)
+            NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_HIGH)
         notificationManager.createNotificationChannel(channel)
     }
 
+    companion object {
+        const val CHANNEL_ID = "alarm_note_channel"
+        const val CHANNEL_NAME = "Alarm Note Channel"
+    }
 
 }
 

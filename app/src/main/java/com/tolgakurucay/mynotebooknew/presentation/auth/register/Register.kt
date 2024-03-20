@@ -34,11 +34,10 @@ import com.tolgakurucay.mynotebooknew.presentation.custom.ButtonType
 import com.tolgakurucay.mynotebooknew.presentation.custom.CustomButton
 import com.tolgakurucay.mynotebooknew.presentation.custom.CustomTextField
 import com.tolgakurucay.mynotebooknew.presentation.custom.TextFieldType
-import com.tolgakurucay.mynotebooknew.presentation.theme.spacing10
-import com.tolgakurucay.mynotebooknew.presentation.theme.spacing30
-import com.tolgakurucay.mynotebooknew.presentation.theme.spacing40
-import com.tolgakurucay.mynotebooknew.presentation.theme.spacing5
-import com.tolgakurucay.mynotebooknew.presentation.theme.spacing70
+import com.tolgakurucay.mynotebooknew.presentation.theme.marginExtraLarge
+import com.tolgakurucay.mynotebooknew.presentation.theme.marginMedium
+import com.tolgakurucay.mynotebooknew.presentation.theme.marginSmall
+import com.tolgakurucay.mynotebooknew.presentation.theme.pageDividerMedium
 import com.tolgakurucay.mynotebooknew.util.safeLet
 
 @Composable
@@ -166,56 +165,56 @@ fun RegisterContent(
             textAlign = TextAlign.Start,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(start = spacing30, top = spacing30),
+                .padding(start = marginExtraLarge, top = marginExtraLarge),
             style = MaterialTheme.typography.displaySmall
         )
-        Spacer(modifier = Modifier.padding(vertical = spacing70))
+        Spacer(modifier = Modifier.padding(vertical = pageDividerMedium))
         CustomTextField(
-            horizontalMargin = spacing10,
+            horizontalMargin = marginMedium,
             textFieldType = TextFieldType.NAME,
             onValueChange = {
                 name = it
             },
         )
-        Spacer(modifier = Modifier.padding(vertical = spacing5))
+        Spacer(modifier = Modifier.padding(vertical = marginSmall))
         CustomTextField(
-            horizontalMargin = spacing10,
+            horizontalMargin = marginMedium,
             textFieldType = TextFieldType.SURNAME,
             onValueChange = {
                 surname = it
             },
         )
-        Spacer(modifier = Modifier.padding(vertical = spacing5))
+        Spacer(modifier = Modifier.padding(vertical = marginSmall))
         CustomTextField(
-            horizontalMargin = spacing10,
+            horizontalMargin = marginMedium,
             textFieldType = TextFieldType.EMAIL,
             onValueChange = {
                 email = it
             },
         )
-        Spacer(modifier = Modifier.padding(vertical = spacing5))
+        Spacer(modifier = Modifier.padding(vertical = marginSmall))
         CustomTextField(
-            horizontalMargin = spacing10,
+            horizontalMargin = marginMedium,
             textFieldType = TextFieldType.PASSWORD,
             onValueChange = {
                 password = it
             },
         )
-        Spacer(modifier = Modifier.padding(vertical = spacing5))
+        Spacer(modifier = Modifier.padding(vertical = marginSmall))
         CustomTextField(
-            horizontalMargin = spacing10,
+            horizontalMargin = marginMedium,
             textFieldType = TextFieldType.PASSWORD_AGAIN,
             onValueChange = {
                 passwordAgain = it
             },
         )
 
-        Spacer(modifier = Modifier.padding(top = spacing40))
+        Spacer(modifier = Modifier.padding(top = marginExtraLarge))
         CustomButton(
             buttonType = ButtonType.REGISTER,
-            horizontalMargin = spacing10,
+            horizontalMargin = marginSmall,
             onClick = { register() })
-        Spacer(modifier = Modifier.padding(top = spacing40))
+        Spacer(modifier = Modifier.padding(top = marginExtraLarge))
         observeData()
 
 

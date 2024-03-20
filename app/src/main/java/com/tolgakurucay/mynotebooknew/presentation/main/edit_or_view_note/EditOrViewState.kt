@@ -5,4 +5,4 @@ import com.tolgakurucay.mynotebooknew.domain.base.BaseState
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class EditOrViewState(var hasUpdated: Boolean = false) : BaseState(), Parcelable
+data class EditOrViewState(var hasUpdated: Boolean = false, var hasDeleted: Boolean = false) : BaseState(), Parcelable

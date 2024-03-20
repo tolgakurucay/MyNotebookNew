@@ -32,10 +32,9 @@ import com.tolgakurucay.mynotebooknew.presentation.custom.CustomAlertDialog
 import com.tolgakurucay.mynotebooknew.presentation.custom.CustomButton
 import com.tolgakurucay.mynotebooknew.presentation.custom.CustomTextField
 import com.tolgakurucay.mynotebooknew.presentation.custom.TextFieldType
-import com.tolgakurucay.mynotebooknew.presentation.theme.spacing10
-import com.tolgakurucay.mynotebooknew.presentation.theme.spacing30
-import com.tolgakurucay.mynotebooknew.presentation.theme.spacing40
-import com.tolgakurucay.mynotebooknew.presentation.theme.spacing70
+import com.tolgakurucay.mynotebooknew.presentation.theme.marginExtraLarge
+import com.tolgakurucay.mynotebooknew.presentation.theme.marginMedium
+import com.tolgakurucay.mynotebooknew.presentation.theme.pageDividerMedium
 
 @Composable
 fun ForgotPasswordPage(
@@ -90,30 +89,30 @@ fun ForgotPasswordContent(
             textAlign = TextAlign.Start,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(end = spacing30, top = spacing30, start = spacing30),
+                .padding(end = marginExtraLarge, top = marginExtraLarge, start = marginExtraLarge),
             style = MaterialTheme.typography.displaySmall
         )
 
-        Spacer(modifier = Modifier.padding(vertical = spacing70))
+        Spacer(modifier = Modifier.padding(vertical = pageDividerMedium))
         CustomTextField(
-            horizontalMargin = spacing10,
+            horizontalMargin = marginMedium,
             textFieldType = TextFieldType.EMAIL,
             onValueChange = {
                 email = it
             },
         )
-        Spacer(modifier = Modifier.padding(top = spacing40))
+        Spacer(modifier = Modifier.padding(top = marginExtraLarge))
 
         CustomButton(
             buttonType = ButtonType.FORGOT_PASSWORD,
-            horizontalMargin = spacing10,
+            horizontalMargin = marginMedium,
             onClick = {
                 if (arrayOf(email).validateCustomTextFields()) {
                     forgotPassword.invoke(email!!)
                 }
             },
         )
-        Spacer(modifier = Modifier.padding(top = spacing40))
+        Spacer(modifier = Modifier.padding(top = marginExtraLarge))
 
     }
 

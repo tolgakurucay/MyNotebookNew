@@ -89,7 +89,7 @@
     <string name="question_you_want_exit">Çıkış yapmak istediğinden emin misin?</string>
     <string name="common_an_error_occured">Bir hata oluştu</string>
     <string name="cd_menu">Menu ikonu</string>
-    <string name="action_delete">Sİl</string>
+    <string name="action_delete">Sil</string>
     <string name="cd_search_icon">Arama ikonu</string>
     <string name="screen_favorites">Favoriler Sayfanıza Hoşgeldiniz</string>
     <string name="favorites_no_content">Herhangi bir favori yok</string>
@@ -139,4 +139,13 @@
     <string name="profile_bottom_item_payment">Ödeme</string>
     <string name="profile_bottom_item_view_mode">Karanlık Mod</string>
     <string name="profile_bottom_item_who_am_i">Ben Kimim?</string>
+    <string name="cloud_page">Bulut Ekranı</string>
+    <string name="desc_empty_right_dialog">Buluta yüklemek için hiç hakkınız yok.</string>
+    <string name="desc_less_right_dialog">Buluta yüklemek için hakların yetersiz. Lütfen hak satın al</string>
+    <string name="cloud_no_content">Hiç bulut notu yok</string>
+    <string name="action_delete_note">NOTU SİL</string>
+    <string name="question_delete_note">Bu notu silmek istediğinden emin misin?</string>
+    <string name="question_you_want_add_favorites">Bütün seçilen notları favorilere eklemek istediğine emin misin?</string>
+    <string name="question_you_want_add_cloud">Bütün seçilen notları buluta eklemek istediğine emin misin?</string>
+
 </resources>
