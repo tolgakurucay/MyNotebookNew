@@ -1,5 +1,6 @@
 package com.tolgakurucay.mynotebooknew.presentation.main.cloud
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tolgakurucay.mynotebooknew.domain.model.main.NoteModel
@@ -37,7 +38,8 @@ class CloudViewModel @Inject constructor(
                 _state.update {
                     val isAnySelected = list.find { it.isSelected }
                     it.copy(
-                        list.filter { it.noteType == NoteType.CLOUD.name }.toArrayList(),
+                        noteList = list.filter { it.noteType == NoteType.CLOUD.name }.toArrayList(),
+                        filteredNoteList = list,
                         isShowingTheMenu = isAnySelected.isNotNull()
                     )
                 }
@@ -93,8 +95,25 @@ class CloudViewModel @Inject constructor(
         )
     }
 
-    // TODO:
     fun searchNotesByText(searchString: String) {
+        if (searchString.isEmpty()) {
+            _state.update {
+                it.copy(filteredNoteList = _state.value.noteList)
+            }
+        } else {
+            Log.d("bilgitolga", "searchNotesByText: ${_state.value.noteList.filter {
+                it.title.orEmpty().startsWith(searchString) || it.description.orEmpty()
+                    .startsWith(searchString)
+            }}")
+            _state.update {
+                it.copy(
+                    filteredNoteList = _state.value.noteList.filter {
+                        it.title.orEmpty().startsWith(searchString) || it.description.orEmpty()
+                            .startsWith(searchString)
+                    },
+                )
+            }
+        }
 
     }
 }

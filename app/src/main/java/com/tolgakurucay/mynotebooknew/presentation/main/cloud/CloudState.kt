@@ -9,5 +9,6 @@ data class CloudState(
     val noteUpdated: Boolean = false,
     val allNotesDeleted: Boolean = false,
     val isShowingTheMenu: Boolean = false,
-    val changeStateManually: Boolean = false
+    val changeStateManually: Boolean = false,
+    val filteredNoteList: List<NoteModel> = listOf()
     ) : BaseState()

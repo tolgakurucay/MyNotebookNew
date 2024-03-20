@@ -36,7 +36,8 @@ import com.tolgakurucay.mynotebooknew.util.share
 
 @Composable
 fun CloudPage(
-    cloudViewModel: CloudViewModel = hiltViewModel(), onNoteItemClicked: (NoteModel) -> Unit
+    cloudViewModel: CloudViewModel = hiltViewModel(),
+    onNoteItemClicked: (NoteModel) -> Unit
 ) {
 
     val state by cloudViewModel.state.collectAsStateWithLifecycle()
@@ -44,12 +45,9 @@ fun CloudPage(
     val isShowDeleteDialog = remember { mutableStateOf(false) }
     val isShared = remember { mutableStateOf(false) }
 
-    LaunchedEffect(key1 = Unit){
 
-    }
-
-
-    CloudContent(state = state,
+    CloudContent(
+        state = state,
         onNoteItemClicked = { noteModel ->
             if (state.isShowingTheMenu.not()) {
                 onNoteItemClicked.invoke(noteModel)
@@ -64,9 +62,11 @@ fun CloudPage(
                 is CloudTopBarActions.Search -> {
                     cloudViewModel.searchNotesByText(it.searchString)
                 }
+
                 CloudTopBarActions.Share -> isShared.setStateTrue()
             }
-        })
+        },
+    )
 
 
 
@@ -113,9 +113,10 @@ fun CloudContent(
                 actions = onTopBarActionsClicked
 
             )
-        }) {
+        },
+    ) {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            if(state.noteList.any { it.noteType == NoteType.CLOUD.name }){
+            if (state.filteredNoteList.any { it.noteType == NoteType.CLOUD.name }) {
                 Column(modifier = Modifier.padding(it)) {
                     LazyVerticalStaggeredGrid(
                         columns = StaggeredGridCells.Fixed(2),
@@ -124,7 +125,7 @@ fun CloudContent(
                         ),
                         modifier = Modifier.fillMaxSize(),
                     ) {
-                        items(state.noteList) { model ->
+                        items(state.filteredNoteList) { model ->
                             CloudNoteItem(
                                 model,
                                 onClicked = { noteModel ->
@@ -141,9 +142,7 @@ fun CloudContent(
                         }
                     }
                 }
-            }
-
-            else{
+            } else {
                 Text(
                     text = stringResource(id = R.string.cloud_no_content),
                     style = MaterialTheme.typography.bodyLarge, textAlign = TextAlign.Center

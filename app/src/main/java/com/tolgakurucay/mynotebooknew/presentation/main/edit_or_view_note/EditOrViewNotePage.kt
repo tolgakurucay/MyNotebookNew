@@ -60,7 +60,7 @@ fun EditOrViewNotePage(
 
 }
 
-@Preview()
+@Preview
 @Composable
 private fun EditOrViewNoteContent(
     model: NoteModel = NoteModel(),
