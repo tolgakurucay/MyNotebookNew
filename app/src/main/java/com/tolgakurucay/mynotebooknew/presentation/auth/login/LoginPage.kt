@@ -265,12 +265,12 @@ fun LoginContent(
                 .fillMaxWidth()
                 .padding(vertical = marginExtraLarge)
         ) {
-            IconButton(
+            /*IconButton(
                 onClick = {}, modifier = Modifier
                     .paint(painterResource(id = R.drawable.facebook_sign))
             ) {
 
-            }
+            }*/
             IconButton(
                 onClick = {
                     onGoogleSignInClicked()
@@ -279,12 +279,12 @@ fun LoginContent(
             ) {
 
             }
-            IconButton(
+          /*  IconButton(
                 onClick = {},
                 modifier = Modifier.paint(painterResource(id = R.drawable.phone_sign))
             ) {
 
-            }
+            }*/
         }
 
     }
